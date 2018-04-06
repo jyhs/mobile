@@ -32,7 +32,7 @@ module.exports = {
         proxyTable: {
             /*
             '/api': {
-                target: 'http://www.coral123.com',
+                target: 'https://111.231.136.250',
                 changeOrigin: true
             }
             */
