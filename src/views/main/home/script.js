@@ -56,9 +56,6 @@ export default {
     },
 
     async created() {
-        this.$vux.loading.show({
-            text: '努力加载中'
-        });
         this.provinces = await this.getProvinces();
         const response = await this.getGroupList({
             page: 1,
@@ -79,7 +76,6 @@ export default {
             const encyImage = (await this.getEncyImagesById({id: ency.id}))['imageList'][0];
             this.$set(ency, 'encyImage', encyImage ? `${ImageBasePath}${encyImage}` : require('../../../assets/others/tuan_image.png'));
         }
-        this.$vux.loading.hide();
 
         for (let group of this.groups) {
             const interval = Math.floor(Math.abs(Math.abs(moment(group.end_date).diff(moment())) / 1000));

@@ -69,6 +69,7 @@ export default {
                 console.error(error);
             }
             this.$vux.loading.hide();
+            this.$vux.loading.hide();
 
             if (result.status === 'ok') {
                 this.$vux.toast.show({
