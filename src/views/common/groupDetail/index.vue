@@ -16,28 +16,28 @@
         <scroller :on-refresh="handleDataRefresh">
             <div class="detail">
                 <div>
-                <span class="column f12">
-                    <span class="title">组织者：</span>
-                    <span>{{group.contacts}}</span>
-                </span>
+                    <span class="column f12">
+                        <span class="title">组织者：</span>
+                        <span>{{group.contacts}}</span>
+                    </span>
                 </div>
                 <div>
-                <span class="column f12">
-                    <span class="title">电话：</span>
-                    <span>{{group.phone}}</span>
-                </span>
+                    <span class="column f12">
+                        <span class="title">电话：</span>
+                        <span>{{group.phone}}</span>
+                    </span>
                 </div>
                 <div>
-                <span class="column f12">
-                    <span class="title">截止时间：</span>
-                    <span>{{group.end_date}}</span>
-                </span>
+                    <span class="column f12">
+                        <span class="title">截止时间：</span>
+                        <span>{{group.end_date}}</span>
+                    </span>
                 </div>
                 <div>
-                <span class="column f12">
-                    <span class="title">团购金额：</span>
-                    <span class="count">￥{{groupCount}}</span>
-                </span>
+                    <span class="column f12">
+                        <span class="title">团购金额：</span>
+                        <span class="count">￥{{groupCount}}</span>
+                    </span>
                 </div>
             </div>
             <div class="description">
@@ -48,7 +48,7 @@
                     <popover placement="right" class="name" @on-show="handleDetailImageShow(item)">
                         <div slot="content" class="popover-content">
                             <span class="f10">{{item.name}}</span>
-                            <img :src="imagePath" alt="生物图片加载中...">
+                            <img :src="imagePath" alt="生物图片加载中..." @click="handleActions(item, 'encyDetail')">
                         </div>
                         <button class="f14">{{item.name}}</button>
                     </popover>

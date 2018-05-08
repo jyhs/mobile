@@ -145,7 +145,7 @@
                         text: '登录成功'
                     });
                     this.loginHasError = false;
-                    this.$router.push('/');
+                    window.location.href = '/';
                     window.localStorage.setItem('SeawaterAuthorization', result.token);
                     window.localStorage.setItem('SeawaterLoginUserId', result.id);
                     window.sessionStorage.removeItem('SeaWaterLoginHasError');

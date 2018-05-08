@@ -43,8 +43,8 @@
                         看看？
                     </span>
                 </div>
-                <load-more tip="努力加载中" v-if="groups.length === 0"></load-more>
-                <div class="block-content" v-for="group in groups" v-if="group.status===1" :key="group.id"
+                <load-more tip="努力加载中" v-if="!groups"></load-more>
+                <div class="block-content" v-for="group in (groups || [])" v-if="group.status===1" :key="group.id"
                      @click="handleActions(group, 'groupDetail')">
                     <div class="content-main group-content-main">
                         <div class="avatar">
@@ -85,8 +85,11 @@
                     <span class="rect"></span>
                     <span class="title-text f16">最新出单</span>
                 </div>
-                <load-more tip="努力加载中" v-if="bills.length === 0"></load-more>
-                <div class="block-content" v-for="item in bills" v-if="item.status===1" :key="item.id"
+                <div class="has-no-active" v-if="!hasActiveBill">
+                    <span class="f13">亲，暂时没有可用的出单哟！</span>
+                </div>
+                <load-more tip="努力加载中" v-if="!bills"></load-more>
+                <div class="block-content" v-for="item in (bills || [])" v-if="item.status===1" :key="item.id"
                      @click="handleActions(item, 'billDetail')">
                     <div class="content-main bill-content-main">
                         <div class="bill-first-word" :style="{'background-color': billFirstWordColor[item.id%5]}">

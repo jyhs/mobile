@@ -8,16 +8,21 @@ import * as GroupAction from '../actions/GroupAction';
 import * as CartAction from '../actions/CartAction';
 
 const state = {
-    loadingShow: false
+    loadingShow: false,
+    groupsInCurProvince: []
 };
 
 const getters = {
-    loadingShow: state => state.loadingShow
+    loadingShow: state => state.loadingShow,
+    groupsInCurProvince: state => state.groupsInCurProvince
 };
 
 const mutations = {
     [TYPES.LOADING](state, loadingShow) {
         state.loadingShow = loadingShow;
+    },
+    [TYPES.GROUPS_IN_CUR_PROVINCE](state, groupsInCurProvince) {
+        state.groupsInCurProvince = groupsInCurProvince;
     }
 };
 

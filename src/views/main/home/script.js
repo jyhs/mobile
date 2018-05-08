@@ -5,19 +5,19 @@ import {ImageBasePath, AvatarBasePath} from '../../../constants/index';
 
 const baseList = [{
     url: 'javascript: void(0);',
-    img: '/static/images/banner/banner.jpg',
+    img: '/static/images/banner/banner1.jpg',
     title: ''
 }, {
     url: 'javascript: void(0);',
-    img: '/static/images/banner/banner.jpg',
+    img: '/static/images/banner/banner2.jpg',
     title: ''
 }, {
     url: 'javascript: void(0);',
-    img: '/static/images/banner/banner.jpg',
+    img: '/static/images/banner/banner3.jpg',
     title: ''
 }, {
     url: 'javascript: void(0);',
-    img: '/static/images/banner/banner.jpg',
+    img: '/static/images/banner/banner4.jpg',
     title: ''
 }];
 
@@ -37,8 +37,8 @@ export default {
             provinces: [],
             curProvince: [localStorage.getItem('SeawaterCurProvince') || 'sh'],
             curProvinceName: localStorage.getItem('SeawaterCurProvinceName') || '上海',
-            groups: [],
-            bills: [],
+            groups: undefined,
+            bills: undefined,
             encyList: [],
             hasActiveGroup: true,
             hasActiveBill: true,
@@ -103,6 +103,7 @@ export default {
 
     methods: {
         ...mapActions([
+            'updateGroupsInCurProvince',
             'getProvinces',
             'getGroupList',
             'getUserAvatar',
@@ -135,6 +136,8 @@ export default {
                         : require('../../../assets/others/default_avatar.svg'));
                 }
             }
+            this.bills = (await this.getBillList({page: 1, size: 10}))['bills'] || [];
+            this.updateGroupsInCurProvince(this.groups);
 
             window.localStorage.setItem('SeawaterCurProvince', value[0]);
             window.localStorage.setItem('SeawaterCurProvinceName', this.curProvinceName);
@@ -213,8 +216,12 @@ export default {
 
     watch: {
         groups: function (curValue) {
-            const filteredGroups = curValue.filter(item => item.status===1);
+            const filteredGroups = curValue.filter(item => item.status === 1);
             this.hasActiveGroup = filteredGroups.length !== 0;
+        },
+        bills: function (curValue) {
+            const filteredBills = curValue.filter(item => item.status === 1);
+            this.hasActiveBill = filteredBills.length !== 0;
         }
     }
 };

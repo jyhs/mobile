@@ -41,7 +41,7 @@
                      @click="handleActions(item, 'encyDetail')">
                     <div class="content-main ency-content-main">
                         <div class="pic">
-                            <img src="../../../assets/others/tuan_image.png" alt="生物图片">
+                            <img :src="item.picUrl" alt="生物图片">
                         </div>
                         <div class="info">
                             <div class="name-price">

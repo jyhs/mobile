@@ -2,6 +2,15 @@ import * as TYPES from '../constants/types';
 import CommonService from '../services/CommonService';
 
 /**
+ * 保存当前所在省
+ * @param commit
+ * @param curProvince
+ */
+export function updateGroupsInCurProvince({commit}, groups) {
+    commit(TYPES.GROUPS_IN_CUR_PROVINCE, groups);
+}
+
+/**
  * 发送短信验证码
  * @param commit
  * @param params
@@ -20,15 +29,19 @@ export async function sendVerification({commit}, params) {
 export async function getProvinces({commit}) {
     const response = await CommonService.getProvinces();
     const data = [];
-    for (let key of Object.keys(response.data)) {
+    for (let province of response.data) {
         data.push({
-            name: response.data[key],
-            value: key
+            name: province.name,
+            value: province.code
         });
     }
     return data;
 }
 
+/**
+ * 获取城市
+ * @returns {Promise<Array>}
+ */
 export async function getCities () {
     const citiesObj = await CommonService.getCities();
     const citiesArr = [];

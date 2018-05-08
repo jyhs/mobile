@@ -12,7 +12,10 @@
                 </button-tab>
             </div>
             <div class="block" v-if="active==='group'">
-                <div class="block-content" v-for="group in groups" :key="group.id" @click="handleActions(group, 'groupDetail')">
+                <div class="block-content"
+                     v-for="group in (groupsInCurProvince.length ? groupsInCurProvince : groups)"
+                     :key="group.id" @click="handleActions(group, 'groupDetail')"
+                >
                     <div class="content-main group-content-main">
                         <div class="avatar">
                             <img src="../../../assets/others/tuan_image.png" alt="同省商家头像">
@@ -72,7 +75,7 @@
     </div>
 </template>
 <script>
-    import {mapActions} from 'vuex';
+    import {mapGetters, mapActions} from 'vuex';
     import {ButtonTab, ButtonTabItem, Alert} from 'vux';
 
     export default {
@@ -92,6 +95,12 @@
             ButtonTab,
             ButtonTabItem,
             Alert
+        },
+
+        computed: {
+            ...mapGetters([
+                'groupsInCurProvince'
+            ])
         },
 
         async created() {

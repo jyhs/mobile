@@ -79,6 +79,14 @@ export default {
                         }
                     });
                     break;
+                case 'encyDetail':
+                    this.$router.push({
+                        name: actionType,
+                        params: {
+                            id: item.id,
+                        }
+                    });
+                    break;
                 default:
                     break;
             }

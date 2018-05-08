@@ -1,5 +1,6 @@
 import {mapActions} from 'vuex';
 import {ViewBox, Tab, TabItem, Icon, Grid, GridItem, Sticky, Rater, Group, PopupPicker} from 'vux';
+import {ApiBasePath} from '../../../constants/index';
 
 const shareTypes = [{
     name: '微信',
@@ -40,6 +41,9 @@ export default {
 
     async created() {
         this.encyList = await this.getEncyRandomList({number: 20});
+        for (let ency of this.encyList) {
+            this.$set(ency, 'picUrl', `${ApiBasePath}/api/material/image/base64/small?id=${ency.id}`);
+        }
     },
 
     methods: {
