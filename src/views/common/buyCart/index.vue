@@ -7,7 +7,7 @@
             <div class="block">
                 <div class="block-content m-b-10" v-for="item in detailsInCart">
                     <div class="img-container">
-                        <img :src="item.imgPath" alt="生物图片">
+                        <img :src="item.encyImage" alt="生物图片">
                     </div>
                     <div class="info">
                         <span class="name f15">{{item.name}}</span>
@@ -239,28 +239,8 @@
 
             async updateDetailsImg() {
                 this.detailsInCart.map(async detail => {
-                    const imgPath = await this.getDetailImage(detail);
-                    this.$set(detail, 'imgPath', imgPath);
+                    this.$set(detail, 'encyImage', `${SmallImageBasePath}?id=${detail.id}`);
                 });
-            },
-
-            async getDetailImage(detail) {
-                if (!detail['material_id']) {
-                    return require('../../../assets/others/default_detail.svg');
-                }
-
-                let result = {};
-                try {
-                    result = await this.getEncyImageById({id: detail['material_id']});
-                } catch (error) {
-                    console.error(error);
-                }
-
-                if (result.status === 'ok' && result.image) {
-                    return `${SmallImageBasePath}${result.image}`;
-                }
-
-                return require('../../../assets/others/default_detail.svg');
             },
 
             calculateCartCount() {

@@ -99,6 +99,9 @@ export default {
             try {
                 result = await this.getEncyList({type: type.code, page: 1, size: 1000});
                 this.encyList = result['materials'] || [];
+                for (let ency of this.encyList) {
+                    this.$set(ency, 'encyImage', `${SmallImageBasePath}?id=${ency.id}`);
+                }
             } catch (error) {
                 console.error(error);
             }

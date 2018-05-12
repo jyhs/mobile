@@ -2,6 +2,10 @@
     <div class="my-carts-container">
         <scroller :on-refresh="handleDataRefresh">
             <div class="block">
+                <div class="block-title">
+                    <span class="rect"></span>
+                    <span class="title-text f16">我的购物车</span>
+                </div>
                 <div class="no-tips" v-if="carts.length===0">
                     空空如也，<a href="javascript: void(0);" @click="handleActions(null, 'main')">去看看热团吧~~~</a>？
                 </div>
@@ -125,6 +129,24 @@
     .my-carts-container {
         .block {
             width: 100%;
+            .block-title {
+                width: 100%;
+                height: 0.24rem;
+                margin-top: 0.03rem;
+                line-height: 0.24rem;
+                .rect {
+                    padding: 9px 3px;
+                    width: 0;
+                    font-size: 0;
+                    background-color: #84daef;
+                    position: relative;
+                    top: -5px;
+                    margin-left: 0.15rem;
+                }
+                .title-text {
+                    margin-left: 0.05rem;
+                }
+            }
             .no-tips {
                 width: 100%;
                 height: 100%;

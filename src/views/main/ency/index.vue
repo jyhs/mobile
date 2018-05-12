@@ -47,7 +47,9 @@
                             <div class="name-price">
                                 <span class="ency-name f15">{{item.name}}</span>
                                 <span class="ency-price">
-                                    <span class="price-title f12">团购指导价:</span><span class="price-text f12">￥{{item.price}}</span>
+                                    <span class="price-title f12">团购指导价:</span><span class="price-text f12">
+                                        ￥{{item.price}}
+                                    </span>
                                 </span>
                             </div>
                             <div class="tags">

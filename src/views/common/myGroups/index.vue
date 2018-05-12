@@ -2,6 +2,10 @@
     <div class="my-group-container">
         <scroller :on-refresh="handleDataRefresh">
             <div class="block">
+                <div class="block-title">
+                    <span class="rect"></span>
+                    <span class="title-text f16">我的团购</span>
+                </div>
                 <div class="no-tips" v-if="groups.length===0">
                     空空如也，<a href="javascript: void(0);" @click="handleActions(null, 'main')">去开一个</a>？
                 </div>
@@ -131,6 +135,24 @@
     .my-group-container {
         .block {
             width: 100%;
+            .block-title {
+                width: 100%;
+                height: 0.24rem;
+                margin-top: 0.03rem;
+                line-height: 0.24rem;
+                .rect {
+                    padding: 9px 3px;
+                    width: 0;
+                    font-size: 0;
+                    background-color: #84daef;
+                    position: relative;
+                    top: -5px;
+                    margin-left: 0.15rem;
+                }
+                .title-text {
+                    margin-left: 0.05rem;
+                }
+            }
             .no-tips {
                 width: 100%;
                 height: 100%;
