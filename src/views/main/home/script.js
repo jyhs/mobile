@@ -56,14 +56,20 @@ export default {
     },
 
     async created() {
-        this.provinces = await this.getProvinces();
+        const provinces = JSON.parse(window.sessionStorage.getItem('SeawaterProvinces'));
+        if (provinces && provinces.length) {
+            this.provinces = provinces;
+        } else {
+            this.provinces = await this.getProvinces();
+            window.sessionStorage.setItem('SeawaterProvinces', JSON.stringify(this.provinces));
+        }
         const response = await this.getGroupList({
             page: 1,
             size: 10,
             province: this.curProvince[0]
         });
         this.groups = response.res;
-        this.bills = (await this.getBillList({page: 1, size: 10}))['bills'] || [];
+        //this.bills = (await this.getBillList({page: 1, size: 10}))['bills'] || [];
         this.encyList = await this.getEncyRandomList({number: 10});
         for (let ency of this.encyList) {
             this.$set(ency, 'encyImage', `${SmallImageBasePath}?id=${ency.id}`);
@@ -121,7 +127,7 @@ export default {
             for (let group of this.groups) {
                 this.$set(group, 'userAvatar', `${AvatarBasePath}?id=${group.user_id}`);
             }
-            this.bills = (await this.getBillList({page: 1, size: 10}))['bills'] || [];
+            //this.bills = (await this.getBillList({page: 1, size: 10}))['bills'] || [];
             this.updateGroupsInCurProvince(this.groups);
 
             window.localStorage.setItem('SeawaterCurProvince', value[0]);
@@ -138,7 +144,7 @@ export default {
             for (let group of this.groups) {
                 this.$set(group, 'userAvatar', `${AvatarBasePath}?id=${group.user_id}`);
             }
-            this.bills = (await this.getBillList({page: 1, size: 10}))['bills'] || [];
+            //this.bills = (await this.getBillList({page: 1, size: 10}))['bills'] || [];
             this.encyList = await this.getEncyRandomList({number: 10});
             for (let ency of this.encyList) {
                 this.$set(ency, 'encyImage', `${SmallImageBasePath}?id=${ency.id}`);
