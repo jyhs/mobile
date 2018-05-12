@@ -34,10 +34,10 @@
                 <div class="items">
                     <div class="item border-bottom-1 border-top-1" @click="handleActions('myGroups')">
                         <div class="icon">
-                            <img src="../../../assets/others/setting_icon1.svg" alt="我的团购">
+                            <img src="../../../assets/others/setting_icon1.svg" alt="我开的团购">
                         </div>
                         <div class="group">
-                            <span>我的团购</span>
+                            <span>我开的团购</span>
                         </div>
                         <div class="arrow">
                             <icon class="el-icon-coral-enter"></icon>

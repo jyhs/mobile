@@ -44,7 +44,13 @@
                     <span class="title-text f14">截止时间</span>
                 </div>
                 <group>
-                    <datetime title="" format="YYYY-MM-DD HH:mm" v-model="form.end_date"></datetime>
+                    <datetime
+                        placeholder="请选择"
+                        :start-date="startDate"
+                        format="YYYY-MM-DD HH:mm"
+                        v-model="form.end_date"
+                    >
+                    </datetime>
                 </group>
             </div>
             <div class="input-item m-t-10">
@@ -52,7 +58,7 @@
                     <span class="rect"></span>
                     <span class="title-text f14">开团城市</span>
                 </div>
-                <selector placeholder="请选择" :options="cities" :value="form.city"></selector>
+                <selector placeholder="请选择" :options="cities" v-model="form.city"></selector>
             </div>
             <div class="input-item m-t-10">
                 <div class="title f14">
@@ -72,13 +78,15 @@
 
     export default {
         data() {
+            const today = new Date();
             return {
                 showDetails: false,
                 details: [],
                 bill: {},
                 cities: [],
                 currentUser: {},
-                curProvince: [window.localStorage.getItem('SeawaterCurProvince') || 'sh'],
+                curProvince: window.localStorage.getItem('SeawaterCurProvince') || 'sh',
+                startDate: `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`,
                 form: {
                     name: undefined,
                     contacts: undefined,
@@ -87,6 +95,7 @@
                     city: undefined,
                     description: undefined
                 }
+
             };
         },
 
@@ -110,9 +119,15 @@
             this.form.contacts = this.currentUser.name;
             this.form.phone = this.currentUser.phone;
             this.form.city = this.currentUser.city;
-            this.cities = await this.getCitiesInProvinces({
-                area: this.currentUser.province
+            const cities = await this.getCitiesInProvinces({
+                area: this.curProvince
             });
+            for (let city of cities) {
+                this.cities.push({
+                    key: city.name,
+                    value: city.value
+                });
+            }
         },
 
         methods: {
@@ -125,11 +140,23 @@
             ]),
 
             async submit() {
+                const needValid = ['name', 'contacts', 'phone', 'end_date', 'city', 'description'];
+                const message = ['团单名', '联系人姓名', '联系人手机', '截止时间', '开团城市', '其他信息'];
+                for (let i = 0; i < needValid.length; i++) {
+                    if (!this.form[needValid[i]]) {
+                        this.$vux.toast.show({
+                            type: 'warn',
+                            text: `请完善${message[i]}`
+                        });
+                        return;
+                    }
+                }
+
                 const sendInfo = Object.assign({}, this.form, {
-                    end_date: this.form.end_date ? formatDateTimeParam(this.form.end_date) : '',
+                    end_date: this.form.end_date ? formatDateTimeParam(this.form.end_date.replace(/-/g, '/')) : '',
                     bill_id: this.$route.params.id,
                     user_id: parseInt(window.localStorage.getItem('SeawaterLoginUserId')),
-                    province: this.currentUser.province
+                    province: this.curProvince
                 });
                 this.$vux.loading.show({
                     text: '努力加载中'

@@ -3,8 +3,13 @@
         <scroller :on-refresh="handleDataRefresh">
             <div class="block">
                 <div class="block-title">
-                    <span class="rect"></span>
-                    <span class="title-text f16">我的团购</span>
+                    <span @click="handleActions({}, 'return')">
+                        <icon class="el-icon-coral-return f20">
+                            <span class="f16">返回首页</span>
+                        </icon>
+                    </span>
+                    <span class="title-text f18">我开的团购</span>
+                    <span></span>
                 </div>
                 <div class="no-tips" v-if="groups.length===0">
                     空空如也，<a href="javascript: void(0);" @click="handleActions(null, 'main')">去开一个</a>？
@@ -99,6 +104,9 @@
                             }
                         });
                         break;
+                    case 'return':
+                        this.$router.push('/');
+                        break;
                     default:
                         break;
                 }
@@ -140,17 +148,15 @@
                 height: 0.24rem;
                 margin-top: 0.03rem;
                 line-height: 0.24rem;
-                .rect {
-                    padding: 9px 3px;
-                    width: 0;
-                    font-size: 0;
-                    background-color: #84daef;
-                    position: relative;
-                    top: -5px;
-                    margin-left: 0.15rem;
-                }
+                display: flex;
                 .title-text {
                     margin-left: 0.05rem;
+                }
+                span {
+                    flex: 1;
+                }
+                span:nth-child(2) {
+                    text-align: center;
                 }
             }
             .no-tips {

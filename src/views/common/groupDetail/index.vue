@@ -1,6 +1,9 @@
 <template>
     <div class="group-detail-container">
         <div class="name-cart">
+            <div @click="handleActions({}, 'return')">
+                <icon class="el-icon-coral-return f20"></icon>
+            </div>
             <div class="name">
                 <span class="f16">{{group.name}}</span>
             </div>

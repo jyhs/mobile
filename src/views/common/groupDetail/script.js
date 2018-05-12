@@ -31,7 +31,7 @@ export default {
             text: '努力加载中'
         });
         this.group = (await this.getGroupById({id}))[0] || {};
-        this.groupCount = (await this.getCountById({id: this.group.id}))[0].sum || 0;
+        this.groupCount = (await this.getCountById({id}))[0].sum || 0;
         this.details = await this.getDetailsByBillId({id: this.group.bill_id}) || [];
         this.cart = (await this.getCartUnderUserByGroupId({
             groupId: this.group.id,
@@ -83,9 +83,12 @@ export default {
                     this.$router.push({
                         name: actionType,
                         params: {
-                            id: item.id,
+                            id: item.material_id,
                         }
                     });
+                    break;
+                case 'return':
+                    this.$router.back();
                     break;
                 default:
                     break;
@@ -95,7 +98,7 @@ export default {
         async handleDetailImageShow (detail) {
             if (!detail['material_id']) {
                 this.preDetail = detail;
-                this.imagePath = `${SmallImageBasePath}?id=${detail.id}`;
+                this.imagePath = `${SmallImageBasePath}?id=${detail.material_id}`;
                 return;
             }
             if (detail.id === this.preDetail.id) {
@@ -103,7 +106,7 @@ export default {
             }
 
             this.preDetail = detail;
-            this.imagePath = `${SmallImageBasePath}?id=${detail.id}`;
+            this.imagePath = `${SmallImageBasePath}?id=${detail.material_id}`;
         },
 
         alreadyHasCartUnderGroup() {
