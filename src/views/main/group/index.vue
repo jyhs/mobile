@@ -18,7 +18,7 @@
                 >
                     <div class="content-main group-content-main">
                         <div class="avatar">
-                            <img src="../../../assets/others/tuan_image.png" alt="同省商家头像">
+                            <img :src="group.userAvatar" alt="同省商家头像">
                         </div>
                         <div class="info">
                             <div class="info-item">
@@ -77,6 +77,7 @@
 <script>
     import {mapGetters, mapActions} from 'vuex';
     import {ButtonTab, ButtonTabItem, Alert} from 'vux';
+    import {AvatarBasePath} from '../../../constants/index';
 
     export default {
         data() {
@@ -110,6 +111,9 @@
                 province: this.curProvince[0]
             });
             this.groups = response.res;
+            for (let group of this.groups) {
+                this.$set(group, 'userAvatar', `${AvatarBasePath}?id=${group.user_id}`);
+            }
             this.bills = (await this.getBillList({page: 1, size: 1000}))['bills'] || [];
         },
 
@@ -126,6 +130,9 @@
                     province: this.curProvince[0]
                 });
                 this.groups = response.res;
+                for (let group of this.groups) {
+                    this.$set(group, 'userAvatar', `${AvatarBasePath}?id=${group.user_id}`);
+                }
                 this.bills = (await this.getBillList({page: 1, size: 10}))['bills'] || [];
                 done();
             },
@@ -208,6 +215,7 @@
                             width: 0.82rem;
                             height: 0.86rem;
                             vertical-align: middle;
+                            border-radius: 5px;
                         }
                     }
                     .info {

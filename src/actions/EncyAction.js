@@ -116,3 +116,14 @@ export async function getEncyImagesById({commit}, params) {
     const response = await EncyService.getEncyImagesById(params);
     return response.data || {};
 }
+
+/**
+ * 获取小图
+ * @param commit
+ * @param params
+ * @returns {Promise<void>}
+ */
+export async function getSmallEncyImageById({commit}, params) {
+    const response = await EncyService.getSmallEncyImageById(params);
+    return response.data;
+}

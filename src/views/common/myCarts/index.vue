@@ -9,7 +9,7 @@
                      @click="handleActions(cart, 'buyCart')">
                     <div class="content-main group-content-main">
                         <div class="avatar">
-                            <img src="../../../assets/others/tuan_image.png" alt="同省商家头像">
+                            <img :src="cart.userAvatar" alt="同省商家头像">
                         </div>
                         <div class="info">
                             <div class="info-item">
@@ -40,6 +40,7 @@
 </template>
 <script>
     import {mapActions} from 'vuex';
+    import {AvatarBasePath} from '../../../constants/index';
 
     export default {
         data() {
@@ -66,6 +67,10 @@
                     userId: this.currentUserId
                 });
                 this.carts = result.res || [];
+                console.log(this.carts);
+                for (let cart of this.carts) {
+                    this.$set(cart, 'userAvatar', `${AvatarBasePath}?id=${cart.user_id}`);
+                }
             },
 
             handleActions(item, actionType) {
@@ -151,6 +156,7 @@
                             width: 0.82rem;
                             height: 0.86rem;
                             vertical-align: middle;
+                            border-radius: 5px;
                         }
                     }
                     .info {

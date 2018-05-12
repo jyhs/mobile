@@ -14,9 +14,7 @@ export default {
         this.currentUser = (await this.getUserById({
             id: currentUserId
         }))[0];
-        const avatarImgPath = (await this.getUserAvatar({id: currentUserId})).imgPath;
-        this.avatarImgPath = avatarImgPath ? `${AvatarBasePath}${avatarImgPath}?${Math.random()}`
-            : require('../../../assets/others/default_avatar.svg');
+        this.avatarImgPath = `${AvatarBasePath}?id=${currentUserId}`;
     },
 
     methods: {

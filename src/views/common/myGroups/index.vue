@@ -9,7 +9,7 @@
                      @click="handleActions(group, 'groupDetail')">
                     <div class="content-main group-content-main">
                         <div class="avatar">
-                            <img src="../../../assets/others/tuan_image.png" alt="同省商家头像">
+                            <img :src="group.userAvatar" alt="同省商家头像">
                         </div>
                         <div class="info">
                             <div class="info-item">
@@ -48,6 +48,7 @@
 </template>
 <script>
     import {mapActions} from 'vuex';
+    import {AvatarBasePath} from '../../../constants/index';
 
     export default {
         data() {
@@ -74,6 +75,9 @@
                     userId: this.currentUserId
                 });
                 this.groups = result.res || [];
+                for (let group of this.groups) {
+                    this.$set(group, 'userAvatar', `${AvatarBasePath}?id=${group.user_id}`);
+                }
             },
 
             handleActions(item, actionType) {
@@ -158,6 +162,7 @@
                             width: 0.82rem;
                             height: 0.86rem;
                             vertical-align: middle;
+                            border-radius: 5px;
                         }
                     }
                     .info {

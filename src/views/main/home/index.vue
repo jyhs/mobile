@@ -83,31 +83,6 @@
             <div class="block m-t-10">
                 <div class="block-title">
                     <span class="rect"></span>
-                    <span class="title-text f16">最新出单</span>
-                </div>
-                <div class="has-no-active" v-if="!hasActiveBill">
-                    <span class="f13">亲，暂时没有可用的出单哟！</span>
-                </div>
-                <load-more tip="努力加载中" v-if="!bills"></load-more>
-                <div class="block-content" v-for="item in (bills || [])" v-if="item.status===1" :key="item.id"
-                     @click="handleActions(item, 'billDetail')">
-                    <div class="content-main bill-content-main">
-                        <div class="bill-first-word" :style="{'background-color': billFirstWordColor[item.id%5]}">
-                            <span class="f13">{{item.name[0]}}</span>
-                        </div>
-                        <div class="info">
-                            <span class="bill-name f15">{{item.name}}</span>
-                            <span class="upload-time f10">{{item.contacts}}上传于{{item.upload_date.split('T')[0]}}</span>
-                        </div>
-                        <div class="open-btn" @click.stop="handleActions(item, 'groupAdd')">
-                            <span class="f13">我要开团</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="block m-t-10">
-                <div class="block-title">
-                    <span class="rect"></span>
                     <span class="title-text f16">生物百科</span>
                 </div>
                 <load-more tip="努力加载中" v-if="encyList.length === 0"></load-more>
@@ -132,6 +107,7 @@
                             <div class="others">
                                 <rater :value="mapLevel(item.level)" :font-size="10"></rater>
                                 <div class="actions">
+                                    <!--
                                     <div class="action">
                                         <icon class="el-icon-coral-share f12"></icon>
                                         <span class="f12">分享</span>
@@ -140,8 +116,12 @@
                                         <icon class="el-icon-coral-message f12"></icon>
                                         <span class="f12">评论</span>
                                     </div>
+                                    -->
                                     <div class="action">
+                                        <!--
                                         <icon class="el-icon-coral-praise f12"></icon>
+                                        -->
+                                        <img src="../../../assets/others/dianzan.svg" alt="生物点赞"/>
                                         <span class="f12">点赞</span>
                                     </div>
                                 </div>
@@ -150,6 +130,33 @@
                     </div>
                 </div>
             </div>
+            <!--
+            <div class="block m-t-10">
+                <div class="block-title">
+                    <span class="rect"></span>
+                    <span class="title-text f16">最新出单</span>
+                </div>
+                <div class="has-no-active" v-if="!hasActiveBill">
+                    <span class="f13">亲，暂时没有可用的出单哟！</span>
+                </div>
+                <load-more tip="努力加载中" v-if="!bills"></load-more>
+                <div class="block-content" v-for="item in (bills || [])" v-if="item.status===1" :key="item.id"
+                     @click="handleActions(item, 'billDetail')">
+                    <div class="content-main bill-content-main">
+                        <div class="bill-first-word" :style="{'background-color': billFirstWordColor[item.id%5]}">
+                            <span class="f13">{{item.name[0]}}</span>
+                        </div>
+                        <div class="info">
+                            <span class="bill-name f15">{{item.name}}</span>
+                            <span class="upload-time f10">{{item.contacts}}上传于{{item.upload_date.split('T')[0]}}</span>
+                        </div>
+                        <div class="open-btn" @click.stop="handleActions(item, 'groupAdd')">
+                            <span class="f13">我要开团</span>
+                        </div>
+                    </div>
+                  </div>
+            </div>
+            -->
         </scroller>
         <group>
             <popup-picker

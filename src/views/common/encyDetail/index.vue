@@ -1,7 +1,8 @@
 <template>
     <div class="ency-detail-container">
         <scroller :on-refresh="handleDataRefresh">
-            <swiper loop auto :list="encyImages" :aspect-ratio="200/300"></swiper>
+            <swiper loop auto :list="encyImages"></swiper>
+            <!--
             <div class="button-tab">
                 <button-tab :height="35">
                     <button-tab-item selected @on-item-click="handleTabItemChange('description')">
@@ -18,6 +19,7 @@
                     </button-tab-item>
                 </button-tab>
             </div>
+            -->
             <div class="block" v-if="activeTab==='description'">
                 <div class="name f18">{{ency.name}}</div>
                 <div class="tags m-t-10">
@@ -148,6 +150,9 @@
 </script>
 <style lang="less">
     .ency-detail-container {
+        .vux-slider > .vux-swiper > .vux-swiper-item > a > .vux-img {
+            background-size: contain;
+        }
         .button-tab {
             padding: 0.1rem 0.1rem 0;
             .vux-button-group > a {

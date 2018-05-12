@@ -64,5 +64,9 @@ export default {
         return Vue.axios.get(`${ApiBasePath}/api/material/imageList`, {
             params: {id}
         });
+    },
+
+    getSmallEncyImageById({id}) {
+      return Vue.axios.get(`http://111.231.136.250:1433/api/material/image/base64/small?id=${id}`);
     }
 };

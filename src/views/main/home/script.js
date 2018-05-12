@@ -1,7 +1,7 @@
 import {mapActions} from 'vuex';
 import {Search, Swiper, Group, PopupPicker, Rater, LoadMore} from 'vux';
 import moment from 'moment';
-import {ImageBasePath, AvatarBasePath} from '../../../constants/index';
+import {AvatarBasePath, SmallImageBasePath} from '../../../constants/index';
 
 const baseList = [{
     url: 'javascript: void(0);',
@@ -63,23 +63,16 @@ export default {
             province: this.curProvince[0]
         });
         this.groups = response.res;
-        for (let group of this.groups) {
-            if (group.status === 1) {
-                const avatarImgPath = (await this.getUserAvatar({id: group.user_id})).imgPath;
-                this.$set(group, 'userAvatar', avatarImgPath ? `${AvatarBasePath}${avatarImgPath}?${Math.random()}`
-                    : require('../../../assets/others/default_avatar.svg'));
-            }
-        }
         this.bills = (await this.getBillList({page: 1, size: 10}))['bills'] || [];
         this.encyList = await this.getEncyRandomList({number: 10});
         for (let ency of this.encyList) {
-            const encyImage = (await this.getEncyImagesById({id: ency.id}))['imageList'][0];
-            this.$set(ency, 'encyImage', encyImage ? `${ImageBasePath}${encyImage}` : require('../../../assets/others/tuan_image.png'));
+            this.$set(ency, 'encyImage', `${SmallImageBasePath}?id=${ency.id}`);
         }
 
         for (let group of this.groups) {
             const interval = Math.floor(Math.abs(Math.abs(moment(group.end_date).diff(moment())) / 1000));
-            this.$set(group, 'interval', interval)
+            this.$set(group, 'interval', interval);
+            this.$set(group, 'userAvatar', `${AvatarBasePath}?id=${group.user_id}`);
         }
         if (this.groupCountDownTimer) {
             window.clearInterval(this.groupCountDownTimer);
@@ -126,11 +119,7 @@ export default {
             });
             this.groups = response.res;
             for (let group of this.groups) {
-                if (group.status === 1) {
-                    const avatarImgPath = (await this.getUserAvatar({id: group.user_id})).imgPath;
-                    this.$set(group, 'userAvatar', avatarImgPath ? `${AvatarBasePath}${avatarImgPath}?${Math.random()}`
-                        : require('../../../assets/others/default_avatar.svg'));
-                }
+                this.$set(group, 'userAvatar', `${AvatarBasePath}?id=${group.user_id}`);
             }
             this.bills = (await this.getBillList({page: 1, size: 10}))['bills'] || [];
             this.updateGroupsInCurProvince(this.groups);
@@ -147,14 +136,13 @@ export default {
             });
             this.groups = response.res;
             for (let group of this.groups) {
-                if (group.status === 1) {
-                    const avatarImgPath = (await this.getUserAvatar({id: group.user_id})).imgPath;
-                    this.$set(group, 'userAvatar', avatarImgPath ? `${AvatarBasePath}${avatarImgPath}?${Math.random()}`
-                        : require('../../../assets/others/default_avatar.svg'));
-                }
+                this.$set(group, 'userAvatar', `${AvatarBasePath}?id=${group.user_id}`);
             }
             this.bills = (await this.getBillList({page: 1, size: 10}))['bills'] || [];
             this.encyList = await this.getEncyRandomList({number: 10});
+            for (let ency of this.encyList) {
+                this.$set(ency, 'encyImage', `${SmallImageBasePath}?id=${ency.id}`);
+            }
             done();
         },
 

@@ -1,6 +1,6 @@
 import {mapActions} from 'vuex';
 import {ViewBox, Tab, TabItem, Icon, Grid, GridItem, Sticky, Rater, Group, PopupPicker} from 'vux';
-import {ApiBasePath} from '../../../constants/index';
+import {SmallImageBasePath} from '../../../constants/index';
 
 const shareTypes = [{
     name: '微信',
@@ -42,7 +42,7 @@ export default {
     async created() {
         this.encyList = await this.getEncyRandomList({number: 20});
         for (let ency of this.encyList) {
-            this.$set(ency, 'picUrl', `${ApiBasePath}/api/material/image/base64/small?id=${ency.id}`);
+            this.$set(ency, 'encyImage', `${SmallImageBasePath}?id=${ency.id}`);
         }
     },
 
@@ -50,7 +50,8 @@ export default {
         ...mapActions([
             'getTypesByCategoryCode',
             'getEncyRandomList',
-            'getEncyList'
+            'getEncyList',
+            'getSmallEncyImageById'
         ]),
 
         async handleTabItemClick (type) {
@@ -64,6 +65,9 @@ export default {
             } else {
                 this.types = [];
                 this.encyList = await this.getEncyRandomList({number: 20});
+                for (let ency of this.encyList) {
+                    this.$set(ency, 'encyImage', `${SmallImageBasePath}?id=${ency.id}`);
+                }
             }
         },
 

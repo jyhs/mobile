@@ -41,7 +41,7 @@
                      @click="handleActions(item, 'encyDetail')">
                     <div class="content-main ency-content-main">
                         <div class="pic">
-                            <img :src="item.picUrl" alt="生物图片">
+                            <img :src="item.encyImage" alt="生物图片">
                         </div>
                         <div class="info">
                             <div class="name-price">
@@ -58,20 +58,18 @@
                             <div class="others">
                                 <rater :value="mapLevel(item.level)" :font-size="10"></rater>
                                 <div class="actions">
+                                    <!--
                                     <div class="action" @click.stop="handleActions(item, 'share')">
-                                        <!--
                                         <icon class="el-icon-coral-share f12"></icon>
-                                        -->
                                         <img src="../../../assets/others/share.svg" alt="生物分享">
                                         <span class="f12">分享</span>
                                     </div>
                                     <div class="action" @click.stop="handleActions(item, 'comment')">
-                                        <!--
                                         <icon class="el-icon-coral-message f12"></icon>
-                                        -->
                                         <img src="../../../assets/others/comm.svg" alt="生物评论">
                                         <span class="f12">评论(222)</span>
                                     </div>
+                                    -->
                                     <div class="action" @click.stop="handleActions(item, 'up')">
                                         <!--
                                         <icon class="el-icon-coral-praise f12"></icon>

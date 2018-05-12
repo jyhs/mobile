@@ -95,7 +95,7 @@ export default {
         async handleDetailImageShow (detail) {
             if (!detail['material_id']) {
                 this.preDetail = detail;
-                this.imagePath = require('../../../assets/others/default_detail.svg');
+                this.imagePath = `${SmallImageBasePath}?id=${detail.id}`;
                 return;
             }
             if (detail.id === this.preDetail.id) {
@@ -103,21 +103,7 @@ export default {
             }
 
             this.preDetail = detail;
-            this.imagePath = '';
-            let result = {};
-            try {
-                result = await this.getEncyImageById({id: detail['material_id']});
-            } catch (error) {
-                console.error(error);
-            }
-
-            if (result.status === 'ok') {
-                if (result.image) {
-                    this.imagePath = `${SmallImageBasePath}${result.image}`;
-                } else {
-                    this.imagePath = require('../../../assets/others/default_detail.svg');
-                }
-            }
+            this.imagePath = `${SmallImageBasePath}?id=${detail.id}`;
         },
 
         alreadyHasCartUnderGroup() {
