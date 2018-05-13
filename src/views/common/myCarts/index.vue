@@ -15,7 +15,7 @@
                     空空如也，<a href="javascript: void(0);" @click="handleActions(null, 'main')">去看看热团吧~~~</a>？
                 </div>
                 <div class="block-content" v-else v-for="cart in carts" :key="cart.id"
-                     @click="handleActions(cart, 'buyCart')">
+                     @click="handleActions(cart, 'cartDetail')">
                     <div class="content-main group-content-main">
                         <div class="avatar">
                             <img :src="cart.userAvatar" alt="同省商家头像">
@@ -88,7 +88,7 @@
                         window.sessionStorage.setItem('SeawaterGroupTabActive', 'group');
                         this.$router.push('/');
                         break;
-                    case 'buyCart':
+                    case 'cartDetail':
                         this.$router.push({
                             name: actionType,
                             params: {

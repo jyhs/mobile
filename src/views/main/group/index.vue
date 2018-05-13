@@ -77,6 +77,7 @@
 <script>
     import {mapGetters, mapActions} from 'vuex';
     import {ButtonTab, ButtonTabItem, Alert} from 'vux';
+    import {compile} from '../../../util/data';
     import {AvatarBasePath} from '../../../constants/index';
 
     export default {
@@ -144,13 +145,20 @@
 
             handleActions(item, actionType) {
                 switch (actionType) {
-                    case 'groupDetail':
                     case 'billDetail':
                     case 'groupAdd':
                         this.$router.push({
                             name: actionType,
                             params: {
                                 id: item.id
+                            }
+                        });
+                        break;
+                    case 'groupDetail':
+                        this.$router.push({
+                            name: actionType,
+                            params: {
+                                id: compile(item.id)
                             }
                         });
                         break;

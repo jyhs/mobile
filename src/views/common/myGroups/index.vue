@@ -57,6 +57,7 @@
 </template>
 <script>
     import {mapActions} from 'vuex';
+    import {compile} from '../../../util/data';
     import {AvatarBasePath} from '../../../constants/index';
 
     export default {
@@ -100,7 +101,7 @@
                         this.$router.push({
                             name: actionType,
                             params: {
-                                id: item.id
+                                id: compile(item.id)
                             }
                         });
                         break;

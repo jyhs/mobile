@@ -9,7 +9,7 @@ const encyDetail = r => require.ensure([], () => r(require('@/views/common/encyD
 const billDetail = r => require.ensure([], () => r(require('@/views/common/billDetail/index.vue')), 'billDetail');
 const groupAdd = r => require.ensure([], () => r(require('@/views/common/groupAdd/index.vue')), 'groupAdd');
 const groupDetail = r => require.ensure([], () => r(require('@/views/common/groupDetail/index.vue')), 'groupDetail');
-const buyCart = r => require.ensure([], () => r(require('@/views/common/buyCart/index.vue')), 'buyCart');
+const cartDetail = r => require.ensure([], () => r(require('@/views/common/cartDetail/index.vue')), 'cartDetail');
 const myGroups = r => require.ensure([], () => r(require('@/views/common/myGroups/index.vue')), 'myGroups');
 const myCarts = r => require.ensure([], () => r(require('@/views/common/myCarts/index.vue')), 'myCarts');
 const mySetting = r => require.ensure([], () => r(require('@/views/common/mySetting/index.vue')), 'mySetting');
@@ -52,7 +52,7 @@ const routes = [{
             requireAuth: true
         }
     }, {
-        path: '/group/:id/detail',
+        path: '/buy/:id/page',
         component: groupDetail,
         name: 'groupDetail',
         meta: {
@@ -60,8 +60,8 @@ const routes = [{
         }
     }, {
         path: '/group/:groupId/cart/:cartId',
-        component: buyCart,
-        name: 'buyCart',
+        component: cartDetail,
+        name: 'cartDetail',
         meta: {
             requireAuth: true
         }

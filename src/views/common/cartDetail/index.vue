@@ -70,6 +70,7 @@
 <script>
     import {mapActions} from 'vuex';
     import {XNumber, Group, XTextarea, XInput, Confirm} from 'vux';
+    import {compile} from '../../../util/data';
     import {SmallImageBasePath} from '../../../constants/index';
     import RegExp from '../../../constants/regExp';
 
@@ -166,7 +167,7 @@
                         this.$router.push({
                             name: actionType,
                             params: {
-                                id: this.group.id
+                                id: compile(this.group.id)
                             }
                         });
                         break;

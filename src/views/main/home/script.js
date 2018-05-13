@@ -1,6 +1,7 @@
 import {mapActions} from 'vuex';
 import {Search, Swiper, Group, PopupPicker, Rater, LoadMore} from 'vux';
 import moment from 'moment';
+import {compile} from '../../../util/data';
 import {AvatarBasePath, SmallImageBasePath} from '../../../constants/index';
 
 const baseList = [{
@@ -157,7 +158,6 @@ export default {
                 case 'toGroupTab':
                     this.$emit('on-to', 'group');
                     break;
-                case 'groupDetail':
                 case 'billDetail':
                 case 'encyDetail':
                 case 'groupAdd':
@@ -165,6 +165,14 @@ export default {
                         name: actionType,
                         params: {
                             id: item.id
+                        }
+                    });
+                    break;
+                case 'groupDetail':
+                    this.$router.push({
+                        name: actionType,
+                        params: {
+                            id: compile(item.id)
                         }
                     });
                     break;

@@ -140,8 +140,9 @@
             ]),
 
             async submit() {
-                const needValid = ['name', 'contacts', 'phone', 'end_date', 'city', 'description'];
-                const message = ['团单名', '联系人姓名', '联系人手机', '截止时间', '开团城市', '其他信息'];
+                const needValid = ['name', 'contacts', 'phone', 'end_date', 'city'];
+                const message = ['团单名', '联系人姓名', '联系人手机', '截止时间', '开团城市'];
+
                 for (let i = 0; i < needValid.length; i++) {
                     if (!this.form[needValid[i]]) {
                         this.$vux.toast.show({

@@ -11,7 +11,7 @@
                 <icon class="el-icon-coral-publishgoods_fill"></icon>
                 <badge :text="cartDetailIds.length"></badge>
             </div>
-            <div class="cart" @click="handleActions({}, 'buyCart')" v-else>
+            <div class="cart" @click="handleActions({}, 'cartDetail')" v-else>
                 <icon class="el-icon-coral-publishgoods_fill"></icon>
                 <badge :text="cartDetailIds.length"></badge>
             </div>

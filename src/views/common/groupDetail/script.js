@@ -1,5 +1,6 @@
 import {mapActions} from 'vuex';
 import {Badge, Alert, Popover} from 'vux';
+import {unCompile} from '../../../util/data';
 import {SmallImageBasePath} from '../../../constants/index'
 
 export default {
@@ -26,12 +27,13 @@ export default {
 
     async created() {
         const {id} = this.$route.params;
+        const groupId = unCompile(id);
 
         this.$vux.loading.show({
             text: '努力加载中'
         });
-        this.group = (await this.getGroupById({id}))[0] || {};
-        this.groupCount = (await this.getCountById({id}))[0].sum || 0;
+        this.group = (await this.getGroupById({id: groupId}))[0] || {};
+        this.groupCount = (await this.getCountById({id: groupId}))[0].sum || 0;
         this.details = await this.getDetailsByBillId({id: this.group.bill_id}) || [];
         this.cart = (await this.getCartUnderUserByGroupId({
             groupId: this.group.id,
@@ -61,7 +63,8 @@ export default {
 
         async handleDataRefresh(done) {
             const {id} = this.$route.params;
-            this.group = (await this.getGroupById({id}))[0] || {};
+            const groupId = unCompile(id);
+            this.group = (await this.getGroupById({id: groupId}))[0] || {};
             done();
         },
 
@@ -70,7 +73,7 @@ export default {
                 case 'tip':
                     this.showTip = true;
                     break;
-                case 'buyCart':
+                case 'cartDetail':
                     this.$router.push({
                         name: actionType,
                         params: {

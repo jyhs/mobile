@@ -9,3 +9,31 @@ exports.countHandle = (count) => {
         return count;
     }
 };
+
+/**
+ * @param code
+ * @returns {string}
+ */
+exports.compile = (code) => {
+    const codeStr = `${code}`;
+    let c = String.fromCharCode(codeStr.charCodeAt(0) + codeStr.length);
+    for (let i = 1; i < codeStr.length; i++) {
+        c += String.fromCharCode(codeStr.charCodeAt(i) + codeStr.charCodeAt(i - 1));
+    }
+    c = escape(c.split('').join(' '));
+    return c;
+};
+
+/**
+ * @param code
+ * @returns {string}
+ */
+exports.unCompile = (code) => {
+    let codeStr = `${code}`;
+    codeStr = unescape(codeStr).split(' ').join('');
+    let c = String.fromCharCode(codeStr.charCodeAt(0) - codeStr.length);
+    for (let i = 1; i < codeStr.length; i++) {
+        c += String.fromCharCode(codeStr.charCodeAt(i) - c.charCodeAt(i - 1));
+    }
+    return c;
+};
