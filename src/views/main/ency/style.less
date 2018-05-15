@@ -3,11 +3,19 @@
     padding-bottom: 53px;
     background: #fff;
     position: relative;
+    .vux-search-box {
+        position: fixed !important;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+    }
     .nav {
         position: fixed;
         width: 100%;
         z-index: 100;
-        top: 0;
+        top: 44px;
+        height: 0;
         .vux-tab {
             height: 38px;
         }
@@ -25,8 +33,10 @@
             }
         }
     }
-    .ency-list {
+    .mT38 {
         margin-top: 38px;
+    }
+    .ency-list {
         padding-bottom: 10px;
         .types {
             display: flex;

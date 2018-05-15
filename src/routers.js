@@ -4,7 +4,7 @@
 
 const loginRegister = r => require.ensure([], () => r(require('@/views/user/loginRegister/index.vue')), 'loginRegister');
 const main = r => require.ensure([], () => r(require('@/views/main/index.vue')), 'main');
-const search = r => require.ensure([], () => r(require('@/views/common/search/index.vue')), 'search');
+const encySearch = r => require.ensure([], () => r(require('@/views/common/encySearch/index.vue')), 'encySearch');
 const encyDetail = r => require.ensure([], () => r(require('@/views/common/encyDetail/index.vue')), 'encyDetail');
 const billDetail = r => require.ensure([], () => r(require('@/views/common/billDetail/index.vue')), 'billDetail');
 const groupAdd = r => require.ensure([], () => r(require('@/views/common/groupAdd/index.vue')), 'groupAdd');
@@ -25,8 +25,9 @@ const routes = [{
             requireAuth: true
         }
     }, {
-        path: '/main/search',
-        component: search,
+        path: '/ency/search',
+        component: encySearch,
+        name: 'encySearch',
         meta: {
             requireAuth: true
         }

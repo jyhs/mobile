@@ -1,5 +1,5 @@
 import {mapActions} from 'vuex';
-import {ViewBox, Tab, TabItem, Icon, Grid, GridItem, Sticky, Rater, Group, PopupPicker} from 'vux';
+import {ViewBox, Search, Tab, TabItem, Icon, Grid, GridItem, Sticky, Rater, Group, PopupPicker} from 'vux';
 import {SmallImageBasePath} from '../../../constants/index';
 
 const shareTypes = [{
@@ -23,11 +23,14 @@ export default {
             showSharePicker: false,
             shareTypes: shareTypes,
             shareType: [],
-            currentItem: {}
+            currentItem: {},
+            searching: false,
+            searchText: '',
         }
     },
     components: {
         ViewBox,
+        Search,
         Tab,
         TabItem,
         Icon,
@@ -85,6 +88,12 @@ export default {
                         }
                     });
                     break;
+                case 'encySearch':
+                    this.searching = true;
+                    break;
+                case 'encySearchCancel':
+                    this.searching = false;
+                    break;
                 default:
                     break;
             }
@@ -115,6 +124,16 @@ export default {
         handleCloseSharePicker(closeType) {
             if (closeType) {
                 console.log('shareType', this.shareType);
+            }
+        },
+
+        async handleSearchChange()  {
+            if (this.searchText) {
+                const result = await this.getEncyList({name: this.searchText, page: 1, size: 100});
+                this.encyList = result['materials'] || [];
+                for (let ency of this.encyList) {
+                    this.$set(ency, 'encyImage', `${SmallImageBasePath}?id=${ency.id}`);
+                }
             }
         },
 

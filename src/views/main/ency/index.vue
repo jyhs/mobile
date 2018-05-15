@@ -1,6 +1,17 @@
 <template>
     <div class="ency-tab-container">
-        <div class="nav">
+        <div style="height: 44px">
+            <search
+                 v-model="searchText"
+                 position="absolute"
+                 auto-scroll-to-top
+                 @on-change="handleSearchChange"
+                 @on-focus="handleActions({}, 'encySearch')"
+                 @on-cancel="handleActions({}, 'encySearchCancel')"
+            >
+            </search>
+        </div>
+        <div class="nav" v-if="!searching">
             <tab class="tab-container" bar-active-color="#28b1ea" active-color="#28b1ea">
                 <tab-item selected @on-item-click="handleTabItemClick('tj')">
                     <div class="tab-item-container">
@@ -29,8 +40,8 @@
                 </tab-item>
             </tab>
         </div>
-        <div class="ency-list">
-            <div class="types">
+        <div class="ency-list" :class="{mT38 : !searching}">
+            <div class="types" v-if="!searching">
                 <div class="type f12" :class="{'type-active': activeType==type.code}" v-for="type in types"
                      :key="type.code" @click="handleTypeChange(type)">
                     {{type.name}}
