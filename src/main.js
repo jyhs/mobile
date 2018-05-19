@@ -3,7 +3,7 @@ import VueRouter from 'vue-router';
 import VueLazyload from 'vue-lazyload';
 import Axios from 'axios';
 import VueAxios from 'vue-axios';
-import {ToastPlugin, LoadingPlugin, ConfirmPlugin} from 'vux';
+import {ToastPlugin, LoadingPlugin, ConfirmPlugin, DatetimePlugin} from 'vux';
 import VueScroller from 'vue-scroller';
 import App from './App.vue';
 import store from './store';
@@ -17,6 +17,7 @@ Vue.use(VueAxios, Axios);
 Vue.use(ToastPlugin);
 Vue.use(LoadingPlugin);
 Vue.use(ConfirmPlugin);
+Vue.use(DatetimePlugin);
 Vue.use(VueScroller);
 // error，loading是图片路径, 用require引入
 Vue.use(VueLazyload, {

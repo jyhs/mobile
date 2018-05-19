@@ -28,11 +28,23 @@
                                     <icon class="el-icon-coral-naozhong f12"></icon>
                                     <span class="f12 c999">{{group.end_date}}结束</span>
                                 </span>
+                                <span v-else>
+                                    <img src="../../../assets/download.svg"
+                                         class="download"
+                                         @click.stop="handleDownload(group)"
+                                    />
+                                </span>
                             </div>
                             <div class="info-item">
                                 <span class="group-name f15">{{group.name}}</span>
-                                <icon class="el-icon-coral-empty f18" v-if="group.status===1"
-                                      @click.stop="handleFinishGroup(group)"></icon>
+                                <icon class="el-icon-coral-lock f20"
+                                      v-if="group.status===1"
+                                      @click.stop="handleFinishGroup(group)"
+                                ></icon>
+                                <icon class="el-icon-coral-unlock f20"
+                                      @click.stop="handleReopenGroup(group)"
+                                      v-else
+                                ></icon>
                             </div>
                             <div class="info-item">
                                 <span>

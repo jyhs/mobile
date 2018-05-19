@@ -13,36 +13,36 @@
         </div>
         <div class="nav" v-if="!searching">
             <tab class="tab-container" bar-active-color="#28b1ea" active-color="#28b1ea">
-                <tab-item selected @on-item-click="handleTabItemClick('tj')">
+                <tab-item :selected="activeTab==='tj'" @on-item-click="handleTabItemClick('tj')">
                     <div class="tab-item-container">
                         <span class="text f13">热门推荐</span>
                     </div>
                 </tab-item>
-                <tab-item @on-item-click="handleTabItemClick('hy')">
+                <tab-item :selected="activeTab==='hy'" @on-item-click="handleTabItemClick('hy')">
                     <div class="tab-item-container">
                         <span class="text f13">海水鱼</span>
                     </div>
                 </tab-item>
-                <tab-item @on-item-click="handleTabItemClick('rt')">
+                <tab-item :selected="activeTab==='rt'" @on-item-click="handleTabItemClick('rt')">
                     <div class="tab-item-container">
                         <span class="text f13">软体珊瑚</span>
                     </div>
                 </tab-item>
-                <tab-item @on-item-click="handleTabItemClick('yg')">
+                <tab-item :selected="activeTab==='yg'" @on-item-click="handleTabItemClick('yg')">
                     <div class="tab-item-container">
                         <span class="text f13">硬骨珊瑚</span>
                     </div>
                 </tab-item>
-                <tab-item @on-item-click="handleTabItemClick('qt')">
+                <tab-item :selected="activeTab==='qt'" @on-item-click="handleTabItemClick('qt')">
                     <div class="tab-item-container">
                         <span class="text f13">其他</span>
                     </div>
                 </tab-item>
             </tab>
         </div>
-        <div class="ency-list" :class="{mT38 : !searching}">
+        <div class="ency-list" :class="{mT40 : !searching}">
             <div class="types" v-if="!searching">
-                <div class="type f12" :class="{'type-active': activeType==type.code}" v-for="type in types"
+                <div class="type f12" :class="{'type-active': activeTypes[activeTab]===type.code}" v-for="type in types"
                      :key="type.code" @click="handleTypeChange(type)">
                     {{type.name}}
                 </div>

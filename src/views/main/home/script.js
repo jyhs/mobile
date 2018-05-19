@@ -77,7 +77,7 @@ export default {
         }
 
         for (let group of this.groups) {
-            const interval = Math.floor(Math.abs(Math.abs(moment(group.end_date).diff(moment())) / 1000));
+            const interval = Math.floor(Math.abs(Math.abs(moment(group.end_date.replace(/-/g,"/")).diff(moment())) / 1000));
             this.$set(group, 'interval', interval);
             this.$set(group, 'userAvatar', `${AvatarBasePath}?id=${group.user_id}`);
         }
@@ -86,7 +86,7 @@ export default {
         } else {
             this.groupCountDownTimer = window.setInterval(() => {
                 for (let group of this.groups) {
-                    const interval = Math.floor(Math.abs(moment(group.end_date).diff(moment())) / 1000);
+                    const interval = Math.floor(Math.abs(moment(group.end_date.replace(/-/g,"/")).diff(moment())) / 1000);
                     this.$set(group, 'interval', interval)
                 }
             }, 1000);
@@ -107,10 +107,6 @@ export default {
             'getEncyRandomList',
             'getEncyImagesById'
         ]),
-
-        onFocus() {
-            this.$router.push('/main/search');
-        },
 
         handleShowProvinces() {
             this.showProvincesPicker = true;

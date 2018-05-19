@@ -45,6 +45,17 @@ export async function finishGroupByIdAndUserId({commit}, params) {
 }
 
 /**
+ * 重新开始团单
+ * @param commit
+ * @param params
+ * @returns {Promise.<void>}
+ */
+export async function reopenGroupByIdAndUserId({commit}, params) {
+    const response = await GroupService.reopenGroupByIdAndUserId(params);
+    return response.data;
+}
+
+/**
  * 添加团购通过billId及userId
  * @param commit
  * @param params
@@ -53,4 +64,15 @@ export async function finishGroupByIdAndUserId({commit}, params) {
 export async function addGroupByBillIdAndUserId({commit}, params) {
     const response = await GroupService.addGroupByBillIdAndUserId(params);
     return response.data;
+}
+
+/**
+ * 下载用户团单
+ * @param commit
+ * @param params
+ * @returns {Promise.<{}>}
+ */
+export async function downloadGroupByIdAndUserId({commit}, params) {
+    const response = await GroupService.downloadGroupByIdAndUserId(params);
+    return response.data || {};
 }

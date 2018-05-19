@@ -16,9 +16,15 @@ const shareTypes = [{
 export default {
     data () {
         return {
-            activeTab: 'tj',
+            activeTab: window.sessionStorage.getItem('SeawaterEncyActiveTab') || 'tj',
             types: [],
-            activeType: 'all',
+            activeTypes: {
+                tj: '',
+                hy: window.sessionStorage.getItem('SeawaterEncyhyActiveType') || 'all',
+                rt: window.sessionStorage.getItem('SeawaterEncyrtActiveType') || 'all',
+                yg: window.sessionStorage.getItem('SeawaterEncyygActiveType') || 'all',
+                qt: window.sessionStorage.getItem('SeawaterEncyqtActiveType') || 'all'
+            },
             encyList: [],
             showSharePicker: false,
             shareTypes: shareTypes,
@@ -26,6 +32,7 @@ export default {
             currentItem: {},
             searching: false,
             searchText: '',
+            searchTimer: null
         }
     },
     components: {
@@ -42,11 +49,8 @@ export default {
         PopupPicker
     },
 
-    async created() {
-        this.encyList = await this.getEncyRandomList({number: 20});
-        for (let ency of this.encyList) {
-            this.$set(ency, 'encyImage', `${SmallImageBasePath}?id=${ency.id}`);
-        }
+    created() {
+        this.initRandomEncyList(this.activeTab);
     },
 
     methods: {
@@ -57,14 +61,14 @@ export default {
             'getSmallEncyImageById'
         ]),
 
-        async handleTabItemClick (type) {
-            this.activeTab = type;
+        async initRandomEncyList(type) {
             if (type !== 'tj') {
                 const types = await this.getTypesByCategoryCode({categoryCode: type});
                 this.types = [{
                     name: '全部',
                     code: 'all'
                 }, ...types];
+                this.initEncyListInType(this.activeTypes[this.activeTab]);
             } else {
                 this.types = [];
                 this.encyList = await this.getEncyRandomList({number: 20});
@@ -72,6 +76,36 @@ export default {
                     this.$set(ency, 'encyImage', `${SmallImageBasePath}?id=${ency.id}`);
                 }
             }
+        },
+
+        async initEncyListInType(type) {
+            this.$vux.loading.show({
+                text: '努力加载中'
+            });
+            let result = [];
+            try {
+                if (this.activeTypes[this.activeTab] === 'all') {
+                    this.encyList = await this.getEncyRandomList({number: 20});
+                    for (let ency of this.encyList) {
+                        this.$set(ency, 'encyImage', `${SmallImageBasePath}?id=${ency.id}`);
+                    }
+                } else {
+                    result = await this.getEncyList({type, page: 1, size: 1000});
+                    this.encyList = result['materials'] || [];
+                    for (let ency of this.encyList) {
+                        this.$set(ency, 'encyImage', `${SmallImageBasePath}?id=${ency.id}`);
+                    }
+                }
+            } catch (error) {
+                console.error(error);
+            }
+            this.$vux.loading.hide();
+        },
+
+        async handleTabItemClick (type) {
+            this.activeTab = type;
+            window.sessionStorage.setItem('SeawaterEncyActiveTab', type);
+            this.initRandomEncyList(type);
         },
 
         handleActions(item, actionType) {
@@ -93,6 +127,7 @@ export default {
                     break;
                 case 'encySearchCancel':
                     this.searching = false;
+                    this.initRandomEncyList();
                     break;
                 default:
                     break;
@@ -100,21 +135,9 @@ export default {
         },
 
         async handleTypeChange(type) {
-            this.activeType = type.code;
-            this.$vux.loading.show({
-                text: '努力加载中'
-            });
-            let result = [];
-            try {
-                result = await this.getEncyList({type: type.code, page: 1, size: 1000});
-                this.encyList = result['materials'] || [];
-                for (let ency of this.encyList) {
-                    this.$set(ency, 'encyImage', `${SmallImageBasePath}?id=${ency.id}`);
-                }
-            } catch (error) {
-                console.error(error);
-            }
-            this.$vux.loading.hide();
+            this.activeTypes[this.activeTab] = type.code;
+            window.sessionStorage.setItem(`SeawaterEncy${this.activeTab}ActiveType`, type.code);
+            this.initEncyListInType(type.code);
         },
 
         handleShareTypeChange(shareType) {
@@ -129,11 +152,14 @@ export default {
 
         async handleSearchChange()  {
             if (this.searchText) {
-                const result = await this.getEncyList({name: this.searchText, page: 1, size: 100});
-                this.encyList = result['materials'] || [];
-                for (let ency of this.encyList) {
-                    this.$set(ency, 'encyImage', `${SmallImageBasePath}?id=${ency.id}`);
-                }
+                window.clearTimeout(this.searchTimer);
+                this.searchTimer = setTimeout(async () => {
+                    const result = await this.getEncyList({name: this.searchText, page: 1, size: 100});
+                    this.encyList = result['materials'] || [];
+                    for (let ency of this.encyList) {
+                        this.$set(ency, 'encyImage', `${SmallImageBasePath}?id=${ency.id}`);
+                    }
+                }, 500);
             }
         },
 

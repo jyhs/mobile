@@ -1,9 +1,6 @@
 <template>
     <div class="home-container">
         <scroller :on-refresh="handleDataRefresh">
-            <!--
-            <search position="absolute" auto-scroll-to-top @on-focus="onFocus"></search>
-            -->
             <swiper loop auto :list="list" :aspect-ratio="306/750"></swiper>
             <div class="city-selector">
                 <span @click="handleShowProvinces">

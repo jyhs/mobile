@@ -18,12 +18,8 @@ const routes = [{
         path: '/user/login/register',
         component: loginRegister
     }, {
-        path: '/main',
+        path: '/',
         component: main,
-        alias: '/',
-        meta: {
-            requireAuth: true
-        }
     }, {
         path: '/ency/search',
         component: encySearch,

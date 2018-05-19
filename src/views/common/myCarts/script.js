@@ -60,19 +60,18 @@ export default {
             done();
         },
 
-        handleFinishGroup(group) {
+        handleDeleteCart(cart) {
             this.$vux.confirm.show({
                 title: '确认结束',
                 content: '确定结束热团吗？',
                 onConfirm: async () => {
-                    const result = await this.finishGroupByIdAndUserId({
-                        id: group.id,
-                        user_id: this.currentUserId
+                    const result = await this.deleteCartById({
+                        id: cart.id,
                     });
                     if (result.status === 'ok') {
                         this.$vux.toast.show({
                             type: 'success',
-                            text: `结束团单${group.name}成功`
+                            text: `删除购物车成功`
                         });
                         this.initData();
                     }

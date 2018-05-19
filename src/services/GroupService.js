@@ -34,7 +34,15 @@ export default {
         return Vue.axios.post(`${ApiBasePath}/api/group/finish`, params);
     },
 
+    reopenGroupByIdAndUserId(params) {
+        return Vue.axios.post(`${ApiBasePath}/api/group/reopen`, params);
+    },
+
     addGroupByBillIdAndUserId(params) {
         return Vue.axios.post(`${ApiBasePath}/api/group/add`, params);
+    },
+
+    downloadGroupByIdAndUserId(params) {
+        return Vue.axios.post(`${ApiBasePath}/api/group/dowload`, params);
     }
 };
