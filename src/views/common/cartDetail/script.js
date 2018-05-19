@@ -9,6 +9,7 @@ export default {
         return {
             max: 10000,
             currentUser: {},
+            currentUserId: parseInt(window.localStorage.getItem('SeawaterLoginUserId')),
             group: {},
             details: [],
             detailsInCart: [],
@@ -16,7 +17,8 @@ export default {
             phone: '',
             remark: '',
             currentItem: {},
-            deleteConfirm: false
+            deleteConfirm: false,
+            cart: {},
         };
     },
 
@@ -42,6 +44,11 @@ export default {
         if (this.group.status === 0) {
             this.max = 0;
         }
+        this.cart = (await this.getCartUnderUserByGroupId({
+            groupId: this.group.id,
+            userId: this.currentUserId
+        }))[0];
+        this.remark = this.cart.description.trim();
         const detailsInCartKey = `SeawaterDetailsToCart_${this.currentUser.id}_${this.group.id}`;
 
         this.details = await this.getDetailsByBillId({id: this.group.bill_id});
@@ -77,7 +84,8 @@ export default {
             'getEncyImageById',
             'updateCart',
             'updateCartDetail',
-            'deleteDetailById'
+            'deleteDetailById',
+            'getCartUnderUserByGroupId'
         ]),
 
         handleDataRefresh(done) {
@@ -193,7 +201,7 @@ export default {
 
         async updateDetailsImg() {
             this.detailsInCart.map(async detail => {
-                this.$set(detail, 'encyImage', `${SmallImageBasePath}?id=${detail.material_id}`);
+                this.$set(detail, 'encyImage', `${SmallImageBasePath}?id=${detail.material_id || 0}`);
             });
         },
 

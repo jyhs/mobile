@@ -83,12 +83,17 @@ export default {
                     });
                     break;
                 case 'encyDetail':
-                    this.$router.push({
-                        name: actionType,
-                        params: {
-                            id: item.material_id,
-                        }
-                    });
+                    const materialId = item['material_id'];
+                    if (materialId) {
+                        this.$router.push({
+                            name: actionType,
+                            params: {
+                                id: materialId,
+                            }
+                        });
+                    } else {
+                        this.$vux.toast.text('Sorry,没有匹配的生物')
+                    }
                     break;
                 case 'return':
                     this.$router.back();
@@ -99,9 +104,10 @@ export default {
         },
 
         async handleDetailImageShow (detail) {
+            const materialId = detail['material_id'] || 0;
             if (!detail['material_id']) {
                 this.preDetail = detail;
-                this.imagePath = `${SmallImageBasePath}?id=${detail.material_id}`;
+                this.imagePath = `${SmallImageBasePath}?id=${materialId}`;
                 return;
             }
             if (detail.id === this.preDetail.id) {
@@ -109,7 +115,7 @@ export default {
             }
 
             this.preDetail = detail;
-            this.imagePath = `${SmallImageBasePath}?id=${detail.material_id}`;
+            this.imagePath = `${SmallImageBasePath}?id=${materialId}`;
         },
 
         alreadyHasCartUnderGroup() {
