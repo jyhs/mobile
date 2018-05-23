@@ -56,13 +56,13 @@ export default {
         LoadMore
     },
 
-    async created() {
-        const provinces = JSON.parse(window.sessionStorage.getItem('SeawaterProvinces'));
+    async mounted() {
+        const provinces = JSON.parse(window.localStorage.getItem('SeawaterProvinces'));
         if (provinces && provinces.length) {
             this.provinces = provinces;
         } else {
             this.provinces = await this.getProvinces();
-            window.sessionStorage.setItem('SeawaterProvinces', JSON.stringify(this.provinces));
+            window.localStorage.setItem('SeawaterProvinces', JSON.stringify(this.provinces));
         }
         const response = await this.getGroupList({
             page: 1,
