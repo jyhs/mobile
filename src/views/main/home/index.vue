@@ -45,7 +45,7 @@
                      @click="handleActions(group, 'groupDetail')">
                     <div class="content-main group-content-main">
                         <div class="avatar">
-                            <img :src="group.userAvatar" alt="同省商家头像">
+                            <img :src="group.userAvatar || require('../../../assets/others/default_avatar.svg')" alt="同省商家头像">
                         </div>
                         <div class="info">
                             <div class="info-item">

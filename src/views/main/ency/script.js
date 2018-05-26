@@ -1,5 +1,5 @@
 import {mapActions} from 'vuex';
-import {ViewBox, Search, Tab, TabItem, Icon, Grid, GridItem, Sticky, Rater, Group, PopupPicker} from 'vux';
+import {ViewBox, Search, Tab, TabItem, Icon, Grid, GridItem, Sticky, Rater, Group, PopupPicker, LoadMore} from 'vux';
 import {SmallImageBasePath} from '../../../constants/index';
 
 const shareTypes = [{
@@ -25,7 +25,7 @@ export default {
                 yg: window.sessionStorage.getItem('SeawaterEncyygActiveType') || 'all',
                 qt: window.sessionStorage.getItem('SeawaterEncyqtActiveType') || 'all'
             },
-            encyList: [],
+            encyList: undefined,
             showSharePicker: false,
             shareTypes: shareTypes,
             shareType: [],
@@ -46,7 +46,8 @@ export default {
         Sticky,
         Rater,
         Group,
-        PopupPicker
+        PopupPicker,
+        LoadMore
     },
 
     created() {

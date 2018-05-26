@@ -11,7 +11,7 @@
         </div>
         <scroller :on-refresh="handleDataRefresh">
             <div class="block">
-                <div class="no-tips" v-if="carts.length===0">
+                <div class="no-tips" v-if="carts&&carts.length===0">
                     空空如也，<a href="javascript: void(0);" @click="handleActions(null, 'main')">去看看热团吧~~~</a>？
                 </div>
                 <div class="block-content" v-else v-for="cart in carts" :key="cart.id"

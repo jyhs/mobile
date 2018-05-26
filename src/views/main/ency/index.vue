@@ -48,6 +48,7 @@
                 </div>
             </div>
             <div class="block">
+                <load-more tip="努力加载中" v-if="!encyList"></load-more>
                 <div class="block-content" v-for="item in encyList" :key="item.id"
                      @click="handleActions(item, 'encyDetail')">
                     <div class="content-main ency-content-main">

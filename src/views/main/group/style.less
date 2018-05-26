@@ -1,80 +1,30 @@
-.home-container {
-    height: 100%;
+.group-tab-container {
+    min-height: 100%;
     padding-bottom: 63px;
-    .weui-search-bar {
-        padding: 5px;
-    }
-    .city-selector {
-        width: 100%;
-        height: 0.35rem;
-        line-height: 0.35rem;
-        text-align: right;
-        span {
-            font-size: 14px;
+    .button-tab {
+        padding: 0.1rem 0.1rem 0;
+        .vux-button-group > a {
+            color: #ccc;
+            box-shadow: 0 0 6px 0 rgba(0,0,0,0.06);
+            border-radius: 4px;
+        }
+        .vux-button-group > a {
+            background-color: #fafafa;
+        }
+        .vux-button-group > a.vux-button-group-current {
+            background-color: #fff;
             color: #28b1ea;
+            font-size: 14px;
         }
-        .el-icon-coral-coordinates {
-            position: relative;
-            left: 5px;
+        .vux-button-group > a.vux-button-tab-item-first:after {
+            border: none;
         }
-        .el-icon-coral-biaotou-daoxu {
-            position: relative;
-            top: 2px;
-        }
-    }
-    .tab-icons {
-        width: 100%;
-        height: 0.95rem;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-around;
-        align-items: center;
-        .tab-icon {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            img {
-                width: 0.48rem;
-                height: 0.48rem;
-                margin-bottom: 0.08rem;
-            }
-            span {
-                color: #adadad;
-            }
+        .vux-button-group > a.vux-button-tab-item-last:after {
+            border: none;
         }
     }
     .block {
         width: 100%;
-        .block-title {
-            width: 100%;
-            height: 0.24rem;
-            margin-top: 0.03rem;
-            line-height: 0.24rem;
-            .rect {
-                padding: 9px 3px;
-                width: 0;
-                font-size: 0;
-                background-color: #84daef;
-                position: relative;
-                top: -5px;
-                margin-left: 0.15rem;
-            }
-            .title-text {
-                margin-left: 0.05rem;
-            }
-        }
-        .has-no-active {
-            width: 100%;
-            height: 0.4rem;
-            line-height: 0.4rem;
-            text-align: center;
-            span {
-                color: #666;
-                .link {
-                    color: #84daef;
-                }
-            }
-        }
         .block-content {
             width: 100%;
             padding: 0.1rem 0.1rem 0 0.1rem;
@@ -95,7 +45,7 @@
                         width: 0.82rem;
                         height: 0.86rem;
                         vertical-align: middle;
-                        border-radius: 4px;
+                        border-radius: 5px;
                     }
                 }
                 .info {
@@ -175,13 +125,16 @@
                     height: 0.28rem;
                     line-height: 0.28rem;
                     text-align: center;
-                    background-color: #39b7f9;
+                    background-color: #84daef;
                     box-shadow: 0 2px 6px 0 rgba(0,0,0,0.10);
                     border-radius: 4px;
                     margin: 0.1rem;
                     span {
                         color: #fff;
                     }
+                }
+                .open-btn-disabled {
+                    background-color: #ccc;
                 }
             }
             .ency-content-main {
@@ -194,7 +147,6 @@
                     img {
                         width: 0.88rem;
                         height: 0.64rem;
-                        border-radius: 5px;
                     }
                 }
                 .info {
@@ -218,15 +170,10 @@
                             }
                         }
                     }
-                    .tags {
-                        display: flex;
-                        flex-direction: row;
-                        flex-wrap: wrap;
-                        .tag {
-                            margin-right: 2px;
-                            span {
-                                color: #9b9b9b;
-                            }
+                    .ency-category {
+                        line-height: 15px;
+                        span {
+                            color: #898989;
                         }
                     }
                     .others {
@@ -237,9 +184,7 @@
                             display: flex;
                             flex-direction: row;
                             .action {
-                                display: flex;
                                 margin-left: 0.05rem;
-                                align-items: center;
                                 span {
                                     color: #9b9b9b;
                                 }

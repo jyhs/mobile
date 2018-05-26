@@ -21,7 +21,6 @@ const groupValidator = (children) => {
 };
 
 const getMatchedErrorMsg = (searchKey) => {
-    console.log(searchKey);
     for (let msg of ErrorMsg) {
         if (msg[searchKey]) {
             return msg[searchKey];

@@ -1,5 +1,4 @@
 import {mapActions} from 'vuex';
-import {compile} from '../../../util/data';
 import {AvatarBasePath, GroupExcelBasePath} from '../../../constants/index';
 import {formatDateTimeParam} from '../../../util/date';
 
@@ -7,12 +6,17 @@ export default {
     data() {
         return {
             currentUserId: parseInt(window.localStorage.getItem('SeawaterLoginUserId')),
-            groups: [],
+            groups: undefined,
         };
     },
 
     created() {
         this.initData();
+    },
+
+    mounted() {
+        const ele = document.getElementById('loading');
+        ele.style.display = 'none';
     },
 
     methods: {
@@ -42,11 +46,15 @@ export default {
                     window.sessionStorage.setItem('SeawaterGroupTabActive', 'bill');
                     this.$router.push('/');
                     break;
-                case 'groupDetail':
+                case 'userCarts':
                     this.$router.push({
                         name: actionType,
                         params: {
-                            id: compile(item.id)
+                            groupId: item.id,
+                            userId: this.currentUserId
+                        },
+                        query: {
+                            name: item.name
                         }
                     });
                     break;

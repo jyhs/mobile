@@ -48,6 +48,11 @@ export default {
         }
     },
 
+    mounted() {
+        const ele = document.getElementById('loading');
+        ele.style.display = 'none';
+    },
+
     methods: {
         ...mapActions([
             'getGroupById',

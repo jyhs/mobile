@@ -11,11 +11,11 @@
         </div>
         <scroller :on-refresh="handleDataRefresh">
             <div class="block">
-                <div class="no-tips" v-if="groups.length===0">
+                <div class="no-tips" v-if="groups&&groups.length===0">
                     空空如也，<a href="javascript: void(0);" @click="handleActions(null, 'main')">去开一个</a>？
                 </div>
                 <div class="block-content" v-else v-for="group in groups" :key="group.id"
-                     @click="handleActions(group, 'groupDetail')">
+                     @click="handleActions(group, 'userCarts')">
                     <div class="content-main group-content-main">
                         <div class="avatar">
                             <img :src="group.userAvatar" alt="同省商家头像">
@@ -28,7 +28,7 @@
                                     <icon class="el-icon-coral-naozhong f12"></icon>
                                     <span class="f12 c999">{{group.end_date}}结束</span>
                                 </span>
-                                <span v-else>
+                                <span>
                                     <img src="../../../assets/download.svg"
                                          class="download"
                                          @click.stop="handleDownload(group)"

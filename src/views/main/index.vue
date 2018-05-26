@@ -68,6 +68,11 @@
             Mine
         },
 
+        mounted() {
+            const ele = document.getElementById('loading');
+            ele.style.display = 'none';
+        },
+
         methods: {
             handleTabItemClick (index) {
                 if (index !== this.activeIndex) {

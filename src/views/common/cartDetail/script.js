@@ -75,6 +75,11 @@ export default {
         this.$vux.loading.hide();
     },
 
+    mounted() {
+        const ele = document.getElementById('loading');
+        ele.style.display = 'none';
+    },
+
     methods: {
         ...mapActions([
             'getUserById',

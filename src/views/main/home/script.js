@@ -1,6 +1,5 @@
 import {mapActions} from 'vuex';
 import {Search, Swiper, Group, PopupPicker, Rater, LoadMore} from 'vux';
-import moment from 'moment';
 import {compile} from '../../../util/data';
 import {AvatarBasePath, SmallImageBasePath} from '../../../constants/index';
 
@@ -22,7 +21,7 @@ const baseList = [{
     title: ''
 }];
 
-const urlList = baseList.map((item, index) => ({
+const urlList = baseList.map((item) => ({
     url: item.url,
     img: item.img,
     fallbackImg: item.fallbackImg,
@@ -77,17 +76,15 @@ export default {
         }
 
         for (let group of this.groups) {
-            const interval = Math.floor(Math.abs(Math.abs(moment(group.end_date.replace(/-/g,"/")).diff(moment())) / 1000));
-            this.$set(group, 'interval', interval);
             this.$set(group, 'userAvatar', `${AvatarBasePath}?id=${group.user_id}`);
+            this.$set(group, 'interval', this.getIntervalFromNow(group.end_date));
         }
         if (this.groupCountDownTimer) {
             window.clearInterval(this.groupCountDownTimer);
         } else {
             this.groupCountDownTimer = window.setInterval(() => {
                 for (let group of this.groups) {
-                    const interval = Math.floor(Math.abs(moment(group.end_date.replace(/-/g,"/")).diff(moment())) / 1000);
-                    this.$set(group, 'interval', interval)
+                    this.$set(group, 'interval', this.getIntervalFromNow(group.end_date));
                 }
             }, 1000);
         }
@@ -175,6 +172,13 @@ export default {
                 default:
                     break;
             }
+        },
+
+        getIntervalFromNow(endDate) {
+            const now = new Date().getTime();
+            const end = new Date(endDate.replace(/-/g,"/")).getTime();
+
+            return Math.floor(Math.abs(end - now) / 1000);
         },
 
         getProvinceNameByValue(value) {

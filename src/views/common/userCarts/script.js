@@ -5,7 +5,8 @@ export default {
     data() {
         return {
             currentUserId: parseInt(window.localStorage.getItem('SeawaterLoginUserId')),
-            carts: undefined
+            cartList: undefined,
+            groupName: ''
         };
     },
 
@@ -20,40 +21,32 @@ export default {
 
     methods: {
         ...mapActions([
-            'getCartsByUserId',
+            'getCartByGroupIdAndUserId',
             'deleteCartById'
         ]),
 
         async initData() {
-            const result = await this.getCartsByUserId({
-                page: 1,
-                size: 1000,
-                userId: this.currentUserId
+            const {groupId, userId} = this.$route.params;
+            const {name} = this.$route.query;
+
+            this.groupName = name;
+            this.cartList = await this.getCartByGroupIdAndUserId({
+                groupId,
+                userId
             });
-            this.carts = result.res || [];
-            for (let cart of this.carts) {
+            for (let cart of this.cartList) {
                 this.$set(cart, 'userAvatar', `${AvatarBasePath}?id=${cart.user_id}`);
             }
         },
 
+
         handleActions(item, actionType) {
             switch (actionType) {
-                case 'main':
-                    window.sessionStorage.setItem('SeawaterTabActiveIndex', 2);
-                    window.sessionStorage.setItem('SeawaterGroupTabActive', 'group');
-                    this.$router.push('/');
-                    break;
-                case 'cartDetail':
-                    this.$router.push({
-                        name: actionType,
-                        params: {
-                            cartId: item.id,
-                            groupId: item.group_id
-                        }
-                    });
-                    break;
                 case 'return':
                     this.$router.push('/');
+                    break;
+                case 'delete':
+                    this.handleDeleteCart(item);
                     break;
                 default:
                     break;
@@ -67,8 +60,8 @@ export default {
 
         handleDeleteCart(cart) {
             this.$vux.confirm.show({
-                title: '确认结束',
-                content: '确定结束热团吗？',
+                title: '确定删除',
+                content: '确定删除该购物车吗？',
                 onConfirm: async () => {
                     const result = await this.deleteCartById({
                         id: cart.id,
@@ -76,12 +69,20 @@ export default {
                     if (result.status === 'ok') {
                         this.$vux.toast.show({
                             type: 'success',
-                            text: `删除购物车成功`
+                            text: `删除成功`
                         });
                         this.initData();
                     }
                 }
             });
+        },
+
+        mapDate(dateStr) {
+            const date = new Date(dateStr);
+            const year = date.getFullYear();
+            const month = date.getMonth() + 1 < 10 ? `0${date.getMonth() + 1}` : (date.getMonth() + 1);
+            const day =  date.getDate() + 1 < 10 ? `0${date.getDate() + 1}` : (date.getDate() + 1);
+            return `${year}-${month}-${day} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
         }
     }
 };

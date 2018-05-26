@@ -36,7 +36,6 @@
 </template>
 <script>
     import {mapActions} from 'vuex';
-    import _ from 'lodash';
     import CountDown from './CountDown.vue';
     import RegExp from '../constants/regExp';
 
@@ -117,7 +116,7 @@
                 });
                 let result = {};
                 try {
-                    const sendInfo = _.extend({}, this.loginForm, {
+                    const sendInfo = Object.assign({}, this.loginForm, {
                         requestId: this.requestId || 'defaultRequestId',
                         is_error: this.loginHasError,
                         auth: this.loginForm.auth || '1234',

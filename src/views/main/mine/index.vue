@@ -7,7 +7,7 @@
             <div class="wrap">
                 <div class="user-info">
                     <div class="avatar">
-                        <img :src="avatarImgPath" alt="用户头像">
+                        <img :src="avatarImgPath || require('../../../assets/others/default_avatar.svg')" alt="用户头像">
                     </div>
                     <div class="others">
                         <span class="name f20">{{currentUser.name}}</span>
