@@ -96,7 +96,7 @@ export default {
                     }
                     break;
                 case 'return':
-                    this.$router.back();
+                    this.$router.push('/');
                     break;
                 default:
                     break;

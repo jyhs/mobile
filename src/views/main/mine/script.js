@@ -11,10 +11,15 @@ export default {
 
     async created() {
         const currentUserId = parseInt(window.localStorage.getItem('SeawaterLoginUserId'));
-        this.currentUser = (await this.getUserById({
-            id: currentUserId
-        }))[0];
-        this.avatarImgPath = `${AvatarBasePath}?id=${currentUserId}`;
+        console.log(currentUserId);
+        if (currentUserId) {
+            this.currentUser = (await this.getUserById({
+                id: currentUserId
+            }))[0];
+            this.avatarImgPath = `${AvatarBasePath}?id=${currentUserId}`;
+        } else {
+            this.$router.push('/user/login/register');
+        }
     },
 
     methods: {
@@ -36,7 +41,7 @@ export default {
             }
         },
 
-        handleLogout(group) {
+        handleLogout() {
             this.$vux.confirm.show({
                 title: '确定退出',
                 content: '确定退出登录吗？',
