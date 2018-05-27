@@ -62,7 +62,7 @@
                             <div class="info-item">
                                 <span>
                                     <icon class="el-icon-coral-people f12 c999"></icon>
-                                    <span class="f12 c999">{{group.supplierName}}</span>
+                                    <span class="f12 c999">{{group.contacts}}</span>
                                 </span>
                                     <span>
                                     <icon class="el-icon-coral-coordinates f12 c999"></icon>
@@ -114,12 +114,8 @@
                                         <span class="f12">评论</span>
                                     </div>
                                     -->
-                                    <div class="action">
-                                        <!--
-                                        <icon class="el-icon-coral-praise f12"></icon>
-                                        -->
-                                        <img src="../../../assets/others/dianzan.svg" alt="生物点赞"/>
-                                        <span class="f12">点赞</span>
+                                    <div class="action" @click.stop="handleActions(item, 'focus')">
+                                        <icon class="el-icon-coral-like_fill f16" :class="{focused: item.isFocused}"></icon>
                                     </div>
                                 </div>
                             </div>

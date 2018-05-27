@@ -32,3 +32,14 @@ export async function getBillById({commit}, params) {
     const response = await BillService.getBillById(params);
     return response.data || {};
 }
+
+/**
+ * 根据分类获取团单明细
+ * @param commit
+ * @param params
+ * @returns {Promise<*|{}>}
+ */
+export async function getBillDetailsById({commit}, params) {
+    const response = await BillService.getBillDetailsById(params);
+    return response.data;
+}

@@ -51,7 +51,7 @@ export default {
     },
 
     created() {
-        this.initRandomEncyList(this.activeTab);
+        this.initFocusedEncyList();
     },
 
     methods: {
@@ -60,67 +60,23 @@ export default {
             'getEncyRandomList',
             'getEncyList',
             'getSmallEncyImageById',
+            'getFocusedEncyList',
             'focusEncy'
         ]),
 
-        async initRandomEncyList(type) {
-            if (type !== 'tj') {
-                const types = await this.getTypesByCategoryCode({categoryCode: type});
-                this.types = [{
-                    name: '全部',
-                    code: 'all'
-                }, ...types];
-                this.initEncyListInType(this.activeTypes[this.activeTab]);
-            } else {
-                this.types = [];
-                this.encyList = await this.getEncyRandomList({number: 20});
-                for (let ency of this.encyList) {
-                    this.$set(ency, 'encyImage', `${SmallImageBasePath}?id=${ency.id}`);
-                }
+        async initFocusedEncyList() {
+            this.encyList = await this.getFocusedEncyList({userId: this.currentUserId});
+            for (let ency of this.encyList) {
+                this.$set(ency, 'encyImage', `${SmallImageBasePath}?id=${ency.id}`);
+                this.$set(ency, 'isFocused', true);
             }
-        },
-
-        async initEncyListInType(type) {
-            this.$vux.loading.show({
-                text: '努力加载中'
-            });
-            let result = [];
-            try {
-                if (this.activeTypes[this.activeTab] === 'all') {
-                    this.encyList = await this.getEncyRandomList({number: 20});
-                    for (let ency of this.encyList) {
-                        this.$set(ency, 'encyImage', `${SmallImageBasePath}?id=${ency.id}`);
-                    }
-                } else {
-                    result = await this.getEncyList({
-                        type, page: 1,
-                        size: 1000,
-                        userId: this.currentUserId
-                    });
-                    this.encyList = result['materials'] || [];
-                    for (let ency of this.encyList) {
-                        this.$set(ency, 'encyImage', `${SmallImageBasePath}?id=${ency.id}`);
-                        if (ency.focus_id) {
-                            this.$set(ency, 'isFocused', true);
-                        } else {
-                            this.$set(ency, 'isFocused', false);
-                        }
-                    }
-                }
-            } catch (error) {
-                console.error(error);
-            }
-            this.$vux.loading.hide();
-        },
-
-        handleTabItemClick (type) {
-            this.activeTab = type;
-            window.sessionStorage.setItem('SeawaterEncyActiveTab', type);
-            this.initRandomEncyList(type);
         },
 
         handleActions(item, actionType) {
             switch (actionType) {
+                case 'return':
+                    this.$router.back();
+                    break;
                 case 'share':
                     this.currentItem = item;
                     this.showSharePicker = true;
@@ -132,13 +88,6 @@ export default {
                             id: item.id
                         }
                     });
-                    break;
-                case 'encySearch':
-                    this.searching = true;
-                    break;
-                case 'encySearchCancel':
-                    this.searching = false;
-                    this.initRandomEncyList();
                     break;
                 case 'focus':
                     this.handleFocusEncy(item);
@@ -155,14 +104,8 @@ export default {
             });
 
             if (response.status === 'ok') {
-                this.$set(ency, 'isFocused', !ency.isFocused);
+                this.initFocusedEncyList();
             }
-        },
-
-        async handleTypeChange(type) {
-            this.activeTypes[this.activeTab] = type.code;
-            window.sessionStorage.setItem(`SeawaterEncy${this.activeTab}ActiveType`, type.code);
-            this.initEncyListInType(type.code);
         },
 
         handleShareTypeChange(shareType) {

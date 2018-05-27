@@ -33,6 +33,7 @@ export default {
                 case 'myGroups':
                 case 'myCarts':
                 case 'mySetting':
+                case 'encyFocus':
                     this.$router.push({name: actionType});
                     break;
                 default:

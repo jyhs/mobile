@@ -64,6 +64,17 @@ export async function getEncyList({commit}, params) {
 }
 
 /**
+ * 获取关注的生物资料
+ * @param commit
+ * @param params
+ * @returns {Promise<*|{}>}
+ */
+export async function getFocusedEncyList({commit}, params) {
+    const response = await EncyService.getFocusedEncyList(params);
+    return response.data || {};
+}
+
+/**
  * 随机获取生物
  * @param commit
  * @param params
@@ -125,5 +136,16 @@ export async function getEncyImagesById({commit}, params) {
  */
 export async function getSmallEncyImageById({commit}, params) {
     const response = await EncyService.getSmallEncyImageById(params);
+    return response.data;
+}
+
+/**
+ * 关注生物
+ * @param commit
+ * @param params
+ * @returns {Promise<*>}
+ */
+export async function focusEncy({commit}, params) {
+    const response = await EncyService.focusEncy(params);
     return response.data;
 }

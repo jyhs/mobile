@@ -1,5 +1,5 @@
 import {mapActions} from 'vuex';
-import {Badge, Alert, Popover} from 'vux';
+import {Badge, Alert, Popover, Tab, TabItem} from 'vux';
 import {unCompile} from '../../../util/data';
 import {SmallImageBasePath} from '../../../constants/index'
 
@@ -7,9 +7,10 @@ export default {
     data() {
         return {
             currentUserId: parseInt(window.localStorage.getItem('SeawaterLoginUserId')),
+            activeTab: 'hy',
             group: {},
             groupCount: '',
-            details: [],
+            details: undefined,
             cart: {},
             detailsInCart: [],
             cartDetailIds: [],
@@ -22,7 +23,9 @@ export default {
     components: {
         Badge,
         Alert,
-        Popover
+        Popover,
+        Tab,
+        TabItem
     },
 
     async created() {
@@ -34,7 +37,13 @@ export default {
         });
         this.group = (await this.getGroupById({id: groupId}))[0] || {};
         this.groupCount = (await this.getCountById({id: groupId}))[0].sum || 0;
-        this.details = await this.getDetailsByBillId({id: this.group.bill_id}) || [];
+        this.details = await this.getBillDetailsById({
+            id: this.group.bill_id,
+            category: this.activeTab
+        }) || [];
+        for (let ency of this.details) {
+            this.$set(ency, 'encyImage', `${SmallImageBasePath}?id=${ency.material_id}`);
+        }
         this.cart = (await this.getCartUnderUserByGroupId({
             groupId: this.group.id,
             userId: this.currentUserId
@@ -63,7 +72,8 @@ export default {
             'addCart',
             'updateCartDetail',
             'getEncyImageById',
-            'deleteDetailById'
+            'deleteDetailById',
+            'getBillDetailsById'
         ]),
 
         async handleDataRefresh(done) {
@@ -71,6 +81,18 @@ export default {
             const groupId = unCompile(id);
             this.group = (await this.getGroupById({id: groupId}))[0] || {};
             done();
+        },
+
+        async handleTabItemClick (type) {
+            this.activeTab = type;
+
+            this.details = await this.getBillDetailsById({
+                id: this.group.bill_id,
+                category: type
+            }) || [];
+            for (let ency of this.details) {
+                this.$set(ency, 'encyImage', `${SmallImageBasePath}?id=${ency.material_id}`);
+            }
         },
 
         handleActions(item, actionType) {
@@ -229,19 +251,11 @@ export default {
                 copyDetail.count = 1;
                 copyDetail.checked = true;
                 this.detailsInCart.push(copyDetail);
-                window.localStorage.setItem(detailsInCartKey,
-                    JSON.stringify((JSON.parse(window.localStorage.getItem(detailsInCartKey)) || []).concat([copyDetail])));
-                /*
-                try {
-                    await this.updateCartDetail({
-                        cart_id: this.cart.id,
-                        bill_detail_id: detail.id,
-                        bill_detail_num: 1
-                    });
-                } catch (error) {
-                    console.error(error);
-                }
-                */
+                window.localStorage.setItem(
+                    detailsInCartKey,
+                    JSON.stringify((JSON.parse(window.localStorage.getItem(detailsInCartKey)) || []
+                ).concat([copyDetail])));
+                this.$vux.toast.text('加入购物车成功');
             }
         },
     },

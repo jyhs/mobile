@@ -30,17 +30,29 @@ export default {
         });
     },
 
-    getEncyList({name, type, page = 1, size = 10}) {
+    getEncyList({name, type, userId, page = 1, size = 10}) {
         const params = {page, size};
         name && (params.name = name);
         type && (params.type = type);
+        userId && (params.user_id = userId);
 
         return Vue.axios.get(`${ApiBasePath}/api/material/list`, {params});
     },
 
-    getEncyRandomList({number}) {
+    getFocusedEncyList({userId}) {
+        return Vue.axios.get(`${ApiBasePath}/api/material/focus/list`, {
+            params: {
+                user_id: userId
+            }
+        });
+    },
+
+    getEncyRandomList({number, userId}) {
+        const params = {number};
+        userId && (params.user_id = userId);
+
         return Vue.axios.get(`${ApiBasePath}/api/material/random/list`, {
-            params: {number}
+            params
         });
     },
 
@@ -67,6 +79,15 @@ export default {
     },
 
     getSmallEncyImageById({id}) {
-      return Vue.axios.get(`http://111.231.136.250:1433/api/material/image/base64/small?id=${id}`);
+        return Vue.axios.get(`${ApiBasePath}/api/material/image/base64/small?id=${id}`);
+    },
+
+    focusEncy({user_id, material_id}) {
+        return Vue.axios.get(`${ApiBasePath}/api/material/focus`, {
+            params: {
+                user_id,
+                material_id
+            }
+        });
     }
 };

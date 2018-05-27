@@ -23,5 +23,14 @@ export default {
                 id
             }
         });
+    },
+
+    getBillDetailsById({id, category}) {
+        return Vue.axios.get(`${ApiBasePath}/api/bill/detail/category`, {
+            params: {
+                id,
+                category
+            }
+        });
     }
 };

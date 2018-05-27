@@ -1,52 +1,15 @@
 <template>
-    <div class="ency-tab-container">
-        <div style="height: 44px">
-            <search
-                 v-model="searchText"
-                 position="absolute"
-                 auto-scroll-to-top
-                 @on-change="handleSearchChange"
-                 @on-focus="handleActions({}, 'encySearch')"
-                 @on-cancel="handleActions({}, 'encySearchCancel')"
-            >
-            </search>
-        </div>
-        <div class="nav" v-if="!searching">
-            <tab class="tab-container" bar-active-color="#28b1ea" active-color="#28b1ea">
-                <tab-item :selected="activeTab==='tj'" @on-item-click="handleTabItemClick('tj')">
-                    <div class="tab-item-container">
-                        <span class="text f13">热门推荐</span>
-                    </div>
-                </tab-item>
-                <tab-item :selected="activeTab==='hy'" @on-item-click="handleTabItemClick('hy')">
-                    <div class="tab-item-container">
-                        <span class="text f13">海水鱼</span>
-                    </div>
-                </tab-item>
-                <tab-item :selected="activeTab==='rt'" @on-item-click="handleTabItemClick('rt')">
-                    <div class="tab-item-container">
-                        <span class="text f13">软体珊瑚</span>
-                    </div>
-                </tab-item>
-                <tab-item :selected="activeTab==='yg'" @on-item-click="handleTabItemClick('yg')">
-                    <div class="tab-item-container">
-                        <span class="text f13">硬骨珊瑚</span>
-                    </div>
-                </tab-item>
-                <tab-item :selected="activeTab==='qt'" @on-item-click="handleTabItemClick('qt')">
-                    <div class="tab-item-container">
-                        <span class="text f13">其他</span>
-                    </div>
-                </tab-item>
-            </tab>
-        </div>
-        <div class="ency-list" :class="{mT40 : !searching}">
-            <div class="types" v-if="!searching">
-                <div class="type f12" :class="{'type-active': activeTypes[activeTab]===type.code}" v-for="type in types"
-                     :key="type.code" @click="handleTypeChange(type)">
-                    {{type.name}}
-                </div>
+    <div class="ency-focused-container">
+        <div class="header">
+            <div @click="handleActions({}, 'return')">
+                <icon class="el-icon-coral-return f20"></icon>
             </div>
+            <div class="name">
+                <span class="f16">关注的生物</span>
+            </div>
+            <span></span>
+        </div>
+        <div class="ency-list">
             <div class="block">
                 <load-more tip="努力加载中" v-if="!encyList"></load-more>
                 <div class="block-content" v-for="item in encyList" :key="item.id"

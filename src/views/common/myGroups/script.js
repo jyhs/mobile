@@ -138,10 +138,12 @@ export default {
                 });
 
                 if (result.status === 'ok') {
-                    const elemIF = document.createElement("iframe");
-                    elemIF.src = `${GroupExcelBasePath}${result.name}?${Math.random()}`;
-                    elemIF.style.display = "none";
-                    document.body.appendChild(elemIF);
+                    // const elemIF = document.createElement("iframe");
+                    // elemIF.src = `${GroupExcelBasePath}${result.name}?${Math.random()}`;
+                    // elemIF.style.display = "none";
+                    // document.body.appendChild(elemIF);
+
+                    window.location.href = `${GroupExcelBasePath}${result.name}?${Math.random()}`;
                 }
             } catch (error) {
                 console.error(error);

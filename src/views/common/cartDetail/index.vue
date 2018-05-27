@@ -1,18 +1,16 @@
 <template>
-    <div class="buy-cart-container">
+    <div class="cart-detail-container">
         <scroller :on-refresh="handleDataRefresh">
             <div style="height: 100%; padding-bottom: 100%">
                 <div class="group-name">
                     <span @click="handleActions({}, 'return')">
-                        <icon class="el-icon-coral-return f20">
-                            <span class="f16">回首页</span>
-                        </icon>
+                        <icon class="el-icon-coral-return f20"></icon>
+                        <span class="f16" style="position: relative; top: -2px;">回首页</span>
                     </span>
                     <span class="f16">{{group.name}}</span>
                     <span @click="handleActions({}, 'groupDetail')">
-                        <icon class="el-icon-coral-enter f20">
-                            <span class="f16">去购物</span>
-                        </icon>
+                        <span class="f16" style="position: relative; top: -2px;">去购物</span>
+                        <icon class="el-icon-coral-enter f20"></icon>
                     </span>
                 </div>
                 <div class="block">

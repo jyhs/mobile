@@ -31,6 +31,7 @@ const urlList = baseList.map((item) => ({
 export default {
     data() {
         return {
+            currentUserId: parseInt(window.localStorage.getItem('SeawaterLoginUserId')),
             list: urlList,
             billFirstWordColor: ['#ee735c', '#d4e5e0', '#f5a623', '#64c708', '#84daef'],
             showProvincesPicker: false,
@@ -73,6 +74,11 @@ export default {
         this.encyList = await this.getEncyRandomList({number: 10});
         for (let ency of this.encyList) {
             this.$set(ency, 'encyImage', `${SmallImageBasePath}?id=${ency.id}`);
+            if (ency.focus_id) {
+                this.$set(ency, 'isFocused', true);
+            } else {
+                this.$set(ency, 'isFocused', false);
+            }
         }
 
         for (let group of this.groups) {
@@ -102,7 +108,8 @@ export default {
             'getUserAvatar',
             'getBillList',
             'getEncyRandomList',
-            'getEncyImagesById'
+            'getEncyImagesById',
+            'focusEncy'
         ]),
 
         handleShowProvinces() {
@@ -142,6 +149,11 @@ export default {
             this.encyList = await this.getEncyRandomList({number: 10});
             for (let ency of this.encyList) {
                 this.$set(ency, 'encyImage', `${SmallImageBasePath}?id=${ency.id}`);
+                if (ency.focus_id) {
+                    this.$set(ency, 'isFocused', true);
+                } else {
+                    this.$set(ency, 'isFocused', false);
+                }
             }
             done();
         },
@@ -169,8 +181,22 @@ export default {
                         }
                     });
                     break;
+                case 'focus':
+                    this.handleFocusEncy(item);
+                    break;
                 default:
                     break;
+            }
+        },
+
+        async handleFocusEncy(ency) {
+            const response = await this.focusEncy({
+                user_id: this.currentUserId,
+                material_id: ency.id
+            });
+
+            if (response.status === 'ok') {
+                this.$set(ency, 'isFocused', !ency.isFocused);
             }
         },
 

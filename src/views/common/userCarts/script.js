@@ -48,6 +48,14 @@ export default {
                 case 'delete':
                     this.handleDeleteCart(item);
                     break;
+                case 'cartItems':
+                    this.$router.push({
+                        name: actionType,
+                        params: {
+                            id: item.id
+                        }
+                    });
+                    break;
                 default:
                     break;
             }

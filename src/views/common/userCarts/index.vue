@@ -14,7 +14,8 @@
                 <div class="no-tips" v-if="cartList&&cartList.length===0">
                     空空如也~~~
                 </div>
-                <div class="block-content" v-else v-for="cart in cartList" :key="cart.id">
+                <div class="block-content" v-else v-for="cart in cartList" :key="cart.id"
+                     @click="handleActions(cart, 'cartItems')">
                     <div class="content-main cart-content-main">
                         <div class="avatar">
                             <img :src="cart.userAvatar" alt="用户头像">

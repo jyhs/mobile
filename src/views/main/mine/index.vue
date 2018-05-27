@@ -20,8 +20,8 @@
                                 <span class="f18">0</span>
                                 <span class="f11">关注商家</span>
                             </div>
-                            <div class="up-ency">
-                                <span class="f18">0</span>
+                            <div class="up-ency" @click="handleActions('encyFocus')">
+                                <span class="f18">{{currentUser.focus_no}}</span>
                                 <span class="f11">生物收藏</span>
                             </div>
                             <div class="point">
