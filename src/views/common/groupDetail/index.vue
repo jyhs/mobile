@@ -80,15 +80,15 @@
                         </div>
                         <div class="info">
                             <div class="name-price">
-                                <span class="ency-name f15">{{item.name}}</span>
-                                <div>
+                                <span class="ency-name f15">
+                                    {{item.name}}
                                     <span class="ency-size f12">{{item.size}}</span>
-                                    <span class="ency-price">
+                                </span>
+                                <span class="ency-price">
                                     <span class="price-title f12">价格:</span><span class="price-text f12">
                                         ￥{{item.price}}
                                     </span>
                                 </span>
-                                </div>
                             </div>
                             <div class="others">
                                 <div>

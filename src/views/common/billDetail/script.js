@@ -39,6 +39,16 @@ export default {
             const {id} = this.$route.params;
             this.bill = (await this.getBillById({id}));
             done();
+        },
+
+        handleActions(item, actionType) {
+            switch (actionType) {
+                case 'return':
+                    this.$router.back();
+                    break;
+                default:
+                    break;
+            }
         }
     }
 };

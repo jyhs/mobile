@@ -39,11 +39,10 @@ export default {
             }
         },
 
-
         handleActions(item, actionType) {
             switch (actionType) {
                 case 'return':
-                    this.$router.push('/');
+                    this.$router.back();
                     break;
                 case 'delete':
                     this.handleDeleteCart(item);

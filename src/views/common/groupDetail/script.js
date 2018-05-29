@@ -10,7 +10,7 @@ export default {
             activeTab: 'hy',
             group: {},
             groupCount: '',
-            details: undefined,
+            details: [],
             cart: {},
             detailsInCart: [],
             cartDetailIds: [],
@@ -66,12 +66,9 @@ export default {
         ...mapActions([
             'getGroupById',
             'getCountById',
-            'getDetailsByBillId',
             'getCartUnderUserByGroupId',
             'getDetailsByCartId',
             'addCart',
-            'updateCartDetail',
-            'getEncyImageById',
             'deleteDetailById',
             'getBillDetailsById'
         ]),
