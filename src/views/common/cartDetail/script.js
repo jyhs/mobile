@@ -53,7 +53,7 @@ export default {
 
         this.details = await this.getDetailsByBillId({id: this.group.bill_id});
 
-        const detailsInLocalStore = JSON.parse(window.localStorage.getItem(detailsInCartKey));
+        const detailsInLocalStore = JSON.parse(window.sessionStorage.getItem(detailsInCartKey));
         if (detailsInLocalStore && detailsInLocalStore.length) {
             this.detailsInCart = detailsInLocalStore;
         } else {
@@ -218,7 +218,7 @@ export default {
                 }
                 this.totalCount = cartCount;
                 const detailsInCartKey = `SeawaterDetailsToCart_${this.currentUser.id}_${this.group.id}`;
-                window.localStorage.setItem(detailsInCartKey, JSON.stringify(this.detailsInCart));
+                window.sessionStorage.setItem(detailsInCartKey, JSON.stringify(this.detailsInCart));
             });
         },
 

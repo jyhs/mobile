@@ -157,7 +157,7 @@ export default {
 
         async updateDetailsInCart() {
             const detailsInCartKey = `SeawaterDetailsToCart_${this.currentUserId}_${this.group.id}`;
-            const detailsInLocalStore = JSON.parse(window.localStorage.getItem(detailsInCartKey));
+            const detailsInLocalStore = JSON.parse(window.sessionStorage.getItem(detailsInCartKey));
             if (detailsInLocalStore && detailsInLocalStore.length) {
                 this.detailsInCart = detailsInLocalStore;
             } else {
@@ -212,10 +212,10 @@ export default {
         async handleCartDetail(detail) {
             const detailsInCartKey = `SeawaterDetailsToCart_${this.currentUserId}_${this.group.id}`;
             if (this.cartDetailIds.includes(detail.id)) {
-                const detailsInStore = JSON.parse(window.localStorage.getItem(detailsInCartKey)) || [];
+                const detailsInStore = JSON.parse(window.sessionStorage.getItem(detailsInCartKey)) || [];
                 const idsInStore = detailsInStore.map(item => item.id);
                 if (idsInStore.includes(detail.id)) {
-                    window.localStorage.setItem(detailsInCartKey, JSON.stringify(detailsInStore.filter(item => item.id !== detail.id)));
+                    window.sessionStorage.setItem(detailsInCartKey, JSON.stringify(detailsInStore.filter(item => item.id !== detail.id)));
                     for (let i = 0; i < this.detailsInCart.length; i++) {
                        if (this.detailsInCart[i].id === detail.id) {
                            this.detailsInCart.splice(i, 1);
@@ -248,9 +248,9 @@ export default {
                 copyDetail.count = 1;
                 copyDetail.checked = true;
                 this.detailsInCart.push(copyDetail);
-                window.localStorage.setItem(
+                window.sessionStorage.setItem(
                     detailsInCartKey,
-                    JSON.stringify((JSON.parse(window.localStorage.getItem(detailsInCartKey)) || []
+                    JSON.stringify((JSON.parse(window.sessionStorage.getItem(detailsInCartKey)) || []
                 ).concat([copyDetail])));
                 this.$vux.toast.text('加入购物车成功');
             }
