@@ -72,21 +72,18 @@ export default {
             });
         },
 
-        handleActions(item, actionType) {
-            switch (actionType) {
-                case 'numberChange':
-                    this.calculateCartCount();
-                    break;
-                case 'deleteConfirm':
-                    this.currentItem = item;
-                    this.deleteConfirm = true;
-                    break;
-                case 'return':
-                    this.$router.back();
-                    break;
-                default:
-                    break;
-            }
+        back() {
+            this.$router.back();
+        },
+
+        numberChange() {
+            this.calculateCartCount();
+            this.handleSubmit();
+        },
+
+        deleteConfirmFun(item) {
+            this.currentItem = item;
+            this.deleteConfirm = true;
         },
 
         async handleConfirmDelete() {
@@ -115,10 +112,11 @@ export default {
 
                 if (result.status === 'ok') {
                     this.detailsInCart.splice(deleteIndex, 1);
-                    this.$vux.toast.show({
-                        type: 'success',
-                        text: `删除${this.currentItem.name}成功`
-                    });
+                    // this.$vux.toast.show({
+                    //     type: 'success',
+                    //     text: `删除${this.currentItem.name}成功`
+                    // });
+                    this.handleSubmit();
                 }
                 this.$vux.loading.hide();
             }
@@ -156,11 +154,10 @@ export default {
                 submitFlag = false;
             }
             this.$vux.loading.hide();
-
             if (submitFlag) {
                 this.$vux.toast.show({
                     type: 'success',
-                    text: '修改成功'
+                    text: '操作成功'
                 });
             }
         },
