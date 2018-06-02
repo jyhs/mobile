@@ -50,6 +50,7 @@
                     auth: ''
                 },
                 loginEnabled: true,
+                inputHasErrorNum: Number(window.sessionStorage.getItem('SeaWaterInputHasErrorNum')) || 0,
                 loginHasError: Boolean(window.sessionStorage.getItem('SeaWaterLoginHasError')) || false,
                 countDown: {
                     isStart: false
@@ -130,11 +131,15 @@
                         text: '输入错误，请重试',
                         time: 3000
                     });
-                    this.loginHasError = true;
+                    this.inputHasErrorNum++;
+                    window.sessionStorage.setItem('SeaWaterInputHasErrorNum', this.inputHasErrorNum);
                     this.loginForm.password = '';
                     this.loginForm.phone = '';
                     this.loginForm.auth = '';
-                    window.sessionStorage.setItem('SeaWaterLoginHasError', true);
+                    if (this.inputHasErrorNum === 3) {
+                        this.loginHasError = true;
+                        window.sessionStorage.setItem('SeaWaterLoginHasError', true);
+                    }
                 }
                 this.$vux.loading.hide();
                 this.loginEnabled = true;
@@ -147,6 +152,7 @@
                     window.location.href = '/';
                     window.localStorage.setItem('SeawaterAuthorization', result.token);
                     window.localStorage.setItem('SeawaterLoginUserId', result.id);
+                    window.sessionStorage.removeItem('SeaWaterInputHasErrorNum');
                     window.sessionStorage.removeItem('SeaWaterLoginHasError');
                 }
             },

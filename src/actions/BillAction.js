@@ -43,3 +43,23 @@ export async function getBillDetailsById({commit}, params) {
     const response = await BillService.getBillDetailsById(params);
     return response.data;
 }
+
+/**
+ * 获取珊瑚分类
+ * @param {*} param0
+ * @param {*} params
+ */
+export async function getBillShanhuDetailsById({commit}, params) {
+    const response = await BillService.getBillShanhuDetailsById(params);
+    return response.data;
+}
+
+/**
+ * 获取珊瑚分类
+ * @param {*} param0
+ * @param {*} params
+ */
+export async function getBillUndefienDetailsById({commit}, params) {
+    const response = await BillService.getBillUndefienDetailsById(params);
+    return response.data;
+}

@@ -1,5 +1,5 @@
 import {mapActions} from 'vuex';
-import {XNumber, Group, Confirm} from 'vux';
+import {XNumber, Group, XTextarea, Confirm} from 'vux';
 import {SmallImageBasePath} from '../../../constants/index';
 
 export default {
@@ -19,6 +19,7 @@ export default {
     components: {
         XNumber,
         Group,
+        XTextarea,
         Confirm
     },
 

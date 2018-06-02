@@ -28,5 +28,9 @@ export default {
                 id
             }
         });
+    },
+
+    uploadUserAvatar(formData) {
+        return Vue.axios.post(`${ApiBasePath}/api/users/upload`, formData);
     }
 };

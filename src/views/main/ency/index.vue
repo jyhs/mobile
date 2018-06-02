@@ -65,7 +65,7 @@
                                 </span>
                             </div>
                             <div class="tags">
-                                <div class="tag" v-for="tag in item.tag.trim().split(',')" :key="item">
+                                <div class="tag" v-for="tag in item.tag.trim().split(',')" :key="tag">
                                     <span class="f10">{{tag}}</span>
                                 </div>
                             </div>

@@ -32,5 +32,21 @@ export default {
                 category
             }
         });
+    },
+
+    getBillShanhuDetailsById({id}) {
+        return Vue.axios.get(`${ApiBasePath}/api/bill/detail/shanhu`, {
+            params: {
+                id
+            }
+        });
+    },
+
+    getBillUndefienDetailsById({id}) {
+        return Vue.axios.get(`${ApiBasePath}/api/bill/detail/undefine`, {
+            params: {
+                id
+            }
+        });
     }
 };

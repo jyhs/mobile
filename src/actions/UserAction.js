@@ -54,3 +54,14 @@ export async function getUserAvatar({commit}, params) {
     const response = await UserService.getUserAvatar(params);
     return response.data;
 }
+
+/**
+ * 上传用户头像
+ * @param commit
+ * @param formData
+ * @returns {Promise.<{}>}
+ */
+export async function uploadUserAvatar({commit}, {formData}) {
+    const response = await UserService.uploadUserAvatar(formData);
+    return response.data || {};
+}

@@ -1,5 +1,5 @@
 import {mapActions} from 'vuex';
-import {Badge, Alert, Popover, Tab, TabItem} from 'vux';
+import {Search, Badge, Alert, Popover, Tab, TabItem} from 'vux';
 import {unCompile} from '../../../util/data';
 import {SmallImageBasePath} from '../../../constants/index'
 
@@ -13,14 +13,20 @@ export default {
             details: [],
             cart: {},
             detailsInCart: [],
+            detailsInCartMap: {},
             cartDetailIds: [],
+            totalPrice: 0,
             showTip: false,
             preDetail: {},
-            imagePath: ''
+            imagePath: '',
+            isSearching: false,
+            searchText: '',
+            searchTimer: null
         };
     },
 
     components: {
+        Search,
         Badge,
         Alert,
         Popover,
@@ -37,13 +43,7 @@ export default {
         });
         this.group = (await this.getGroupById({id: groupId}))[0] || {};
         this.groupCount = (await this.getCountById({id: groupId}))[0].sum || 0;
-        this.details = await this.getBillDetailsById({
-            id: this.group.bill_id,
-            category: this.activeTab
-        }) || [];
-        for (let ency of this.details) {
-            this.$set(ency, 'encyImage', `${SmallImageBasePath}?id=${ency.material_id}`);
-        }
+        this.initDetailsByType(this.activeTab);
         this.cart = (await this.getCartUnderUserByGroupId({
             groupId: this.group.id,
             userId: this.currentUserId
@@ -70,8 +70,31 @@ export default {
             'getDetailsByCartId',
             'addCart',
             'deleteDetailById',
-            'getBillDetailsById'
+            'getDetailsByBillId',
+            'getBillDetailsById',
+            'getBillShanhuDetailsById',
+            'getBillUndefienDetailsById'
         ]),
+
+        async initDetailsByType(type) {
+            if (type === 'sh') {
+                this.details = await this.getBillShanhuDetailsById({
+                    id: this.group.bill_id
+                }) || [];
+            } else if (type === 'wfl') {
+                this.details = await this.getBillUndefienDetailsById({
+                    id: this.group.bill_id
+                }) || [];
+            } else {
+                this.details = await this.getBillDetailsById({
+                    id: this.group.bill_id,
+                    category: type
+                }) || [];
+            }
+            for (let ency of this.details) {
+                this.$set(ency, 'encyImage', `${SmallImageBasePath}?id=${ency.material_id || 0}`);
+            }
+        },
 
         async handleDataRefresh(done) {
             const {id} = this.$route.params;
@@ -82,29 +105,38 @@ export default {
 
         async handleTabItemClick (type) {
             this.activeTab = type;
+            this.initDetailsByType(type);
+        },
 
-            this.details = await this.getBillDetailsById({
-                id: this.group.bill_id,
-                category: type
-            }) || [];
-            for (let ency of this.details) {
-                this.$set(ency, 'encyImage', `${SmallImageBasePath}?id=${ency.material_id}`);
+        handleSearchChange() {
+            if (this.searchText) {
+                window.clearTimeout(this.searchTimer);
+                this.searchTimer = setTimeout(async () => {
+                    this.details = await this.getDetailsByBillId({
+                        id: this.group.bill_id,
+                        name: this.searchText
+                    });
+                    for (let ency of this.details) {
+                        this.$set(ency, 'encyImage', `${SmallImageBasePath}?id=${ency.material_id || 0}`);
+                    }
+                }, 500);
             }
         },
 
         handleActions(item, actionType) {
             switch (actionType) {
-                case 'tip':
-                    this.showTip = true;
-                    break;
                 case 'cartDetail':
-                    this.$router.push({
-                        name: actionType,
-                        params: {
-                            groupId: this.group.id,
-                            cartId: this.cart.id
-                        }
-                    });
+                    if (this.detailsInCart.length) {
+                        this.$router.push({
+                            name: actionType,
+                            params: {
+                                groupId: this.group.id,
+                                cartId: this.cart.id
+                            }
+                        });
+                    } else {
+                        this.showTip = true;
+                    }
                     break;
                 case 'encyDetail':
                     const materialId = item['material_id'];
@@ -121,6 +153,20 @@ export default {
                     break;
                 case 'return':
                     this.$router.push('/');
+                    break;
+                case 'search':
+                    this.isSearching = true;
+                    this.searchText = '';
+                    this.$nextTick(() => {
+                        this.$refs.encySearch.setFocus();
+                        this.details = [];
+                    });
+                    break;
+                case 'encySearchCancel':
+                    this.isSearching = false;
+                    this.$nextTick(() => {
+                        this.initDetailsByType(this.activeTab);
+                    });
                     break;
                 default:
                     break;
@@ -189,6 +235,23 @@ export default {
                 return detail.id;
             });
             return this.cartDetailIds;
+        },
+
+        calculateCartItemPrice() {
+            let totalPrice = 0;
+            for (let detail of this.detailsInCart) {
+                totalPrice += detail.count * detail.price;
+            }
+            this.totalPrice = totalPrice;
+        },
+
+        generateDetailsInCartMap() {
+            const detailsInCartMap = {};
+
+            for (let detail of this.detailsInCart) {
+                detailsInCartMap[detail.id] = detail.count;
+            }
+            this.detailsInCartMap = detailsInCartMap;
         },
 
         async addNewCartUnderGroup() {
@@ -260,6 +323,8 @@ export default {
     watch: {
         'detailsInCart'() {
             this.getCartDetailsIds();
+            this.calculateCartItemPrice();
+            this.generateDetailsInCartMap();
         }
     }
 };

@@ -34,10 +34,17 @@
             <span class="title f16">共计：</span>
             <span class="count f16">￥{{totalCount}}</span>
         </div>
-     
+        <div>
+            <group>
+                <x-textarea
+                        :max="200" name="description" placeholder="备注"
+                        v-model="cart.description" :readonly="true">
+                </x-textarea>
+            </group>
+        </div>
         <confirm v-model="deleteConfirm" :title="`删除${currentItem.name}`"
                  @on-confirm="handleConfirmDelete">
-            <p style="text-align:center;">亲，确认咩？</p>
+            <p style="text-align:center;">亲，确认删除吗？</p>
         </confirm>
     </div>
 </template>

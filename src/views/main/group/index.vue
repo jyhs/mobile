@@ -1,7 +1,7 @@
 <template>
     <div class="group-tab-container">
         <scroller :on-refresh="handleDataRefresh">
-            <div class="button-tab" v-model="active">
+            <div class="button-tab">
                 <button-tab :height="35">
                     <button-tab-item :selected="active==='group'" @on-item-click="handleTabItemChange('group')">
                         同省热团
@@ -36,7 +36,7 @@
                             <div class="info-item">
                                 <span>
                                     <icon class="el-icon-coral-people f12 c999"></icon>
-                                    <span class="f12 c999">{{group.supplierName}}</span>
+                                    <span class="f12 c999">{{group.contacts}}</span>
                                 </span>
                                 <span>
                                     <icon class="el-icon-coral-coordinates f12 c999"></icon>

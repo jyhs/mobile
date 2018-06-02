@@ -12,7 +12,7 @@
             </span>
         </div>
         <div class="block">
-            <div class="block-content m-b-10" v-for="item in detailsInCart">
+            <div class="block-content m-b-10" v-for="item in detailsInCart" :key="item.id">
                 <div class="img-container">
                     <img :src="item.encyImage" alt="生物图片">
                 </div>

@@ -67,19 +67,17 @@
                         </div>
                     </div>
                     -->
-                    <!--
                     <div class="item border-bottom-1" @click="handleActions('mySetting')">
                         <div class="icon">
                             <img src="../../../assets/others/setting_icon4.svg" alt="我的信息">
                         </div>
                         <div class="group">
-                            <span>我的信息</span>
+                            <span>我的设置</span>
                         </div>
                         <div class="arrow">
                             <icon class="el-icon-coral-enter"></icon>
                         </div>
                     </div>
-                    -->
                     <!--
                     <div class="item border-bottom-1">
                         <div class="icon">
