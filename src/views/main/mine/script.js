@@ -15,7 +15,7 @@ export default {
             this.currentUser = (await this.getUserById({
                 id: currentUserId
             }))[0];
-            this.avatarImgPath = `${AvatarBasePath}?id=${currentUserId}`;
+            this.avatarImgPath = `${AvatarBasePath}?id=${currentUserId}&r=${Math.random()}`;
         } else {
             this.$router.push('/user/login/register');
         }

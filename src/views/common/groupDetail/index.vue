@@ -27,7 +27,8 @@
         </div>
         <div class="bottom">
             <div class="total">
-                <span class="f20">合计：￥{{totalPrice}}</span>
+                <span class="f20">合计:<span style="font-weight: bold;">￥{{totalPrice}}</span>
+                </span>
             </div>
             <div class="confirm" @click="handleActions({}, 'cartDetail')">
                 <span class="f20">去确认({{cartDetailIds.length}})</span>
@@ -88,7 +89,7 @@
                 </tab>
             </div>
             <div class="items" :class="{pT05Rem: isSearching}" v-if="details.length!==0">
-                <div class="block-content" v-for="item in details" :key="item.id">
+                <div class="block-content" v-for="item in details" :key="item.id" @click="handleActions(item, 'encyDetail')">
                     <div class="content-main ency-content-main">
                         <div class="pic">
                             <img :src="item.encyImage" alt="生物图片">

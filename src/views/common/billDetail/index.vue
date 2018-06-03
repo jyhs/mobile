@@ -4,7 +4,7 @@
             <span @click="handleActions({}, 'return')">
                 <icon class="el-icon-coral-return f20"></icon>
             </span>
-            <span class="f16">{{bill.name}}</span>
+            <span class="f16 name">{{bill.name}}</span>
             <span></span>
         </div>
         <div class="detail">

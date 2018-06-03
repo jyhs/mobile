@@ -1,5 +1,5 @@
 import {mapActions} from 'vuex';
-import {ViewBox, Search, Tab, TabItem, Grid, GridItem, Sticky, Rater, Group, PopupPicker, LoadMore} from 'vux';
+import {Search, Tab, TabItem, Flexbox, FlexboxItem, Rater, Group, PopupPicker, LoadMore} from 'vux';
 import {SmallImageBasePath} from '../../../constants/index';
 
 const shareTypes = [{
@@ -37,13 +37,11 @@ export default {
         }
     },
     components: {
-        ViewBox,
         Search,
         Tab,
         TabItem,
-        Grid,
-        GridItem,
-        Sticky,
+        Flexbox, 
+        FlexboxItem,
         Rater,
         Group,
         PopupPicker,

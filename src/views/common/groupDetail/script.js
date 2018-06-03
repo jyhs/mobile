@@ -1,5 +1,5 @@
 import {mapActions} from 'vuex';
-import {Search, Badge, Alert, Popover, Tab, TabItem} from 'vux';
+import {Search, Badge, Alert, Popover, Tab, TabItem, Sticky} from 'vux';
 import {unCompile} from '../../../util/data';
 import {SmallImageBasePath} from '../../../constants/index'
 
@@ -31,7 +31,8 @@ export default {
         Alert,
         Popover,
         Tab,
-        TabItem
+        TabItem,
+        Sticky
     },
 
     async created() {
