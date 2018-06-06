@@ -109,19 +109,20 @@
                             <div class="others">
                                 <div>
                                     <badge v-if="item.recommend==='tj'" text="推荐"></badge>
+                                    <badge v-if="item.recommend==='tej'" text="特价"></badge>
                                 </div>
                                 <div class="actions">
                                     <div v-if="cartDetailIds.includes(item.id)" class="item-in-cart">
                                         <icon 
                                             class="el-icon-coral-publishgoods_fill"
-                                            @click="handleActions({}, 'cartDetail')">
+                                            @click.stop="handleActions({}, 'cartDetail')">
                                         </icon>
                                         <badge :text="detailsInCartMap[item.id]"></badge>
                                     </div>
                                     <div v-else class="item-in-cart">
                                         <icon 
                                             class="el-icon-coral-addition_fill"
-                                            @click="handleCartDetail(item)">
+                                            @click.stop="handleCartDetail(item)">
                                         </icon>
                                     </div>
                                 </div>

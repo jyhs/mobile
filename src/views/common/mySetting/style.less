@@ -38,9 +38,6 @@
         overflow: hidden;
         display: inline-block;
         position: relative;
-        &:hover {
-            border: 1px dashed #1d90e6;
-        }
         input {
             position: absolute;
             left: -9999px;
@@ -83,6 +80,10 @@
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
+        img {
+            width: 0.25rem;
+            height: 0.25rem;
+        }
     }
     .default-checker {
         height: 0.25rem;
@@ -95,5 +96,14 @@
       }
     .selected-checker {
         border-color: green;
+    }
+    .rect {
+        padding: 8px 3px;
+        width: 0;
+        font-size: 0;
+        background-color: #f4a623;
+        position: relative;
+        top: -5px;
+        margin-right: 0.03rem;
     }
 }

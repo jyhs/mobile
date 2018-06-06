@@ -32,5 +32,13 @@ export default {
 
     uploadUserAvatar(formData) {
         return Vue.axios.post(`${ApiBasePath}/api/users/upload`, formData);
+    },
+
+    uploadPayQrCode(formData) {
+        return Vue.axios.post(`${ApiBasePath}/api/users/upload/pay`, formData);
+    },
+
+    updateUser(params) {
+        return Vue.axios.post(`${ApiBasePath}/api/users/update`, params);
     }
 };

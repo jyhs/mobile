@@ -65,3 +65,25 @@ export async function uploadUserAvatar({commit}, {formData}) {
     const response = await UserService.uploadUserAvatar(formData);
     return response.data || {};
 }
+
+/**
+ * 上传用户支付二维码
+ * @param commit
+ * @param formData
+ * @returns {Promise.<{}>}
+ */
+export async function uploadPayQrCode({commit}, {formData}) {
+    const response = await UserService.uploadPayQrCode(formData);
+    return response.data || {};
+}
+
+/**
+ * 更新用户
+ * @param commit
+ * @param params
+ * @returns {Promise.<{}>}
+ */
+export async function updateUser({commit}, params) {
+    const response = await UserService.updateUser(params);
+    return response.data || {};
+}

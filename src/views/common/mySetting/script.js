@@ -1,18 +1,23 @@
 import {mapActions} from 'vuex';
-import {Group, GroupTitle, XButton, XInput, XTextarea, Checker, CheckerItem} from 'vux';
-import {AvatarBasePath, SmallImageBasePath} from '../../../constants/index';
+import {Group, GroupTitle, XButton, XInput, XTextarea} from 'vux';
+import {AvatarBasePath, TaobaoQrBasePath, WechatQrBasePath, SmallImageBasePath} from '../../../constants/index';
 import {isEmpty, toFormData} from '../../../util/common';
 
 const ImageBasePath = {
-    avatar: AvatarBasePath
+    avatar: AvatarBasePath,
+    taobao: TaobaoQrBasePath,
+    wechat: WechatQrBasePath
 };
 
 export default {
     data() {
         return {
             currentUserId: parseInt(window.localStorage.getItem('SeawaterLoginUserId')),
-            avatarImgPath: '',
             user: {},
+            isSeller: false,
+            avatarImgPath: '',
+            taobaoImgPath: '',
+            wechatImgPath: ''
         };
     },
 
@@ -21,9 +26,7 @@ export default {
         GroupTitle,
         XButton,
         XInput,
-        XTextarea,
-        Checker,
-        CheckerItem,
+        XTextarea
     },
 
     created() {
@@ -39,7 +42,8 @@ export default {
         ...mapActions([
             'getUserById',
             'getUserAvatar',
-            'uploadUserAvatar'
+            'uploadUserAvatar',
+            'uploadPayQrCode'
         ]),
 
         async initData() {
@@ -51,12 +55,22 @@ export default {
                 description: isEmpty(userEditing.description) ? '' : userEditing.description,
             });
             this.avatarImgPath = `${AvatarBasePath}?id=${this.currentUserId}&r=${Math.random()}`;
+            if (this.user.pay_type === 'zfb') {
+                this.taobaoImgPath = `${TaobaoQrBasePath}?id=${this.currentUserId}&r=${Math.random()}`;
+            } else {
+                this.wechatImgPath = `${WechatQrBasePath}?id=${this.currentUserId}&r=${Math.random()}`;
+            }
+            this.isSeller = ['pfs', 'lss'].includes(this.user.type);
         },
 
         handleActions(item, actionType) {
             switch(actionType) {
                 case 'return':
                     this.$router.back();
+                    break;
+                case 'wx':
+                case 'zfb':
+                    this.user.pay_type = actionType;
                     break;
                 default:
                     break;
@@ -111,12 +125,16 @@ export default {
             this.$vux.loading.hide();
 
             if (result.status === 'ok') {
-                this.avatarImgPath = `${AvatarBasePath}?id=${this.currentUserId}&r=${Math.random()}`;
+                this[`${which}ImgPath`] = `${ImageBasePath[which]}?id=${this.currentUserId}&r=${Math.random()}`;
                 this.$vux.toast.show({
                     type: 'success',                    
                     text: `上传成功`
                 });
             }
+        },
+
+        handleSubmit() {
+            console.log('jiangwu');
         }
     }
 };
