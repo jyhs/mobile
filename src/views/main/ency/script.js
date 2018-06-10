@@ -85,7 +85,11 @@ export default {
             let result = [];
             try {
                 if (this.activeTypes[this.activeTab] === 'all') {
-                    this.encyList = await this.getEncyRandomList({number: 20});
+                    const result = await this.getEncyList({
+                        size: 20,
+                        category: this.activeTab
+                    });
+                    this.encyList = result['materials'] || [];
                     for (let ency of this.encyList) {
                         this.$set(ency, 'encyImage', `${SmallImageBasePath}?id=${ency.id}`);
                     }

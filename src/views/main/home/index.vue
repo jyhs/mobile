@@ -41,8 +41,66 @@
                     </span>
                 </div>
                 <load-more tip="努力加载中" v-if="!groups"></load-more>
-                <div class="block-content" v-for="group in (groups || [])" v-if="group.status===1" :key="group.id"
-                     @click="handleActions(group, 'groupDetail')">
+                <div 
+                    class="block-content" 
+                    v-for="group in ((groups || []).filter(item => item.userType!=='lss') || [])" 
+                    v-if="group.status===1" 
+                    :key="group.id"
+                    @click="handleActions(group, 'groupDetail')"
+                >
+                    <div class="content-main group-content-main">
+                        <div class="avatar">
+                            <img :src="group.userAvatar || require('../../../assets/others/default_avatar.svg')" alt="同省商家头像">
+                        </div>
+                        <div class="info">
+                            <div class="info-item">
+                                <span v-if="group.status===1" class="group-status f11">热团中</span>
+                                <span class="group-status group-status-disabled f11" v-else>已结束</span>
+                                <span v-if="group.status===1">
+                                    <icon class="el-icon-coral-naozhong f12"></icon>
+                                    <span class="f12 c999">{{mapTimeInterval(group.interval)}}后结束</span>
+                                </span>
+                            </div>
+                            <div class="info-item">
+                                <span class="group-name f15">{{group.name}}</span>
+                            </div>
+                            <div class="info-item">
+                                <span>
+                                    <icon class="el-icon-coral-people f12 c999"></icon>
+                                    <span class="f12 c999">{{group.contacts}}</span>
+                                </span>
+                                    <span>
+                                    <icon class="el-icon-coral-coordinates f12 c999"></icon>
+                                    <span class="f12 c999">{{group.city}}</span>
+                                </span>
+                                    <span>
+                                    <icon class="el-icon-coral-caiwu-xianxing f12"></icon>
+                                    <span class="f12 c999">{{group.sum}}</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="block m-t-10">
+                <div class="block-title">
+                    <span class="rect"></span>
+                    <span class="title-text f16">同省零售</span>
+                </div>
+                <div class="has-no-active" v-if="!hasActiveGroup">
+                    <span class="f13">亲，热团都结束了哟，摆架去
+                        <span class="link" @click="handleActions({}, 'toGroupTab')">团购</span>
+                        看看？
+                    </span>
+                </div>
+                <load-more tip="努力加载中" v-if="!groups"></load-more>
+                <div 
+                    class="block-content" 
+                    v-for="group in ((groups || []).filter(item => item.userType==='lss') || [])" 
+                    v-if="group.status===1" 
+                    :key="group.id"
+                    @click="handleActions(group, 'groupDetail')"
+                >
                     <div class="content-main group-content-main">
                         <div class="avatar">
                             <img :src="group.userAvatar || require('../../../assets/others/default_avatar.svg')" alt="同省商家头像">

@@ -30,11 +30,12 @@ export default {
         });
     },
 
-    getEncyList({name, type, userId, page = 1, size = 10}) {
+    getEncyList({name, type, userId, category, page = 1, size = 10}) {
         const params = {page, size};
         name && (params.name = name);
         type && (params.type = type);
         userId && (params.user_id = userId);
+        category && (params.category = category);
 
         return Vue.axios.get(`${ApiBasePath}/api/material/list`, {params});
     },

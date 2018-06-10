@@ -2,7 +2,7 @@
     <div class="register-block">
         <div class="register f13 box-sizing p-l-20 p-r-20 clearfix">
             <input class="box-sizing input m-t-9 m-b-9 f14" placeholder="请输入用户名"
-                   v-model="registerForm.name"
+                   v-model="registerForm.name" @blur="handleCheckName"
             />
             <input type="password" class="box-sizing input m-b-9 f14" minlength="6"
                    maxlength="20" placeholder="请输入密码(8-20位)"
@@ -71,9 +71,20 @@
 
         methods: {
             ...mapActions([
+                'checkUsername',
                 'sendVerification',
                 'register'
             ]),
+
+            async handleCheckName(e) {
+                try {
+                    await this.checkUsername({
+                        name: e.target.value
+                    });
+                } catch (error) {
+                    console.error(error);
+                }
+            },
 
             handleCountEnd() {
                 this.countDown.isStart = false;
@@ -128,11 +139,6 @@
                     });
                 } catch (error) {
                     console.error(error);
-                    this.$vux.toast.show({
-                        type: 'warn',
-                        text: '输入错误，请重试',
-                        time: 3000
-                    });
                 }
                 this.$vux.loading.hide();
 

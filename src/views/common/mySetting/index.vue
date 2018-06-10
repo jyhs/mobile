@@ -5,7 +5,7 @@
                 <icon class="el-icon-coral-return f20"></icon>
             </div>
             <div class="name">
-                <span class="f16">我的信息</span>
+                <span class="f16">我的设置</span>
             </div>
             <span></span>
         </div>
@@ -65,11 +65,11 @@
                         <span>我的信息</span>
                     </span>
                 </group-title>
-                <x-input placeholder="请填写手机号" is-type="china-mobile" v-model="user.phone"></x-input>
-                <x-input placeholder="请选择所在地址"></x-input>
-                <x-input v-if="isSeller" placeholder="请填写联系人" v-model="user.contacts"></x-input>
-                <x-textarea v-if="isSeller" placeholder="请填写详细地址" :rows="2" v-model="user.address"></x-textarea>
-                <x-textarea v-if="isSeller" placeholder="请填写自我介绍" :rows="3" v-model="user.description"></x-textarea>
+                <x-input title="手机号码" placeholder="请填写手机号码" is-type="china-mobile" v-model="user.phone"></x-input>
+                <popup-picker title="所在城市" :data="chinaCities" :columns="2" v-model="nowCity" value-text-align="left" show-name></popup-picker>
+                <x-textarea v-if="isSeller" title="详细地址" placeholder="请填写详细地址" :rows="3" v-model="user.address"></x-textarea>
+                <x-input v-if="isSeller" title="联系人名" placeholder="请填写联系人名" v-model="user.contacts"></x-input>               
+                <x-textarea v-if="isSeller" title="自我介绍" placeholder="请填写自我介绍" :rows="4" v-model="user.description"></x-textarea>
             </group>
             <div style="padding: 0 0.1rem; margin-top: 0.1rem;">
                 <x-button type="primary" @click.native="handleSubmit">提交</x-button>

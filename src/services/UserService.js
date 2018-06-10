@@ -40,5 +40,13 @@ export default {
 
     updateUser(params) {
         return Vue.axios.post(`${ApiBasePath}/api/users/update`, params);
+    },
+
+    checkUsername({name}) {
+        return Vue.axios.get(`${ApiBasePath}/api/users/checkName`, {
+            params: {
+                name
+            }
+        });
     }
 };

@@ -1,5 +1,5 @@
 import {mapActions} from 'vuex';
-import {Group, GroupTitle, XButton, XInput, XTextarea} from 'vux';
+import {Group, GroupTitle, XButton, XInput, PopupPicker, XTextarea} from 'vux';
 import {AvatarBasePath, TaobaoQrBasePath, WechatQrBasePath, SmallImageBasePath} from '../../../constants/index';
 import {isEmpty, toFormData} from '../../../util/common';
 
@@ -17,7 +17,9 @@ export default {
             isSeller: false,
             avatarImgPath: '',
             taobaoImgPath: '',
-            wechatImgPath: ''
+            wechatImgPath: '',
+            chinaCities: [],
+            nowCity: []
         };
     },
 
@@ -26,6 +28,7 @@ export default {
         GroupTitle,
         XButton,
         XInput,
+        PopupPicker,
         XTextarea
     },
 
@@ -43,7 +46,9 @@ export default {
             'getUserById',
             'getUserAvatar',
             'uploadUserAvatar',
-            'uploadPayQrCode'
+            'uploadPayQrCode',
+            'getChinaCities',
+            'updateUser'
         ]),
 
         async initData() {
@@ -61,6 +66,8 @@ export default {
                 this.wechatImgPath = `${WechatQrBasePath}?id=${this.currentUserId}&r=${Math.random()}`;
             }
             this.isSeller = ['pfs', 'lss'].includes(this.user.type);
+            this.chinaCities = await this.getChinaCities();
+            this.nowCity = [this.user.province, this.user.city];
         },
 
         handleActions(item, actionType) {
@@ -133,8 +140,40 @@ export default {
             }
         },
 
-        handleSubmit() {
-            console.log('jiangwu');
+        async handleSubmit() {
+            if (!this.validSubmit()) {
+                return;
+            }
+            const sendInfo = Object.assign({}, this.user, {
+                province: this.nowCity[0],
+                city: this.nowCity[1]
+            });
+
+            delete sendInfo.cityName;
+            delete sendInfo.pay_type;
+            delete sendInfo.password;
+
+            this.$vux.loading.show({
+                text: '努力加载中'
+            });
+            const result = await this.updateUser(sendInfo);
+            this.$vux.loading.hide();
+
+            if (result.status === 'ok') {
+                this.$vux.toast.show({
+                    type: 'success',                    
+                    text: `更新成功`
+                });
+            }
+        },
+
+        validSubmit() {
+            if (this.nowCity.length < 2 || !this.nowCity[0] || !this.nowCity[1]) {
+                this.$vux.toast.text('请选择所在城市');
+                return false;
+            }
+
+            return true;
         }
     }
 };

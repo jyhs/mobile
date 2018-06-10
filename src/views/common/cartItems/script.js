@@ -78,7 +78,7 @@ export default {
         },
 
         numberChange() {
-            this.calculateCartCount();
+            this.calculateCartCount(true);
             this.handleSubmit();
         },
 
@@ -169,13 +169,20 @@ export default {
             });
         },
 
-        calculateCartCount() {
-            this.$nextTick(() => {
+        calculateCartCount(flag) {
+            this.$nextTick(async () => {
                 let cartCount = 0;
                 for (let detail of this.detailsInCart) {
                     cartCount += detail.price * detail.count;
                 }
                 this.totalCount = cartCount;
+                if (flag) {
+                    await this.updateCart({
+                        id: this.cart.id,
+                        sum: cartCount,
+                        status: 1
+                    });
+                }
             });
         }
     },

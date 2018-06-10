@@ -22,6 +22,10 @@ export default {
         });
     },
 
+    getChinaCities() {
+        return Vue.axios.get(`${ApiBasePath}/api/tools/china`);
+    },
+
     getTypes() {
         return Vue.axios.get(`${ApiBasePath}/api/users/types`);
     }

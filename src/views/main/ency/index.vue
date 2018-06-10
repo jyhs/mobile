@@ -49,11 +49,10 @@
             </div>
             <div class="block">
                 <load-more tip="努力加载中" v-if="!encyList"></load-more>
-                <div class="block-content" v-for="item in encyList" :key="item.id"
-                     @click="handleActions(item, 'encyDetail')">
+                <div class="block-content" v-for="item in encyList" :key="item.id">
                     <div class="content-main ency-content-main">
                         <div class="pic">
-                            <img :src="item.encyImage" alt="生物图片">
+                            <img :src="item.encyImage" @click="handleActions(item, 'encyDetail')">
                         </div>
                         <div class="info">
                             <div class="name-price">

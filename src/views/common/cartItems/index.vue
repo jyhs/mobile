@@ -34,11 +34,15 @@
             <span class="title f16">共计：</span>
             <span class="count f16">￥{{totalCount}}</span>
         </div>
-        <div>
-            <group>
+        <div style="margin-bottom: 20px;">
+            <group v-if="cart.description.trim()">
                 <x-textarea
-                        :max="200" name="description" placeholder="备注"
-                        v-model="cart.description" :readonly="true">
+                    :max="200" 
+                    name="description" 
+                    placeholder="备注"
+                    v-model="cart.description" 
+                    :readonly="true"
+                >
                 </x-textarea>
             </group>
         </div>

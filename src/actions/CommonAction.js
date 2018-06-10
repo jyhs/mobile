@@ -76,6 +76,11 @@ export async function getCitiesInProvinces({commit}, params) {
     return citiesArr;
 }
 
+export async function getChinaCities({commit}) {
+    const response = await CommonService.getChinaCities();
+    return response.data;
+}
+
 export async function getTypes() {
     const response = await CommonService.getTypes();
     return response.data || {};

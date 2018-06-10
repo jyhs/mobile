@@ -89,10 +89,10 @@
                 </tab>
             </div>
             <div class="items" :class="{pT05Rem: isSearching}" v-if="details.length!==0">
-                <div class="block-content" v-for="item in details" :key="item.id" @click="handleActions(item, 'encyDetail')">
-                    <div class="content-main ency-content-main">
+                <div class="block-content" v-for="item in details" :key="item.id">
+                    <div class="content-main ency-content-main" :class="{activeBg: cartDetailIds.includes(item.id)}">
                         <div class="pic">
-                            <img :src="item.encyImage" alt="生物图片">
+                            <img :src="item.encyImage" alt="生物图片" @click="handleActions(item, 'encyDetail')">
                         </div>
                         <div class="info">
                             <div class="name-price">
@@ -132,15 +132,15 @@
                 </div>
             </div>
             <div v-if="isSearching">
-                <div v-if="!searchText&&details.length===0" style="font-size: 16px; text-align: center; margin-top: 100px;">
+                <div v-if="!searchText&&details.length===0" class="more-description">
                     请输入你搜索条件~~~
                 </div>
-                <div v-if="searchText&&details.length===0" style="font-size: 16px; text-align: center; margin-top: 100px;">
+                <div v-if="searchText&&details.length===0" class="more-description">
                     暂无可购买的生物，请去别处逛逛~~~
                 </div>
             </div>
             <div v-else>
-                <div v-if="details.length===0" style="font-size: 16px; text-align: center; margin-top: 100px;">
+                <div v-if="details.length===0" class="more-description">
                     暂无可购买的生物，请去别处逛逛~~~
                 </div>
             </div>

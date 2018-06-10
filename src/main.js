@@ -94,6 +94,7 @@ Axios.interceptors.response.use(
     },
     error => {
         const {response} = error;
+        console.log('response', response);
         const errorCodes = [502, 504];
 
         if (errorCodes.includes(response.status)) {

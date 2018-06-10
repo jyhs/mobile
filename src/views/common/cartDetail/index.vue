@@ -57,7 +57,7 @@
         </div>
         <confirm v-model="deleteConfirm" :title="`删除${currentItem.name}`"
                  @on-confirm="handleConfirmDelete">
-            <p style="text-align:center;">亲，确认咩？</p>
+            <p style="text-align:center;">亲，确定删除吗？</p>
         </confirm>
     </div>
 </template>

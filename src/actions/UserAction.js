@@ -87,3 +87,14 @@ export async function updateUser({commit}, params) {
     const response = await UserService.updateUser(params);
     return response.data || {};
 }
+
+/**
+ * 检查用户名是否重复
+ * @param commit
+ * @param params
+ * @returns {Promise.<{}>}
+ */
+export async function checkUsername({commit}, params) {
+    const response = await UserService.checkUsername(params);
+    return response.data || {};
+}
