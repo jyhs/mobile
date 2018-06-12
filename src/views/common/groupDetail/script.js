@@ -10,6 +10,7 @@ export default {
             activeTab: 'hy',
             group: {},
             groupCount: '',
+            allDetails: [],
             details: [],
             cart: {},
             detailsInCart: [],
@@ -78,6 +79,9 @@ export default {
         ]),
 
         async initDetailsByType(type) {
+            this.allDetails = await this.getDetailsByBillId({
+                id: this.group.bill_id
+            }) || [];
             if (type === 'sh') {
                 this.details = await this.getBillShanhuDetailsById({
                     id: this.group.bill_id
@@ -211,7 +215,7 @@ export default {
                 const result = (await this.getDetailsByCartId({
                     cartId: this.cart.id
                 }))['res'];
-                this.detailsInCart = this.details.filter(detail => {
+                this.detailsInCart = this.allDetails.filter(detail => {
                     for (let item of result) {
                         if (detail.id === item.bill_detail_id) {
                             this.$set(detail, 'count', item['bill_detail_num']);
