@@ -1,21 +1,12 @@
 <template>
     <div class="group-add-container">
-        <group>
-            <cell is-link :border-intent="false" :arrow-direction="showDetails?'up':'down'"
-                  @click.native="showDetails = !showDetails">
-                <span slot="title">
-                    <span class="dot"></span>
-                    <span class="title">{{bill.name}}</span>
-                </span>
-            </cell>
-            <div class="items slide" :class="showDetails ?'animate':''">
-                <div class="item" :class="{active: index%2!==1}" v-for="(item, index) in details" :key="item.id">
-                    <span class="name f13">{{item.name}}</span>
-                    <span class="size f13">{{item.size}}</span>
-                    <span class="price f13">￥{{item.price}}</span>
-                </div>
-            </div>
-        </group>
+        <div class="header">
+            <span @click="handleActions({}, 'return')">
+                <icon class="el-icon-coral-return f20"></icon>
+            </span>
+            <span class="f16 name">{{bill.name}}</span>
+            <span></span>
+        </div>
         <div class="input-container m-t-10">
             <div class="input-item">
                 <div class="title f14">
@@ -59,6 +50,13 @@
                     <span class="title-text f14">开团城市</span>
                 </div>
                 <selector placeholder="请选择" :options="cities" v-model="form.city"></selector>
+            </div>
+            <div class="m-t-10">
+                <div class="title f14">
+                    <span class="rect"></span>
+                    <span class="title-text f14">运费(%)</span>
+                </div>
+                <x-number v-model="form.freight" :min="0" :max="50" :fillable="true" align="left" width="100px"></x-number>
             </div>
             <div class="input-item m-t-10">
                 <div class="title f14">

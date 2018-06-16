@@ -1,5 +1,5 @@
 import {mapActions} from 'vuex';
-import {Group, Cell, Datetime, Selector, PopupPicker} from 'vux';
+import {Group, Cell, Datetime, Selector, XNumber, PopupPicker} from 'vux';
 import {formatDateTimeParam} from '../../../util/date';
 
 export default {
@@ -37,6 +37,7 @@ export default {
         Cell,
         Datetime,
         Selector,
+        XNumber,
         PopupPicker
     },
 
@@ -77,6 +78,16 @@ export default {
             'addGroupByBillIdAndUserId'
         ]),
 
+        handleActions(item, actionType) {
+            switch(actionType) {
+                case 'return':
+                    this.$router.back();
+                    break;
+                default:
+                    break;
+            }
+        },
+
         async submit() {
             const needValid = ['name', 'contacts', 'phone', 'end_date', 'city'];
             const message = ['团单名', '联系人姓名', '联系人手机', '截止时间', '开团城市'];
@@ -95,7 +106,8 @@ export default {
                 end_date: this.form.end_date ? formatDateTimeParam(this.form.end_date.replace(/-/g, '/')) : '',
                 bill_id: this.$route.params.id,
                 user_id: parseInt(window.localStorage.getItem('SeawaterLoginUserId')),
-                province: this.curProvince
+                province: this.curProvince,
+                freight: this.form.freight / 100
             });
             this.$vux.loading.show({
                 text: '努力加载中'

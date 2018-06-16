@@ -1,7 +1,7 @@
 <template>
     <div class="cart-items-container">
         <div class="header">
-            <span @click="back">
+            <span @click.stop="handleActions({}, 'return')">
                 <icon class="el-icon-coral-return f20"></icon>
             </span>
             <span class="f16">{{group.name}}</span>

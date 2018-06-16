@@ -1,15 +1,38 @@
 .group-add-container {
     min-height: 100%;
-    .slide {
-        padding: 0 20px;
-        overflow: hidden;
-        max-height: 0;
-        transition: max-height .5s cubic-bezier(0, 1, 0, 1) -.1s;
+    padding-bottom: 1rem;
+    .header {
+        width: 100%;
+        height: 0.45rem;
+        line-height: 0.45rem;
+        background-color: #fff;
+        padding: 0 0.1rem;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.10);
+        opacity: 1;
+        position: fixed;
+        left: 0;
+        top: 0;
+        z-index: 5;
+        .name {
+            width: 60%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            text-align: center;
+            span {
+                color: #000;
+            }
+        }
     }
-    .animate {
-        max-height: 9999px;
-        transition-timing-function: cubic-bezier(0.5, 0, 1, 0);
-        transition-delay: 0s;
+    .weui-cell:before {
+        border: none !important;
+    }
+    .weui-cells:before {
+        border: none !important;
     }
     .weui-cells {
         margin-top: 0;
@@ -87,22 +110,23 @@
     }
     .input-container {
         padding: 0 0.1rem;
-        .input-item {
-            .title {
-                margin-bottom: 0.07rem;
-                .rect {
-                    padding: 8px 3px;
-                    width: 0;
-                    font-size: 0;
-                    background-color: #f4a623;
-                    position: relative;
-                    top: -5px;
-                    margin-left: 0.03rem;
-                }
-                .title-text {
-                    margin-left: 0.05rem;
-                }
+        margin-top: 0.55rem;
+        .title {
+            margin-bottom: 0.07rem;
+            .rect {
+                padding: 8px 3px;
+                width: 0;
+                font-size: 0;
+                background-color: #f4a623;
+                position: relative;
+                top: -5px;
+                margin-left: 0.03rem;
             }
+            .title-text {
+                margin-left: 0.05rem;
+            }
+        }
+        .input-item {
             input, textarea {
                 display: inline-block;
                 width: 100%;

@@ -37,7 +37,7 @@
                             <div class="info-item">
                                 <span>
                                     <icon class="el-icon-coral-caiwu-xianxing f12"></icon>
-                                    <span class="f12 c999">{{cart.sum}}</span>
+                                    <span class="f12 c999">{{cart.sum + cart.freight}}</span>
                                 </span>
                             </div>
                         </div>

@@ -27,8 +27,10 @@
         </div>
         <div class="bottom">
             <div class="total">
-                <span class="f20">合计:<span style="font-weight: bold;">￥{{totalPrice}}</span>
-                </span>
+                <span class="f20">合计<span style="font-weight: bold;">
+                    <span style="color: #ee753c;">￥{{totalPrice + Math.floor(totalPrice * group.freight || 0)}}</span>
+                    <span class="f14">(含运费<span style="color: #ee735c;">￥{{Math.floor(totalPrice * group.freight || 0)}}</span>)</span>
+                </span></span>
             </div>
             <div class="confirm" @click="handleActions({}, 'cartDetail')">
                 <span class="f20">去确认({{cartDetailIds.length}})</span>
@@ -52,6 +54,12 @@
                     <span class="column f12">
                         <span class="title">截止时间：</span>
                         <span>{{group.end_date}}</span>
+                    </span>
+                </div>
+                <div>
+                    <span class="column f12">
+                        <span class="title">运费：</span>
+                        <span class="count">{{parseInt((group.freight || 0) * 100)}}%</span>
                     </span>
                 </div>
                 <div>

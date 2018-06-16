@@ -73,8 +73,14 @@ export default {
             });
         },
 
-        back() {
-            this.$router.back();
+        handleActions(item, actionType) {
+            switch(actionType) {
+                case 'return':
+                    this.$router.back();
+                    break;
+                default:
+                    break;
+            }
         },
 
         numberChange() {
