@@ -80,11 +80,23 @@ export default {
         return Vue.axios.post(`${ApiBasePath}/api/cart/delete/detail`, params);
     },
 
+    updateCartPay(params) {
+        return Vue.axios.post(`${ApiBasePath}/api/cart/pay/update`, params);
+    },
+
     deleteCartById({id}) {
         return Vue.axios.get(`${ApiBasePath}/api/cart/delete`, {
             params: {
                 id
             }
         });
+    },
+
+    calculateLost(params) {
+        return Vue.axios.post(`${ApiBasePath}/api/cart/detail/lost`, params);
+    },
+
+    calculateDamage(params) {
+        return Vue.axios.post(`${ApiBasePath}/api/cart/detail/damage`, params);
     }
 };

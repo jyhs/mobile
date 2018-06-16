@@ -5,7 +5,7 @@
                 <icon class="el-icon-coral-return f20"></icon>
             </div>
             <div class="name">
-                <span class="f16">{{groupName}}的订单</span>
+                <span class="f16">{{group.name}}的订单</span>
             </div>
             <span></span>
         </div>
@@ -14,32 +14,72 @@
                 <div class="no-tips" v-if="cartList&&cartList.length===0">
                     空空如也~~~
                 </div>
-                <div class="block-content" v-else v-for="cart in cartList" :key="cart.id"
-                     @click="handleActions(cart, 'cartItems')">
-                    <div class="content-main cart-content-main">
-                        <div class="avatar">
-                            <img :src="cart.userAvatar" alt="用户头像">
-                        </div>
-                        <div class="info">
-                            <div class="info-item">
-                                <span class="f14 c666">{{cart.user_name}}</span>
-                                <span class="f12 c999">购买于{{mapDate(cart.insert_date)}}</span>
+                <div v-else>
+                    <div style="padding: 0.1rem 0.1rem 0; margin: 0 auto;">
+                        <step v-model="group.current_step" background-color='#fbf9fe' gutter="5px">
+                            <step-item title="支付"></step-item>
+                            <step-item title="缺货"></step-item>
+                            <step-item title="报损"></step-item>
+                            <step-item title="完成"></step-item>
+                        </step>
+                    </div>
+                    <div class="block-content" v-for="cart in cartList" :key="cart.id">
+                        <div class="content-main cart-content-main">
+                            <div class="avatar" @click="handleActions(cart, 'cartItems')">
+                                <img :src="cart.userAvatar" alt="用户头像">
                             </div>
-                            <div class="info-item">
-                                <span>
-                                    <icon class="el-icon-coral-mobilephone_fill f12 c999"></icon>
-                                    <span class="f12 c999">{{cart.phone}}</span>
-                                </span>
-                                <span>
-                                    <icon class="el-icon-coral-caiwu-xianxing f12"></icon>
-                                    <span class="f12 c999">{{cart.sum}}</span>
-                                </span>
-                                <span @click.stop="handleActions(cart, 'delete')">
-                                    <icon class="el-icon-coral-delete_fill f12"></icon>
-                                    <span class="f12 c999">删除</span>
-                                </span>
+                            <div class="info">
+                                <div class="info-item" @click="handleActions(cart, 'cartItems')">
+                                    <span class="f14 c666">{{cart.user_name}}</span>
+                                    <span class="f12 c999">购买于{{mapDate(cart.insert_date)}}</span>
+                                </div>
+                                <div class="info-item" @click="handleActions(cart, 'cartItems')">
+                                    <span>
+                                        <icon class="el-icon-coral-mobilephone_fill f12 c999"></icon>
+                                        <span class="f12 c999">{{cart.phone}}</span>
+                                    </span>
+                                    <span>
+                                        <icon class="el-icon-coral-caiwu-xianxing f12"></icon>
+                                        <span class="f12 c999">{{cart.sum}}</span>
+                                    </span>
+                                    <span @click.stop="handleActions(cart, 'delete')">
+                                        <icon class="el-icon-coral-delete_fill f12"></icon>
+                                        <span class="f12 c999">删除</span>
+                                    </span>
+                                </div>
+                                <div class="info-item" v-if="group.current_step===0">
+                                    <span></span>
+                                    <div @click="handleActions(cart, 'changeHasPay')" v-if="group.current_step===0">
+                                        <check-icon :value.sync="cart.is_pay">
+                                            <span v-if="cart.is_pay" style="color: #ee735c;">已付款</span>
+                                            <span v-else>未付款</span>
+                                        </check-icon>
+                                    </div>
+                                </div>
+                                <div v-if="group.current_step!==0">
+                                    <div @click="handleActions(cart, 'changeHasPay')" v-if="group.current_step!==0">
+                                        <span style="color: #999;">缺货应退款<span style="color: #ee735c;">￥{{cart.lost_back}}</span></span>
+                                    </div>
+                                    <div @click="handleActions(cart, 'changeHasPay')" v-if="group.current_step!==0&&group.current_step!==1" style="margin-top: 3px;">
+                                        <span style="color: #999;">报损应退款<span style="color: #ee735c;">￥{{cart.damage_back}}</span></span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+                    </div>
+                    <x-switch></x-switch>
+                    <div style="padding: 0.1rem;">
+                        <flexbox>
+                            <flexbox-item v-if="group.current_step!==0">
+                                <x-button type="default" @click.native="handleActions({}, 'preStep')">上一步</x-button>
+                            </flexbox-item>
+                            <flexbox-item>
+                                <x-button type="primary" @click.native="handleActions({}, 'nextStep')">
+                                    <span v-if="group.current_step!==4">下一步</span>
+                                    <span v-else>回首页</span>
+                                </x-button>
+                            </flexbox-item>
+                        </flexbox>
                     </div>
                 </div>
             </div>

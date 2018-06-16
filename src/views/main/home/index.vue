@@ -9,6 +9,7 @@
                     <icon class="el-icon-coral-biaotou-daoxu f20 c999 m-r-4"></icon>
                 </span>
             </div>
+            <!--
             <div class="tab-icons">
                 <div class="tab-icon">
                     <img src="../../../assets/tabIcon/gdzz.png" alt="各地交流">
@@ -24,9 +25,10 @@
                 </div>
                 <div class="tab-icon">
                     <img src="../../../assets/tabIcon/tggz.png" alt="团购规则">
-                    <span class="f12">团购规则</span>
+                    <span class="f12">团购帮助</span>
                 </div>
             </div>
+            -->
             <div class="block">
                 <div class="block-title">
                     <span class="rect"></span>

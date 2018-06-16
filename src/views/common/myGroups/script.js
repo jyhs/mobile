@@ -52,9 +52,6 @@ export default {
                         params: {
                             groupId: item.id,
                             userId: this.currentUserId
-                        },
-                        query: {
-                            name: item.name
                         }
                     });
                     break;

@@ -118,7 +118,7 @@ Axios.interceptors.response.use(
             Vue.$vux.toast.show({
                 type: 'warn',
                 text: response.data.message,
-                time: 3000
+                time: 8000
             });
         }
 

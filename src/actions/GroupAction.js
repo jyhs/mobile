@@ -76,3 +76,25 @@ export async function downloadGroupByIdAndUserId({commit}, params) {
     const response = await GroupService.downloadGroupByIdAndUserId(params);
     return response.data || {};
 }
+
+/**
+ * 下一步
+ * @param commit
+ * @param params
+ * @returns {Promise.<{}>}
+ */
+export async function groupToNextStep({commit}, params) {
+    const response = await GroupService.groupToNextStep(params);
+    return response.data || {};
+}
+
+/**
+ * 上一步
+ * @param commit
+ * @param params
+ * @returns {Promise.<{}>}
+ */
+export async function groupBackPreStep({commit}, params) {
+    const response = await GroupService.groupBackPreStep(params);
+    return response.data || {};
+}

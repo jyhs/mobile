@@ -25,7 +25,7 @@
     "vue-scroller": "^2.2.4",
     "vue-style-loader": "^1.0.0",
     "vuex": "^2.2.1",
-    "vux": "^2.7.7",
+    "vux": "2.9.0",
     "vux-loader": "^1.0.58"
   },
   "devDependencies": {

@@ -172,7 +172,7 @@ export default {
                 phone: this.phone,
                 description: this.remark || undefined,
                 sum: this.totalCount,
-                freight: Math.floor(this.totalCount * this.group.freight),
+                freight: this.totalCount * this.group.freight,
                 status: 1
             });
             if (result.status) {
@@ -195,10 +195,7 @@ export default {
             this.$vux.loading.hide();
 
             if (submitFlag) {
-                this.$vux.toast.show({
-                    type: 'success',
-                    text: '购买成功，准备分赃吧~~~'
-                });
+                this.$vux.toast.text('购买成功，准备分货吧');
                 this.$router.push({
                     name: 'myCarts'
                 });

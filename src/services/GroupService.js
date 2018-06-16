@@ -44,5 +44,13 @@ export default {
 
     downloadGroupByIdAndUserId(params) {
         return Vue.axios.post(`${ApiBasePath}/api/group/dowload`, params);
+    },
+
+    groupToNextStep(params) {
+        return Vue.axios.post(`${ApiBasePath}/api/group/next`, params);
+    },
+
+    groupBackPreStep(params) {
+        return Vue.axios.post(`${ApiBasePath}/api/group/back`, params);
     }
 };

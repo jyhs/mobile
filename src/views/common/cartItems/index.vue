@@ -20,8 +20,8 @@
                     </div>
                     <div class="count-container">
                         <x-number
-                                v-model="item.count" :min="1" :max="max" width="40px"
-                                @on-change="numberChange">
+                                v-model="item.count" :min="0" :max="item.count" width="40px"
+                                @on-change="numberChange(item)">
                         </x-number>
                         <span @click.stop="deleteConfirmFun(item)">
                             <icon class="el-icon-coral-empty f18"></icon>
@@ -31,8 +31,7 @@
             </div>
         </div>
         <div class="total-count">
-            <span class="title f16">共计：</span>
-            <span class="count f16">￥{{totalCount}}</span>
+            <span class="title f16">合计:</span><span class="count f16">￥{{totalCount}}</span>
         </div>
         <div style="margin-bottom: 20px;">
             <group v-if="cart.description && cart.description.trim()">

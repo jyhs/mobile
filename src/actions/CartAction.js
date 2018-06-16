@@ -132,6 +132,17 @@ export async function deleteDetailById({commit}, params) {
 }
 
 /**
+ * 更新购物车是否已支付
+ * @param commit
+ * @param params
+ * @returns {Promise.<{}>}
+ */
+export async function updateCartPay({commit}, params) {
+    const response = await CartService.updateCartPay(params);
+    return response.data || {};
+}
+
+/**
  * 删除购物车
  * @param commit
  * @param params
@@ -139,5 +150,27 @@ export async function deleteDetailById({commit}, params) {
  */
 export async function deleteCartById({commit}, params) {
     const response = await CartService.deleteCartById(params);
+    return response.data || {};
+}
+
+/**
+ * 缺货
+ * @param commit
+ * @param params
+ * @returns {Promise.<{}>}
+ */
+export async function calculateLost({commit}, params) {
+    const response = await CartService.calculateLost(params);
+    return response.data || {};
+}
+
+/**
+ * 报损
+ * @param commit
+ * @param params
+ * @returns {Promise.<{}>}
+ */
+export async function calculateDamage({commit}, params) {
+    const response = await CartService.calculateDamage(params);
     return response.data || {};
 }

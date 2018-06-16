@@ -5,7 +5,6 @@ import {SmallImageBasePath} from '../../../constants/index';
 export default {
     data() {
         return {
-            max: 10000,
             cart: {},
             group: {},
             details: [],
@@ -41,6 +40,8 @@ export default {
             'updateCart',
             'updateCartDetail',
             'deleteDetailById',
+            'calculateLost',
+            'calculateDamage'
         ]),
 
         async initData() {
@@ -83,10 +84,11 @@ export default {
             }
         },
 
-        numberChange() {
-            this.calculateCartCount((() => {
+        numberChange(item) {
+            this.calculateCartCount(() => {
                 this.handleSubmit();
-            }));
+                this.handleLostDamage(item);
+            });
         },
 
         deleteConfirmFun(item) {
@@ -184,6 +186,20 @@ export default {
                 this.totalCount = cartCount;
                 handler && handler();
             });
+        },
+
+        async handleLostDamage(item) {
+            if (this.group.current_step === 1) {
+                await this.calculateLost({
+                    cart_id: this.cart.id,
+                    bill_detail_id: item.id,
+                });
+            } else if (this.group.current_step === 2) {
+                await this.calculateDamage({
+                    cart_id: this.cart.id,
+                    bill_detail_id: item.id,
+                });
+            }
         }
     },
 
