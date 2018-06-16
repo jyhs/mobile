@@ -42,6 +42,7 @@ export default {
             bills: undefined,
             encyList: [],
             hasActiveGroup: true,
+            hasActiveLingShow: true,
             hasActiveBill: true,
             groupCountDownTimer: null
         };
@@ -240,8 +241,8 @@ export default {
 
     watch: {
         groups: function (curValue) {
-            const filteredGroups = curValue.filter(item => item.status === 1);
-            this.hasActiveGroup = filteredGroups.length !== 0;
+            this.hasActiveGroup = curValue.filter(item => (item.status === 1 && item.userType !== 'lss')).length !== 0;
+            this.hasActiveLingShow = curValue.filter(item => (item.status === 1 && item.userType === 'lss')).length !== 0;
         },
         bills: function (curValue) {
             const filteredBills = curValue.filter(item => item.status === 1);

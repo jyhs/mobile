@@ -52,7 +52,7 @@ export default {
                     if (result.status === 'ok') {
                         this.$vux.toast.show({
                             type: 'success',
-                            message: `退出登录成功`
+                            text: `退出登录成功`
                         });
                         window.localStorage.clear();
                         window.sessionStorage.clear();

@@ -32,7 +32,7 @@
             <div class="block">
                 <div class="block-title">
                     <span class="rect"></span>
-                    <span class="title-text f16">同省热团</span>
+                    <span class="title-text f16">同省团购</span>
                 </div>
                 <div class="has-no-active" v-if="!hasActiveGroup">
                     <span class="f13">亲，热团都结束了哟，摆架去
@@ -82,16 +82,10 @@
                     </div>
                 </div>
             </div>
-            <div class="block m-t-10">
+            <div class="block m-t-10" v-if="hasActiveLingShow">
                 <div class="block-title">
                     <span class="rect"></span>
                     <span class="title-text f16">同省零售</span>
-                </div>
-                <div class="has-no-active" v-if="!hasActiveGroup">
-                    <span class="f13">亲，热团都结束了哟，摆架去
-                        <span class="link" @click="handleActions({}, 'toGroupTab')">团购</span>
-                        看看？
-                    </span>
                 </div>
                 <load-more tip="努力加载中" v-if="!groups"></load-more>
                 <div 

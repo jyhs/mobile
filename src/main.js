@@ -94,7 +94,6 @@ Axios.interceptors.response.use(
     },
     error => {
         const {response} = error;
-        console.log('response', response);
         const errorCodes = [502, 504];
 
         if (errorCodes.includes(response.status)) {
@@ -103,6 +102,14 @@ Axios.interceptors.response.use(
                 text: '请求异常，请稍后重试',
                 time: 3000
             });
+        } else if (response.status === 401) {
+            Vue.$vux.toast.show({
+                type: 'warn',
+                text: `登录失效，请重新登录`,
+                time: 3000
+            });
+            window.localStorage.removeItem(`SeawaterAuthorization`);
+            window.location = 'http://www.coral123.com/#/user/login/register';
         } else {
             Vue.$vux.toast.show({
                 type: 'warn',

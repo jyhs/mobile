@@ -35,7 +35,7 @@
             <span class="count f16">￥{{totalCount}}</span>
         </div>
         <div style="margin-bottom: 20px;">
-            <group v-if="cart.description.trim()">
+            <group v-if="cart.description && cart.description.trim()">
                 <x-textarea
                     :max="200" 
                     name="description" 

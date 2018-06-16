@@ -78,8 +78,9 @@ export default {
         },
 
         numberChange() {
-            this.calculateCartCount(true);
-            this.handleSubmit();
+            this.calculateCartCount((() => {
+                this.handleSubmit();
+            }));
         },
 
         deleteConfirmFun(item) {
@@ -132,7 +133,6 @@ export default {
             });
             const result = await this.updateCart({
                 id,
-                phone: this.phone,
                 description: this.remark || undefined,
                 sum: this.totalCount,
                 status: 1
@@ -169,20 +169,14 @@ export default {
             });
         },
 
-        calculateCartCount(flag) {
+        calculateCartCount(handler) {
             this.$nextTick(async () => {
                 let cartCount = 0;
                 for (let detail of this.detailsInCart) {
                     cartCount += detail.price * detail.count;
                 }
                 this.totalCount = cartCount;
-                if (flag) {
-                    await this.updateCart({
-                        id: this.cart.id,
-                        sum: cartCount,
-                        status: 1
-                    });
-                }
+                handler && handler();
             });
         }
     },

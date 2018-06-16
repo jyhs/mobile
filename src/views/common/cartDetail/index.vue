@@ -5,7 +5,7 @@
                 <icon class="el-icon-coral-return f20"></icon>
                 <span class="f16" style="position: relative; top: -2px;">回首页</span>
             </span>
-            <span class="f16">{{group.name}}</span>
+            <span class="name f16">{{group.name}}</span>
             <span @click="handleActions({}, 'groupDetail')">
                 <span class="f16" style="position: relative; top: -2px;">去购物</span>
                 <icon class="el-icon-coral-enter f20"></icon>
