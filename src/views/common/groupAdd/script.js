@@ -20,8 +20,15 @@ export default {
                 end_date: undefined,
                 city: undefined,
                 description: undefined
+            },
+            eidtorOption: {
+                placeholder: '请输入',
+                modules: {
+                    toolbar: [
+                        [{'color': []}, { 'background': []}],
+                    ]
+                }
             }
-
         };
     },
 

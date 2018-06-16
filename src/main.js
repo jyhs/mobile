@@ -5,6 +5,9 @@ import Axios from 'axios';
 import VueAxios from 'vue-axios';
 import {ToastPlugin, LoadingPlugin, ConfirmPlugin, DatetimePlugin} from 'vux';
 import VueScroller from 'vue-scroller';
+import VueQuillEditor from 'vue-quill-editor';
+import 'quill/dist/quill.core.css';
+import 'quill/dist/quill.snow.css';
 import App from './App.vue';
 import store from './store';
 import routes from './routers';
@@ -19,6 +22,7 @@ Vue.use(LoadingPlugin);
 Vue.use(ConfirmPlugin);
 Vue.use(DatetimePlugin);
 Vue.use(VueScroller);
+Vue.use(VueQuillEditor);
 // error，loading是图片路径, 用require引入
 Vue.use(VueLazyload, {
         error: require('./assets/404.png'),

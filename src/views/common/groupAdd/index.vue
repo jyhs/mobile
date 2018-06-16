@@ -65,7 +65,7 @@
                     <span class="rect"></span>
                     <span class="title-text f14">其他信息</span>
                 </div>
-                <textarea placeholder="请输入" class="other-info" v-model="form.description"></textarea>
+                <quill-editor :options="eidtorOption" v-model="form.description"></quill-editor>
             </div>
             <button class="btn btn-full m-t-10 f16" @click="submit">确认开团</button>
         </div>
