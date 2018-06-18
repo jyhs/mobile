@@ -34,6 +34,17 @@ export async function logout({commit}, params) {
 }
 
 /**
+ * 获取用户列表
+ * @param commit
+ * @param params
+ * @returns {Promise.<{}>}
+ */
+export async function getUserList({commit}, params) {
+    const response = await UserService.getUserList(params);
+    return response.data || {};
+}
+
+/**
  * 通过id获取用户
  * @param commit
  * @param params

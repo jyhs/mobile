@@ -164,6 +164,12 @@ export default {
                 case 'toGroupTab':
                     this.$emit('on-to', 'group');
                     break;
+                case 'groupHelp':
+                    this.$vux.toast.text('程序猿努力开发中！');
+                    break;
+                case 'cityComm':
+                case 'fishStores':
+                case 'coopStores':
                 case 'billDetail':
                 case 'encyDetail':
                 case 'groupAdd':

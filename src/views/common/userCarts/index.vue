@@ -31,7 +31,7 @@
                             <div class="info">
                                 <div class="info-item" @click="handleActions(cart, 'cartItems')">
                                     <span class="f14 c666">{{cart.user_name}}</span>
-                                    <span class="f12 c999">购买于{{mapDate(cart.insert_date)}}</span>
+                                    <span class="f12 c999">购于{{mapDate(cart.insert_date)}}</span>
                                 </div>
                                 <div class="info-item" @click="handleActions(cart, 'cartItems')">
                                     <span>

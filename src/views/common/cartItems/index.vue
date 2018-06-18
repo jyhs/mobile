@@ -20,10 +20,18 @@
                     </div>
                     <div class="count-container">
                         <x-number
-                                v-model="item.count" :min="0" :max="item.count" width="40px"
-                                @on-change="numberChange(item)">
+                            v-if="group.current_step!==0"
+                            v-model="item.count" 
+                            :min="0" 
+                            :max="item.count" 
+                            width="40px"
+                            @on-change="numberChange(item)"
+                        >
                         </x-number>
-                        <span @click.stop="deleteConfirmFun(item)">
+                        <span
+                            v-else
+                            @click.stop="deleteConfirmFun(item)"
+                        >
                             <icon class="el-icon-coral-empty f18"></icon>
                         </span>
                     </div>

@@ -62,12 +62,14 @@ export default {
                     this.handleDeleteCart(item);
                     break;
                 case 'cartItems':
-                    this.$router.push({
-                        name: actionType,
-                        params: {
-                            id: item.id
-                        }
-                    });
+                    if ([0, 1, 2].includes(this.group.current_step)) {
+                        this.$router.push({
+                            name: actionType,
+                            params: {
+                                id: item.id
+                            }
+                        });
+                    }
                     break;
                 case 'changeHasPay':
                     this.handleUpdateCartPay(item);

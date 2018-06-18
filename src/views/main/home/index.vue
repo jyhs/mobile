@@ -9,26 +9,24 @@
                     <icon class="el-icon-coral-biaotou-daoxu f20 c999 m-r-4"></icon>
                 </span>
             </div>
-            <!--
             <div class="tab-icons">
-                <div class="tab-icon">
+                <div class="tab-icon" @click="handleActions({}, 'cityComm')">
                     <img src="../../../assets/tabIcon/gdzz.png" alt="各地交流">
                     <span class="f12">各地交流</span>
                 </div>
-                <div class="tab-icon">
+                <div class="tab-icon" @click="handleActions({}, 'fishStores')">
                     <img src="../../../assets/tabIcon/ydlb.png" alt="鱼店列表">
                     <span class="f12">鱼店列表</span>
                 </div>
-                <div class="tab-icon">
+                <div class="tab-icon" @click="handleActions({}, 'coopStores')">
                     <img src="../../../assets/tabIcon/hzsj.png" alt="合作商家">
                     <span class="f12">合作商家</span>
                 </div>
-                <div class="tab-icon">
+                <div class="tab-icon" @click="handleActions({}, 'groupHelp')">
                     <img src="../../../assets/tabIcon/tggz.png" alt="团购规则">
                     <span class="f12">团购帮助</span>
                 </div>
             </div>
-            -->
             <div class="block">
                 <div class="block-title">
                     <span class="rect"></span>

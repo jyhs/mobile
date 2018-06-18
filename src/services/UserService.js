@@ -14,6 +14,16 @@ export default {
         return Vue.axios.post(`${ApiBasePath}/api/users/logout`, params);
     },
 
+    getUserList({name, province, type1, type2, page = 1, size = 10}) {
+        const params = {page, size};
+        name && (params.name = name);
+        province && (params.province = province);
+        type1 && (params.type1 = type1);
+        type2 && (params.type2 = type2);
+
+        return Vue.axios.get(`${ApiBasePath}/api/users/list`, {params});
+    },
+
     getUserById({id}) {
         return Vue.axios.get(`${ApiBasePath}/api/users/get`, {
             params: {

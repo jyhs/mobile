@@ -28,5 +28,9 @@ export default {
 
     getTypes() {
         return Vue.axios.get(`${ApiBasePath}/api/users/types`);
+    },
+
+    getLocalContacts({type, province}) {
+        return Vue.axios.get(`${ApiBasePath}/api/users/qq?type=${type}&province=${province}`);
     }
 };

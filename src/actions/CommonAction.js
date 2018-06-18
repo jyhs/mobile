@@ -94,3 +94,14 @@ export async function getMe() {
 export function loadingShow({commit}, loadingShow) {
     commit(TYPES.LOADING, loadingShow);
 }
+
+/**
+ * 获取本地QQ群
+ * @param commit
+ * @param params
+ * @returns {Promise.<Array>}
+ */
+export async function getLocalContacts({commit}, params) {
+    const response = await CommonService.getLocalContacts(params);
+    return response.data || [];
+}

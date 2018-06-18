@@ -4,6 +4,9 @@
 
 const loginRegister = r => require.ensure([], () => r(require('@/views/user/loginRegister/index.vue')), 'loginRegister');
 const main = r => require.ensure([], () => r(require('@/views/main/index.vue')), 'main');
+const cityComm = r => require.ensure([], () => r(require('@/views/common/cityComm/index.vue')), 'cityComm');
+const fishStores = r => require.ensure([], () => r(require('@/views/common/fishStores/index.vue')), 'fishStores');
+const coopStores = r => require.ensure([], () => r(require('@/views/common/coopStores/index.vue')), 'coopStores');
 const encyDetail = r => require.ensure([], () => r(require('@/views/common/encyDetail/index.vue')), 'encyDetail');
 const encyFocus = r => require.ensure([], () => r(require('@/views/common/encyFocus/index.vue')), 'encyFocus');
 const billDetail = r => require.ensure([], () => r(require('@/views/common/billDetail/index.vue')), 'billDetail');
@@ -22,6 +25,18 @@ const routes = [{
     }, {
         path: '/',
         component: main,
+    }, {
+        path: '/cityComm',
+        component: cityComm,
+        name: 'cityComm',
+    }, {
+        path: '/fishStores',
+        component: fishStores,
+        name: 'fishStores',
+    }, {
+        path: '/coopStores',
+        component: coopStores,
+        name: 'coopStores',
     }, {
         path: '/ency/:id/detail',
         component: encyDetail,
