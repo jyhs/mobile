@@ -46,9 +46,7 @@ export default {
 
         async initData() {
             const {id} = this.$route.params;
-            this.$vux.loading.show({
-                text: '努力加载中'
-            });
+            this.$vux.loading.show("努力加载中");
 
             this.cart = (await this.getCartById({id}))[0];
             this.group = (await this.getGroupById({id: this.cart.group_bill_id}))[0];
@@ -66,6 +64,7 @@ export default {
                 for (let item of result) {
                     if (detail.id === item.bill_detail_id) {
                         this.$set(detail, 'count', item['bill_detail_num']);
+                        this.$set(detail, 'max', item['org_bill_detail_num']);
                         this.$set(detail, 'groupId', this.group.id);
                         return true;
                     }
@@ -85,9 +84,9 @@ export default {
         },
 
         numberChange(item) {
-            this.calculateCartCount(() => {
-                this.handleSubmit();
-                this.handleLostDamage(item);
+            this.calculateCartCount(async () => {
+                await this.handleLostDamage(item);
+                await this.handleSubmit();
             });
         },
 
@@ -107,9 +106,7 @@ export default {
                 }
             }
             if (deleteIndex !== -1) {
-                this.$vux.loading.show({
-                    text: '努力加载中'
-                });
+                this.$vux.loading.show('努力加载中');
                 let result = {};
                 try {
                     result = await this.deleteDetailById({
@@ -122,10 +119,6 @@ export default {
 
                 if (result.status === 'ok') {
                     this.detailsInCart.splice(deleteIndex, 1);
-                    // this.$vux.toast.show({
-                    //     type: 'success',
-                    //     text: `删除${this.currentItem.name}成功`
-                    // });
                     this.handleSubmit();
                 }
                 this.$vux.loading.hide();
@@ -136,9 +129,7 @@ export default {
             const {id} = this.$route.params;
             let submitFlag = true;
 
-            this.$vux.loading.show({
-                text: '努力加载中'
-            });
+            this.$vux.loading.show('努力加载中');
             const result = await this.updateCart({
                 id,
                 description: this.remark || undefined,
@@ -164,10 +155,7 @@ export default {
             }
             this.$vux.loading.hide();
             if (submitFlag) {
-                this.$vux.toast.show({
-                    type: 'success',
-                    text: '操作成功'
-                });
+                this.$vux.toast.text('操作成功');
             }
         },
 
@@ -177,7 +165,7 @@ export default {
             });
         },
 
-        calculateCartCount(handler) {
+        calculateCartPrice(handler) {
             this.$nextTick(async () => {
                 let cartCount = 0;
                 for (let detail of this.detailsInCart) {
@@ -193,11 +181,13 @@ export default {
                 await this.calculateLost({
                     cart_id: this.cart.id,
                     bill_detail_id: item.id,
+                    lost_num: item.count,
                 });
             } else if (this.group.current_step === 2) {
                 await this.calculateDamage({
                     cart_id: this.cart.id,
                     bill_detail_id: item.id,
+                    damage_num: item.count,
                 });
             }
         }
@@ -205,7 +195,7 @@ export default {
 
     watch: {
         'detailsInCart'() {
-            this.calculateCartCount();
+            this.calculateCartPrice();
             this.updateDetailsImg();
         }
     }

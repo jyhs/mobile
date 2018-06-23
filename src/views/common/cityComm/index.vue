@@ -27,10 +27,20 @@
                         </div>
                         <div class="info">
                             <div class="info-item">
-                                <span class="name f15">{{item.name}}</span>
+                                <span class="name f15">
+                                    <span>{{item.name}}</span>
+                                    <popover placement="right" @on-show="onShow" @on-hide="onHide">
+                                        <span slot="content" class="popover-demo-content">
+                                            {{item.desc}}
+                                        </span>
+                                        <button>
+                                            <icon class="el-icon-coral-feedback f15 c999"></icon>
+                                        </button>
+                                    </popover>
+                                </span>
                                 <span>
                                     <icon class="el-icon-coral-coordinates f12 c999"></icon>
-                                    <span class="f12 c999">{{item.province}}</span>
+                                    <span class="f12 c999">{{item.province.name}}</span>
                                 </span>
                             </div>
                             <div class="info-item">
@@ -51,10 +61,20 @@
                         </div>
                         <div class="info">
                             <div class="info-item">
-                                <span class="name f15">{{item.name}}</span>
+                                <span class="name f15">
+                                    <span>{{item.name}}</span>
+                                    <popover placement="right" @on-show="onShow" @on-hide="onHide">
+                                        <span slot="content" class="popover-demo-content">
+                                            {{item.desc}}
+                                        </span>
+                                        <button>
+                                            <icon class="el-icon-coral-feedback f15 c999"></icon>
+                                        </button>
+                                    </popover>
+                                </span>
                                 <span>
                                     <icon class="el-icon-coral-coordinates f12 c999"></icon>
-                                    <span class="f12 c999">{{item.province}}</span>
+                                    <span class="f12 c999">{{item.province.name}}</span>
                                 </span>
                             </div>
                             <div class="info-item">

@@ -23,15 +23,12 @@
                             v-if="group.current_step!==0"
                             v-model="item.count" 
                             :min="0" 
-                            :max="item.count" 
+                            :max="item.max" 
                             width="40px"
                             @on-change="numberChange(item)"
                         >
                         </x-number>
-                        <span
-                            v-else
-                            @click.stop="deleteConfirmFun(item)"
-                        >
+                        <span v-else @click.stop="deleteConfirmFun(item)">
                             <icon class="el-icon-coral-empty f18"></icon>
                         </span>
                     </div>

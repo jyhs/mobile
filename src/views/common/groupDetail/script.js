@@ -1,5 +1,5 @@
 import {mapActions} from 'vuex';
-import {Search, Badge, Alert, Popover, Tab, TabItem, Sticky} from 'vux';
+import {Search, Badge, Alert, Popover, Tab, TabItem} from 'vux';
 import {unCompile} from '../../../util/data';
 import {SmallImageBasePath} from '../../../constants/index'
 
@@ -17,12 +17,14 @@ export default {
             detailsInCartMap: {},
             cartDetailIds: [],
             totalPrice: 0,
+            totalFreight: 0,
             showTip: false,
             preDetail: {},
             imagePath: '',
             isSearching: false,
             searchText: '',
-            searchTimer: null
+            searchTimer: null,
+            scrollUp: false
         };
     },
 
@@ -32,8 +34,7 @@ export default {
         Alert,
         Popover,
         Tab,
-        TabItem,
-        Sticky
+        TabItem
     },
 
     async created() {
@@ -61,7 +62,19 @@ export default {
 
     mounted() {
         const ele = document.getElementById('loading');
+        const groupDetailContainer = document.getElementById('group-detail-container');
         ele.style.display = 'none';
+        let startPageY = 0;
+        groupDetailContainer.ontouchstart = (e) => {
+            startPageY = e.touches[0].pageY;
+            //console.log(startPageY);
+        }
+        groupDetailContainer.ontouchmove = (e) => {
+            if (startPageY - e.touches[0].pageY > 10) {
+                this.scrollUp = true;
+                //console.log('1', this.scrollUp);
+            }
+        }
     },
 
     methods: {
@@ -242,12 +255,20 @@ export default {
             return this.cartDetailIds;
         },
 
-        calculateCartItemPrice() {
+        calculateCartPrice() {
             let totalPrice = 0;
             for (let detail of this.detailsInCart) {
                 totalPrice += detail.count * detail.price;
             }
             this.totalPrice = totalPrice;
+        },
+
+        calculateCartFreight() {
+            let totalFreight = 0;
+            for (let detail of this.detailsInCart) {
+                totalFreight += Math.min((detail.count * detail.price) * this.group.freight, this.group.top_freight);
+            }
+            this.totalFreight = totalFreight;
         },
 
         generateDetailsInCartMap() {
@@ -328,7 +349,8 @@ export default {
     watch: {
         'detailsInCart'() {
             this.getCartDetailsIds();
-            this.calculateCartItemPrice();
+            this.calculateCartPrice();
+            this.calculateCartFreight();
             this.generateDetailsInCartMap();
         }
     }

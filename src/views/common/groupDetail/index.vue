@@ -1,5 +1,5 @@
 <template>
-    <div class="group-detail-container">
+    <div class="group-detail-container" id="group-detail-container">
         <div style="height: 44px" v-if="isSearching">
             <search
                 ref="encySearch"
@@ -28,8 +28,8 @@
         <div class="bottom">
             <div class="total">
                 <span class="f20">合计<span style="font-weight: bold;">
-                    <span style="color: #ee753c;">￥{{totalPrice + parseInt((totalPrice * group.freight || 0) * 100) / 100}}</span>
-                    <span class="f14">(含运费<span style="color: #ee735c;">￥{{parseInt((totalPrice * group.freight || 0) * 100) / 100}}</span>)</span>
+                    <span style="color: #ee753c;">￥{{totalPrice + totalFreight}}</span>
+                    <span class="f14">(含运费<span style="color: #ee735c;">￥{{totalFreight}}</span>)</span>
                 </span></span>
             </div>
             <div class="confirm" @click="handleActions({}, 'cartDetail')">

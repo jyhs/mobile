@@ -1,5 +1,5 @@
 import {mapActions} from 'vuex';
-import {Step, StepItem, Group, XButton, CheckIcon, Flexbox, FlexboxItem} from 'vux';
+import {Step, StepItem, Group, XButton, CheckIcon, Flexbox, FlexboxItem, Popover} from 'vux';
 import {AvatarBasePath} from '../../../constants/index';
 
 export default {
@@ -18,7 +18,8 @@ export default {
         XButton, 
         CheckIcon,
         Flexbox, 
-        FlexboxItem
+        FlexboxItem,
+        Popover
     },
 
     created() {
@@ -103,10 +104,7 @@ export default {
                         id: cart.id,
                     });
                     if (result.status === 'ok') {
-                        this.$vux.toast.show({
-                            type: 'success',
-                            text: `删除成功`
-                        });
+                        this.$vux.toast.text('删除成功');
                         this.initData();
                     }
                 }
@@ -115,9 +113,7 @@ export default {
 
         handleUpdateCartPay(item) {
             this.$nextTick(async () => {
-                this.$vux.toast.show({
-                    text: '更新中'
-                });
+                this.$vux.toast.text('更新中');
                 await this.updateCartPay({
                     id: item.id,
                     status: item.is_pay ? 1 : 0
@@ -127,9 +123,7 @@ export default {
         },
 
         async handleBackPreStep() {
-            this.$vux.toast.show({
-                text: '努力加载中'
-            });
+            this.$vux.toast.text('努力加载中');
             const result = await this.groupBackPreStep({
                 user_id: this.currentUserId,
                 id: this.group.id
@@ -142,9 +136,7 @@ export default {
         },
 
         async handleToNextStep() {
-            this.$vux.toast.show({
-                text: '努力加载中'
-            });
+            this.$vux.toast.text('努力加载中');
             const result = await this.groupToNextStep({
                 user_id: this.currentUserId,
                 id: this.group.id

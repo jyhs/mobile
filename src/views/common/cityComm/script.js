@@ -1,5 +1,5 @@
 import {mapGetters, mapActions} from 'vuex';
-import {ButtonTab, ButtonTabItem, LoadMore} from 'vux';
+import {ButtonTab, ButtonTabItem, LoadMore, Popover} from 'vux';
 import {compile} from '../../../util/data';
 import {QQAvatarBasePath} from '../../../constants/index';
 
@@ -16,7 +16,8 @@ export default {
     components: {
         ButtonTab,
         ButtonTabItem,
-        LoadMore
+        LoadMore,
+        Popover
     },
 
     computed: {

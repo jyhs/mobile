@@ -56,7 +56,21 @@
                     <span class="rect"></span>
                     <span class="title-text f14">运费(%)</span>
                 </div>
-                <x-number v-model="form.freight" :min="0" :max="50" :fillable="true" align="left" width="100px"></x-number>
+                <div class="freight">
+                    <inline-x-number v-model="form.freight" :min="0" :max="50" :fillable="true" align="left" width="80px"></inline-x-number>
+                    <div class="has-top">
+                        <span style="margin-right: 4px;">单品运费封顶</span><inline-x-switch v-model="form.hasTop"></inline-x-switch>
+                    </div>
+                </div>
+            </div>
+            <div class="m-t-10" v-if="form.hasTop">
+                <div class="title f14">
+                    <span class="rect"></span>
+                    <span class="title-text f14">单品运费封顶额(元)</span>
+                </div>
+                <div>
+                    <inline-x-number v-model="form.top_freight" :min="1" :fillable="true" align="left" width="80px"></inline-x-number>
+                </div>
             </div>
             <div class="input-item m-t-10">
                 <div class="title f14">

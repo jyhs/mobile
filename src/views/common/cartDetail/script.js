@@ -14,6 +14,7 @@ export default {
             details: [],
             detailsInCart: [],
             totalCount: 0,
+            totalFreight: 0,
             phone: '',
             remark: '',
             currentItem: {},
@@ -182,6 +183,7 @@ export default {
                             cart_id: cartId,
                             bill_detail_id: this.detailsInCart[i].id,
                             bill_detail_num: this.detailsInCart[i].count,
+                            org_bill_detail_num: this.detailsInCart[i].count,
                             group_bill_id: this.group.id
                         });
                     } catch (error) {
@@ -220,6 +222,14 @@ export default {
             });
         },
 
+        calculateCartFreight() {
+            let totalFreight = 0;
+            for (let detail of this.detailsInCart) {
+                totalFreight += Math.min((detail.count * detail.price) * this.group.freight, this.group.top_freight);
+            }
+            this.totalFreight = totalFreight;
+        },
+
         validSubmit() {
             if (!this.phone) {
                 this.$vux.toast.show({
@@ -241,6 +251,7 @@ export default {
     watch: {
         'detailsInCart'() {
             this.calculateCartCount();
+            this.calculateCartFreight();
             this.updateDetailsImg();
         }
     }

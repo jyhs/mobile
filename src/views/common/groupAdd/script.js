@@ -1,5 +1,5 @@
 import {mapActions} from 'vuex';
-import {Group, Cell, Datetime, Selector, XNumber, PopupPicker} from 'vux';
+import {Group, Cell, Datetime, Selector, InlineXNumber, InlineXSwitch, PopupPicker} from 'vux';
 import {formatDateTimeParam} from '../../../util/date';
 
 export default {
@@ -19,6 +19,8 @@ export default {
                 phone: undefined,
                 end_date: undefined,
                 city: undefined,
+                freight: 13,
+                top_freight: 50,
                 description: undefined
             },
             eidtorOption: {
@@ -37,7 +39,8 @@ export default {
         Cell,
         Datetime,
         Selector,
-        XNumber,
+        InlineXNumber,
+        InlineXSwitch,
         PopupPicker
     },
 
@@ -107,8 +110,10 @@ export default {
                 bill_id: this.$route.params.id,
                 user_id: parseInt(window.localStorage.getItem('SeawaterLoginUserId')),
                 province: this.curProvince,
-                freight: this.form.freight / 100
+                freight: this.form.freight / 100,
+                top_freight: this.form.hasTop ? this.form.top_freight : undefined
             });
+            delete sendInfo.hasTop;
             this.$vux.loading.show({
                 text: '努力加载中'
             });
@@ -118,7 +123,7 @@ export default {
             if (result.status === 'ok') {
                 this.$vux.toast.show({
                     type: 'success',
-                    message: `开团${this.form.name}成功`
+                    text: `开团${this.form.name}成功`
                 });
                 this.$router.push({name: 'myGroups'});
             }

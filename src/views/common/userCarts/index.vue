@@ -57,11 +57,25 @@
                                     </div>
                                 </div>
                                 <div v-if="group.current_step!==0">
-                                    <div @click="handleActions(cart, 'changeHasPay')" v-if="group.current_step!==0">
-                                        <span style="color: #999;">缺货应退款<span style="color: #ee735c;">￥{{cart.lost_back}}</span></span>
-                                    </div>
-                                    <div @click="handleActions(cart, 'changeHasPay')" v-if="group.current_step!==0&&group.current_step!==1" style="margin-top: 3px;">
-                                        <span style="color: #999;">报损应退款<span style="color: #ee735c;">￥{{cart.damage_back}}</span></span>
+                                    <div v-if="group.current_step!==0">
+                                        <span style="color: #999;">
+                                            <span style="display: flex; flex-direction: row;">
+                                                <span>应退款<span style="color: #ee735c">￥{{cart.lost_back + cart.damage_back}}</span></span>
+                                                <popover placement="right">
+                                                    <span slot="content" class="popover-demo-content">
+                                                        <div v-if="cart.lost_back">
+                                                            <span style="color: #fff;">缺货应退款<span>￥{{cart.lost_back}}</span></span>
+                                                        </div>
+                                                        <div v-if="cart.damage_back" style="margin-top: 3px;">
+                                                            <span style="color: #fff;">报损应退款<span>￥{{cart.damage_back}}</span></span>
+                                                        </div>
+                                                    </span>
+                                                    <button>
+                                                        <icon class="el-icon-coral-feedback f16 c999"></icon>
+                                                    </button>
+                                                </popover>
+                                            </span>
+                                        </span>
                                     </div>
                                 </div>
                             </div>

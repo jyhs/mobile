@@ -99,6 +99,7 @@ Axios.interceptors.response.use(
     error => {
         const {response} = error;
         const errorCodes = [502, 504];
+        const logoutCodes = [400, 401];
 
         if (errorCodes.includes(response.status)) {
             Vue.$vux.toast.show({
@@ -106,7 +107,7 @@ Axios.interceptors.response.use(
                 text: '请求异常，请稍后重试',
                 time: 3000
             });
-        } else if (response.status === 401) {
+        } else if (logoutCodes.includes(response.status)) {
             Vue.$vux.toast.show({
                 type: 'warn',
                 text: `登录失效，请重新登录`,
