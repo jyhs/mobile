@@ -165,7 +165,7 @@ export default {
             });
         },
 
-        calculateCartPrice(handler) {
+        calculateCartCount(handler) {
             this.$nextTick(async () => {
                 let cartCount = 0;
                 for (let detail of this.detailsInCart) {
@@ -195,7 +195,7 @@ export default {
 
     watch: {
         'detailsInCart'() {
-            this.calculateCartPrice();
+            this.calculateCartCount();
             this.updateDetailsImg();
         }
     }

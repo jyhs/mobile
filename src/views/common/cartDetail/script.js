@@ -102,6 +102,7 @@ export default {
             switch (actionType) {
                 case 'numberChange':
                     this.calculateCartCount();
+                    this.calculateCartFreight();
                     break;
                 case 'deleteConfirm':
                     this.currentItem = item;
@@ -223,11 +224,15 @@ export default {
         },
 
         calculateCartFreight() {
-            let totalFreight = 0;
+            let totalFreight = 0;           
             for (let detail of this.detailsInCart) {
-                totalFreight += Math.min((detail.count * detail.price) * this.group.freight, this.group.top_freight);
+                if (this.group.top_freight) {
+                    totalFreight += Math.min(detail.price * this.group.freight, this.group.top_freight) * detail.count;
+                } else {
+                    totalFreight = (detail.count * detail.price) * this.group.freight;
+                }
             }
-            this.totalFreight = totalFreight;
+            this.totalFreight = Math.round(totalFreight * 100) / 100;
         },
 
         validSubmit() {

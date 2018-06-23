@@ -58,7 +58,7 @@
                 </div>
                 <div class="freight">
                     <inline-x-number v-model="form.freight" :min="0" :max="50" :fillable="true" align="left" width="80px"></inline-x-number>
-                    <div class="has-top">
+                    <div class="has-top" v-if="form.freight !== 0">
                         <span style="margin-right: 4px;">单品运费封顶</span><inline-x-switch v-model="form.hasTop"></inline-x-switch>
                     </div>
                 </div>

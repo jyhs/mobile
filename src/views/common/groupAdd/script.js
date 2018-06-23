@@ -125,7 +125,8 @@ export default {
                     type: 'success',
                     text: `开团${this.form.name}成功`
                 });
-                this.$router.push({name: 'myGroups'});
+                window.sessionStorage.setItem('SeawaterTabActiveIndex', 0);
+                this.$router.push('/');
             }
         }
     }
