@@ -35,9 +35,14 @@
                 </div>
             </div>
         </div>
+        <!--
         <div class="total-count">
-            <span class="title f16">合计:</span><span class="count f16">￥{{totalCount}}</span>
+            <span class="f20">合计<span style="font-weight: bold;">
+                <span style="color: #ee753c;">￥{{totalCount + totalFreight}}</span>
+                <span class="f14">(含运费<span style="color: #ee735c;">￥{{totalFreight}}</span>)</span>
+            </span></span>
         </div>
+        -->
         <div style="margin-bottom: 20px;">
             <group v-if="cart.description && cart.description.trim()">
                 <x-textarea

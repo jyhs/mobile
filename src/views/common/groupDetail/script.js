@@ -269,7 +269,7 @@ export default {
                 if (this.group.top_freight) {
                     totalFreight += Math.min(detail.price * this.group.freight, this.group.top_freight) * detail.count;
                 } else {
-                    totalFreight = (detail.count * detail.price) * this.group.freight;
+                    totalFreight += (detail.count * detail.price) * this.group.freight;
                 }
             }
             this.totalFreight = Math.round(totalFreight * 100) / 100;

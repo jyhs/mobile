@@ -31,20 +31,24 @@
                             <div class="info">
                                 <div class="info-item" @click="handleActions(cart, 'cartItems')">
                                     <span class="f14 c666">{{cart.user_name}}</span>
-                                    <span class="f12 c999">购于{{mapDate(cart.insert_date)}}</span>
-                                </div>
-                                <div class="info-item" @click="handleActions(cart, 'cartItems')">
                                     <span>
                                         <icon class="el-icon-coral-mobilephone_fill f12 c999"></icon>
                                         <span class="f12 c999">{{cart.phone}}</span>
                                     </span>
+                                </div>
+                                <div class="info-item">
+                                    <span>
+                                        <icon class="el-icon-coral-naozhong f12"></icon>
+                                        <span class="f12 c999">购买于{{mapDate(cart.insert_date)}}</span>
+                                    </span>
+                                </div>
+                                <div class="info-item" @click="handleActions(cart, 'cartItems')">
                                     <span>
                                         <icon class="el-icon-coral-caiwu-xianxing f12"></icon>
-                                        <span class="f12 c999">{{cart.sum}}</span>
-                                    </span>
-                                    <span @click.stop="handleActions(cart, 'delete')">
-                                        <icon class="el-icon-coral-delete_fill f12"></icon>
-                                        <span class="f12 c999">删除</span>
+                                        <span class="f12 c999">
+                                            <span>应收款<span style="color: #ee735c;">￥{{cart.sum + cart.freight}}</span></span>
+                                            <span style="font-size: 10px;">(含运费<span style="color: #ee735c;">￥{{cart.freight}}</span>)</span>
+                                        </span>
                                     </span>
                                 </div>
                                 <div class="info-item" v-if="group.current_step===0">
@@ -57,26 +61,25 @@
                                     </div>
                                 </div>
                                 <div v-if="group.current_step!==0">
-                                    <div v-if="group.current_step!==0">
-                                        <span style="color: #999;">
-                                            <span style="display: flex; flex-direction: row;">
-                                                <span>应退款<span style="color: #ee735c">￥{{cart.lost_back + cart.damage_back}}</span></span>
-                                                <popover placement="right">
-                                                    <span slot="content" class="popover-demo-content">
-                                                        <div v-if="cart.lost_back">
-                                                            <span style="color: #fff;">缺货应退款<span>￥{{cart.lost_back}}</span></span>
-                                                        </div>
-                                                        <div v-if="cart.damage_back" style="margin-top: 3px;">
-                                                            <span style="color: #fff;">报损应退款<span>￥{{cart.damage_back}}</span></span>
-                                                        </div>
-                                                    </span>
-                                                    <button>
-                                                        <icon class="el-icon-coral-feedback f16 c999"></icon>
-                                                    </button>
-                                                </popover>
-                                            </span>
+                                    <span class="f12 c999" style="display: flex; flex-direction: row;">
+                                        <icon class="el-icon-coral-caiwu-xianxing f12"></icon>
+                                        <span style="margin-left:4px; display: flex; flex-direction: row;">
+                                            <span>应退款<span style="color: #ee735c">￥{{cart.lost_back + cart.damage_back}}</span></span>
+                                            <popover placement="right">
+                                                <span slot="content" class="popover-demo-content">
+                                                    <div v-if="cart.lost_back">
+                                                        <span style="color: #fff;">缺货应退款<span>￥{{cart.lost_back}}</span></span>
+                                                    </div>
+                                                    <div v-if="cart.damage_back" style="margin-top: 3px;">
+                                                        <span style="color: #fff;">报损应退款<span>￥{{cart.damage_back}}</span></span>
+                                                    </div>
+                                                </span>
+                                                <button>
+                                                    <icon class="el-icon-coral-feedback f16 c999"></icon>
+                                                </button>
+                                            </popover>
                                         </span>
-                                    </div>
+                                    </span>
                                 </div>
                             </div>
                         </div>

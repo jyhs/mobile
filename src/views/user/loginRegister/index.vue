@@ -31,6 +31,12 @@
                 </div>
             </div>
         </div>
+        <div style="margin-top: 10px;">
+            <divider>第三方账号登录</divider>
+            <div class="third-part">
+                <img :src="require('../../../assets/weixin_on.png')" @click="handleActions({}, 'wechatLogin')">
+            </div>
+        </div>
     </div>
 </template>
 <script src="./script.js"></script>

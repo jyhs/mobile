@@ -55,7 +55,7 @@ export default {
         this.details = await this.getDetailsByBillId({id: this.group.bill_id});
 
         const detailsInLocalStore = JSON.parse(window.sessionStorage.getItem(detailsInCartKey));
-        if (detailsInLocalStore && detailsInLocalStore.length) {
+        if (this.group.status === 1 && detailsInLocalStore && detailsInLocalStore.length) {
             this.detailsInCart = detailsInLocalStore;
         } else {
             const result = (await this.getDetailsByCartId({
@@ -65,6 +65,8 @@ export default {
                 for (let item of result) {
                     if (detail.id === item.bill_detail_id) {
                         this.$set(detail, 'count', item['bill_detail_num']);
+                        this.$set(detail, 'lostNum', item['lost_num']);
+                        this.$set(detail, 'damageNum', item['damage_num']);
                         this.$set(detail, 'groupId', this.group.id);
                         return true;
                     }
@@ -174,7 +176,7 @@ export default {
                 phone: this.phone,
                 description: this.remark || undefined,
                 sum: this.totalCount,
-                freight: this.totalCount * this.group.freight,
+                freight: this.totalFreight,
                 status: 1
             });
             if (result.status) {
@@ -224,15 +226,19 @@ export default {
         },
 
         calculateCartFreight() {
-            let totalFreight = 0;           
-            for (let detail of this.detailsInCart) {
-                if (this.group.top_freight) {
-                    totalFreight += Math.min(detail.price * this.group.freight, this.group.top_freight) * detail.count;
-                } else {
-                    totalFreight = (detail.count * detail.price) * this.group.freight;
+            if (this.group.status === 0) {
+                this.totalFreight = this.cart.freight;
+            } else {
+                let totalFreight = 0;           
+                for (let detail of this.detailsInCart) {
+                    if (this.group.top_freight) {
+                        totalFreight += Math.min(detail.price * this.group.freight, this.group.top_freight) * detail.count;
+                    } else {
+                        totalFreight += (detail.count * detail.price) * this.group.freight;
+                    }
                 }
+                this.totalFreight = Math.round(totalFreight * 100) / 100;
             }
-            this.totalFreight = Math.round(totalFreight * 100) / 100;
         },
 
         validSubmit() {

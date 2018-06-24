@@ -17,17 +17,20 @@
                     <img :src="item.encyImage" alt="生物图片">
                 </div>
                 <div class="info">
-                    <span class="name f15">{{item.name}}</span>
                     <div>
-                        <span class="size f12">{{item.size}}</span>
+                        <span class="name f15">{{item.name}}<span v-if="item.size" class="size f12">({{item.size}})</span></span>
                         <span class="price f14">￥{{item.price}}</span>
+                    </div>
+                    <div v-if="group.status===0">
+                        <span class="f16">缺货<span style="color: #ee735c;">{{item.lostNum}}</span>条</span>
+                        <span class="f16">报损<span style="color: #ee735c;">{{item.damageNum}}</span>条</span>
                     </div>
                     <div class="count-container">
                         <x-number
                                 v-model="item.count" :min="1" :max="max" width="40px"
                                 @on-change="handleActions({}, 'numberChange')">
                         </x-number>
-                        <span @click.stop="handleActions(item, 'deleteConfirm')">
+                        <span v-if="group.status!==0" @click.stop="handleActions(item, 'deleteConfirm')">
                             <icon class="el-icon-coral-empty f18"></icon>
                         </span>
                     </div>

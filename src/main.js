@@ -111,7 +111,7 @@ Axios.interceptors.response.use(
             Vue.$vux.toast.show({
                 type: 'warn',
                 text: `登录失效，请重新登录`,
-                time: 3000
+                time: 8000
             });
             window.localStorage.removeItem(`SeawaterAuthorization`);
             window.location = 'http://www.coral123.com/#/user/login/register';

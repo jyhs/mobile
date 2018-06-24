@@ -10,6 +10,7 @@ export default {
             details: [],
             detailsInCart: [],
             totalCount: 0,
+            totalFreight: 0,
             currentItem: {},
             deleteConfirm: false,
         };
@@ -64,7 +65,11 @@ export default {
                 for (let item of result) {
                     if (detail.id === item.bill_detail_id) {
                         this.$set(detail, 'count', item['bill_detail_num']);
-                        this.$set(detail, 'max', item['org_bill_detail_num']);
+                        if (this.group.current_step === 1) {
+                            this.$set(detail, 'max', item['org_bill_detail_num'] - item['damage_num']);
+                        } else if (this.group.current_step === 2) {
+                            this.$set(detail, 'max', item['org_bill_detail_num'] - item['lost_num']);
+                        }
                         this.$set(detail, 'groupId', this.group.id);
                         return true;
                     }
@@ -85,6 +90,7 @@ export default {
 
         numberChange(item) {
             this.calculateCartCount(async () => {
+                this.calculateCartFreight();
                 await this.handleLostDamage(item);
                 await this.handleSubmit();
             });
@@ -176,6 +182,23 @@ export default {
             });
         },
 
+        calculateCartFreight() {
+            if (this.group.current_step === 1) {
+                let totalFreight = 0;           
+                for (let detail of this.detailsInCart) {
+                    if (this.group.top_freight) {
+                        totalFreight += Math.min(detail.price * this.group.freight, this.group.top_freight) * detail.count;
+                    } else {
+                        totalFreight += (detail.count * detail.price) * this.group.freight;
+                    }
+                }
+                this.totalFreight = Math.round(totalFreight * 100) / 100;
+            } else if (this.group.current_step === 2) {
+                this.totalFreight = this.cart.freight;
+            }
+            console.log(this.totalFreight);
+        },
+
         async handleLostDamage(item) {
             if (this.group.current_step === 1) {
                 await this.calculateLost({
@@ -196,6 +219,7 @@ export default {
     watch: {
         'detailsInCart'() {
             this.calculateCartCount();
+            this.calculateCartFreight();
             this.updateDetailsImg();
         }
     }
