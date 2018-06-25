@@ -14,6 +14,14 @@ export default {
         return Vue.axios.post(`${ApiBasePath}/api/users/logout`, params);
     },
 
+    loginWechat({code}) {
+        return Vue.axios.get(`${ApiBasePath}/api/users/login/weixin`, {
+            params: {
+                code
+            }
+        });
+    },
+
     getUserList({name, province, type1, type2, page = 1, size = 10}) {
         const params = {page, size};
         name && (params.name = name);

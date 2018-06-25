@@ -32,6 +32,16 @@ export async function logout({commit}, params) {
     const response = await UserService.logout(params);
     return response.data;
 }
+/**
+ * 通过微信登录
+ * @param commit
+ * @param params
+ * @returns {Promise.<*|{type, alias, describe}|{}>}
+ */
+export async function loginWechat({commit}, params) {
+    const response = await UserService.loginWechat(params);
+    return response.data;
+}
 
 /**
  * 获取用户列表
