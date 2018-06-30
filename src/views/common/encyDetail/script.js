@@ -34,7 +34,7 @@ export default {
         PopupPicker
     },
 
-    async created() {
+    async activated() {
         const {id} = this.$route.params;
 
         this.ency = await this.getEncyById({id});

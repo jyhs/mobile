@@ -174,3 +174,14 @@ export async function calculateDamage({commit}, params) {
     const response = await CartService.calculateDamage(params);
     return response.data || {};
 }
+
+/**
+ * 更新购物车及明细
+ * @param commit
+ * @param params
+ * @returns {Promise.<{}>}
+ */
+export async function updateCartAndDetail({commit}, params) {
+    const response = await CartService.updateCartAndDetail(params);
+    return response.data || {};
+}

@@ -24,7 +24,7 @@ export default {
             timeInterval: null
         };
     },
-    created () {
+    activated () {
         this.time = this.seconds;
     },
     methods: {

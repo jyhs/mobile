@@ -50,7 +50,7 @@ export default {
         LoadMore
     },
 
-    created() {
+    activated() {
         this.initFocusedEncyList();
     },
 

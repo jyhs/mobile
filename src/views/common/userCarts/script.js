@@ -22,7 +22,7 @@ export default {
         Popover
     },
 
-    created() {
+    activated() {
         this.initData();
     },
 

@@ -98,5 +98,9 @@ export default {
 
     calculateDamage(params) {
         return Vue.axios.post(`${ApiBasePath}/api/cart/detail/damage`, params);
+    },
+
+    updateCartAndDetail(params) {
+        return Vue.axios.post(`${ApiBasePath}/api/cart/update/cart/detail`, params);
     }
 };

@@ -32,7 +32,7 @@ export default {
         XTextarea
     },
 
-    created() {
+    activated() {
         this.initData();
     },
 

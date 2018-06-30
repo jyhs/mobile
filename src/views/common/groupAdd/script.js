@@ -44,7 +44,7 @@ export default {
         PopupPicker
     },
 
-    async created() {
+    async activated() {
         const {id} = this.$route.params;
 
         this.bill = (await this.getBillById({id}));

@@ -13,7 +13,7 @@ export default {
         Badge
     },
 
-    async created() {
+    async activated() {
         const {id} = this.$route.params;
 
         this.$vux.loading.show({

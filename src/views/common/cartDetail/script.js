@@ -31,7 +31,7 @@ export default {
         Confirm
     },
 
-    async created() {
+    async activated() {
         const {groupId, cartId} = this.$route.params;
         this.$vux.loading.show({
             text: '努力加载中'
@@ -93,7 +93,8 @@ export default {
             'updateCart',
             'updateCartDetail',
             'deleteDetailById',
-            'getCartUnderUserByGroupId'
+            'getCartUnderUserByGroupId',
+            'updateCartAndDetail'
         ]),
 
         handleDataRefresh(done) {
@@ -103,8 +104,7 @@ export default {
         handleActions(item, actionType) {
             switch (actionType) {
                 case 'numberChange':
-                    this.calculateCartCount();
-                    this.calculateCartFreight();
+                    this.calculateCartCount(item);
                     break;
                 case 'deleteConfirm':
                     this.currentItem = item;
@@ -213,8 +213,10 @@ export default {
             });
         },
 
-        calculateCartCount() {
-            this.$nextTick(() => {
+        calculateCartCount(item) {
+            const {cartId} = this.$route.params;
+            
+            this.$nextTick(async () => {
                 let cartCount = 0;
                 for (let detail of this.detailsInCart) {
                     cartCount += detail.price * detail.count;
@@ -222,6 +224,22 @@ export default {
                 this.totalCount = cartCount;
                 const detailsInCartKey = `SeawaterDetailsToCart_${this.currentUser.id}_${this.group.id}`;
                 window.sessionStorage.setItem(detailsInCartKey, JSON.stringify(this.detailsInCart));
+                const totalFreight = this.calculateCartFreight();
+                if (item) {
+                    try {
+                        await this.updateCartAndDetail({
+                            cart_id: cartId,
+                            bill_detail_id: item.id,
+                            bill_detail_num: item.count,
+                            group_bill_id: this.group.id,
+                            org_bill_detail_num: item.count,
+                            sum: cartCount,
+                            freight: totalFreight,
+                        });
+                    } catch (error) {
+                        console.error(error);
+                    }
+                }
             });
         },
 
@@ -239,6 +257,8 @@ export default {
                 }
                 this.totalFreight = Math.round(totalFreight * 100) / 100;
             }
+
+            return this.totalFreight;
         },
 
         validSubmit() {
@@ -262,7 +282,6 @@ export default {
     watch: {
         'detailsInCart'() {
             this.calculateCartCount();
-            this.calculateCartFreight();
             this.updateDetailsImg();
         }
     }

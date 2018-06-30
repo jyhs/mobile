@@ -48,7 +48,7 @@ export default {
       default: false
     }
   },
-  created () {
+  activated () {
     this.handleDragMouseMove = this.handleDragMouseMove.bind(this);
     this.handleMouseEnd = this.handleMouseEnd.bind(this);
     this.handleTouchMove = this.handleTouchMove.bind(this);

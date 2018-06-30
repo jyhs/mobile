@@ -9,7 +9,7 @@ export default {
         };
     },
 
-    created() {
+    activated() {
         this.initData();
     },
 

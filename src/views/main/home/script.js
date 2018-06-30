@@ -57,7 +57,7 @@ export default {
         LoadMore
     },
 
-    async mounted() {
+    async created () {
         const provinces = JSON.parse(window.localStorage.getItem('SeawaterProvinces'));
         if (provinces && provinces.length) {
             this.provinces = provinces;
@@ -65,13 +65,7 @@ export default {
             this.provinces = await this.getProvinces();
             window.localStorage.setItem('SeawaterProvinces', JSON.stringify(this.provinces));
         }
-        const response = await this.getGroupList({
-            page: 1,
-            size: 10,
-            province: this.curProvince[0]
-        });
-        this.groups = response.res;
-        //this.bills = (await this.getBillList({page: 1, size: 10}))['bills'] || [];
+        
         this.encyList = await this.getEncyRandomList({number: 10});
         for (let ency of this.encyList) {
             this.$set(ency, 'encyImage', `${SmallImageBasePath}?id=${ency.id}`);
@@ -81,6 +75,16 @@ export default {
                 this.$set(ency, 'isFocused', false);
             }
         }
+    },
+
+    async activated() {
+        const response = await this.getGroupList({
+            page: 1,
+            size: 10,
+            province: this.curProvince[0]
+        });
+        this.groups = response.res;
+        //this.bills = (await this.getBillList({page: 1, size: 10}))['bills'] || [];
 
         for (let group of this.groups) {
             this.$set(group, 'userAvatar', `${AvatarBasePath}?id=${group.user_id}`);

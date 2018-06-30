@@ -9,7 +9,7 @@ export default {
         }
     },
 
-    async created() {
+    async activated() {
         const currentUserId = parseInt(window.localStorage.getItem('SeawaterLoginUserId'));
         if (currentUserId) {
             this.currentUser = (await this.getUserById({

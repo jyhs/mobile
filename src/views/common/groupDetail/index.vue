@@ -28,8 +28,8 @@
         <div class="bottom">
             <div class="total">
                 <span class="f20">合计<span style="font-weight: bold;">
-                    <span style="color: #ee753c;">￥{{totalPrice + totalFreight}}</span>
-                    <span class="f14">(含运费<span style="color: #ee735c;">￥{{totalFreight}}</span>)</span>
+                    <span style="color: #ee753c;">￥{{(totalPrice + totalFreight).toFixed(2)}}</span>
+                    <span class="f14">(含运费<span style="color: #ee735c;">￥{{totalFreight.toFixed(2)}}</span>)</span>
                 </span></span>
             </div>
             <div class="confirm" @click="handleActions({}, 'cartDetail')">

@@ -23,7 +23,7 @@ export default {
         Confirm
     },
 
-    created() {
+    activated() {
         this.initData();
     },
 

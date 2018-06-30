@@ -28,7 +28,7 @@
                     <div class="count-container">
                         <x-number
                                 v-model="item.count" :min="1" :max="max" width="40px"
-                                @on-change="handleActions({}, 'numberChange')">
+                                @on-change="handleActions(item, 'numberChange')">
                         </x-number>
                         <span v-if="group.status!==0" @click.stop="handleActions(item, 'deleteConfirm')">
                             <icon class="el-icon-coral-empty f18"></icon>
@@ -39,8 +39,8 @@
         </div>
         <div class="total-count">
             <span class="f20">合计<span style="font-weight: bold;">
-                <span style="color: #ee753c;">￥{{totalCount + totalFreight}}</span>
-                <span class="f14">(含运费<span style="color: #ee735c;">￥{{totalFreight}}</span>)</span>
+                <span style="color: #ee753c;">￥{{(totalCount + totalFreight).toFixed(2)}}</span>
+                <span class="f14">(含运费<span style="color: #ee735c;">￥{{totalFreight.toFixed(2)}}</span>)</span>
             </span></span>
         </div>
         <div>

@@ -37,7 +37,7 @@ export default {
         TabItem
     },
 
-    async created() {
+    async activated() {
         const {id} = this.$route.params;
         const groupId = unCompile(id);
 
