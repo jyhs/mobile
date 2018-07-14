@@ -67,6 +67,7 @@ router.beforeEach((to, from, next) => {
         if (Authorization) {
             next();
         } else {
+            window.sessionStorage.removeItem(`SeawaterTabActiveIndex`);
             next({path: '/user/login/register'})
         }
     } else {
@@ -100,7 +101,6 @@ Axios.interceptors.response.use(
         const {response} = error;
         const errorCodes = [502, 504];
         const logoutCodes = [400, 401];
-
         if (errorCodes.includes(response.status)) {
             Vue.$vux.toast.show({
                 type: 'warn',
@@ -114,7 +114,8 @@ Axios.interceptors.response.use(
                 time: 8000
             });
             window.localStorage.removeItem(`SeawaterAuthorization`);
-            window.location = 'http://www.coral123.com/#/user/login/register';
+            window.sessionStorage.removeItem(`SeawaterTabActiveIndex`);
+            window.location = 'https://group.huanjiaohu.com/#/user/login/register';
         } else {
             Vue.$vux.toast.show({
                 type: 'warn',

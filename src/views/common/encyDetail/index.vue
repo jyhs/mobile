@@ -43,7 +43,7 @@
                         </div>
                         <div class="item">
                             <span class="title f10">饲养难度：</span>
-                            <rater :value="mapLevel(ency.level)" :font-size="10"></rater>
+                            <rater :value="mapLevel(ency.level)" :font-size="10" disabled></rater>
                         </div>
                         <div class="item">
                             <span class="title f10">英文名：</span><span class="f10">{{ency.ename}}</span>

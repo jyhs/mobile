@@ -126,7 +126,7 @@ export default {
                     text: `开团${this.form.name}成功`
                 });
                 window.sessionStorage.setItem('SeawaterTabActiveIndex', 0);
-                this.$router.push('/');
+                window.location.href = '/';
             }
         }
     }

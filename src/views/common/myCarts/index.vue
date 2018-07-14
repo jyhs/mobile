@@ -31,7 +31,7 @@
                             </div>
                             <div class="info-item">
                                 <span class="group-name f15">{{cart.group_name}}</span>
-                                <icon class="el-icon-coral-empty f18" v-if="cart.status===1"
+                                <icon class="el-icon-coral-empty f18" v-if="cart.group_status===1"
                                       @click.stop="handleDeleteCart(cart)"></icon>
                             </div>
                             <div class="info-item">

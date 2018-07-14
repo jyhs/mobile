@@ -7,7 +7,7 @@ export default {
         return {
             index: 0,
             showWechatLogin: false,
-            wechatLoginUrl: 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx6edb9c7695fb8375&redirect_uri=http://www.coral123.com&response_type=code&scope=snsapi_userinfo#wechat_redirect'
+            wechatLoginUrl: 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx6689f1d6479c5425&redirect_uri=https://group.huanjiaohu.com&response_type=code&scope=snsapi_userinfo#wechat_redirect'
         };
     },
 
@@ -31,6 +31,12 @@ export default {
             switch(actionType) {
                 case 'wechatLogin':
                     window.open(this.wechatLoginUrl);
+                    break;
+                case 'return':
+                    window.sessionStorage.removeItem(`SeawaterTabActiveIndex`);
+                    window.location.href = '/';
+                    break;
+                default:
                     break;
             }
         }

@@ -49,6 +49,10 @@ export default {
         });
     },
 
+    deactivated() {
+        this.encyImages = [];
+    },
+
     mounted() {
         const ele = document.getElementById('loading');
         ele.style.display = 'none';

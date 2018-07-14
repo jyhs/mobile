@@ -51,6 +51,7 @@ export default {
             });
             for (let cart of this.cartList) {
                 this.$set(cart, 'userAvatar', `${AvatarBasePath}?id=${cart.user_id}`);
+                this.$set(cart, 'telTo', `tel:${cart.phone}`);
             }
         },
 

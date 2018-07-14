@@ -67,8 +67,8 @@ export default {
 
         handleDeleteCart(cart) {
             this.$vux.confirm.show({
-                title: '确认结束',
-                content: '确定结束热团吗？',
+                title: '确认删除',
+                content: '确定删除购物车吗？',
                 onConfirm: async () => {
                     const result = await this.deleteCartById({
                         id: cart.id,

@@ -42,7 +42,7 @@ export default {
         });
     },
 
-    getBillUndefienDetailsById({id}) {
+    getBillUndefinedDetailsById({id}) {
         return Vue.axios.get(`${ApiBasePath}/api/bill/detail/undefine`, {
             params: {
                 id

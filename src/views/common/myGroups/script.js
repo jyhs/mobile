@@ -56,7 +56,11 @@ export default {
                     });
                     break;
                 case 'return':
-                    this.$router.push('/');
+                    this.$router.back();
+                    break;
+                case 'index':
+                    window.sessionStorage.setItem('SeawaterTabActiveIndex', 0);
+                    window.location.href = '/';
                     break;
                 default:
                     break;

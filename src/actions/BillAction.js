@@ -59,7 +59,7 @@ export async function getBillShanhuDetailsById({commit}, params) {
  * @param {*} param0
  * @param {*} params
  */
-export async function getBillUndefienDetailsById({commit}, params) {
-    const response = await BillService.getBillUndefienDetailsById(params);
+export async function getBillUndefinedDetailsById({commit}, params) {
+    const response = await BillService.getBillUndefinedDetailsById(params);
     return response.data;
 }

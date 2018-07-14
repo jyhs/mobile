@@ -5,19 +5,19 @@ import {AvatarBasePath, SmallImageBasePath} from '../../../constants/index';
 
 const baseList = [{
     url: 'javascript: void(0);',
-    img: '/static/images/banner/banner1.jpg',
+    img: '/static/images/banner/20180707/b01.jpg',
     title: ''
 }, {
     url: 'javascript: void(0);',
-    img: '/static/images/banner/banner2.jpg',
+    img: '/static/images/banner/20180707/b02.jpg',
     title: ''
 }, {
     url: 'javascript: void(0);',
-    img: '/static/images/banner/banner3.jpg',
+    img: '/static/images/banner/20180707/b03.jpg',
     title: ''
 }, {
     url: 'javascript: void(0);',
-    img: '/static/images/banner/banner4.jpg',
+    img: '/static/images/banner/20180707/b04.jpg',
     title: ''
 }];
 
@@ -90,6 +90,7 @@ export default {
             this.$set(group, 'userAvatar', `${AvatarBasePath}?id=${group.user_id}`);
             this.$set(group, 'interval', this.getIntervalFromNow(group.end_date));
         }
+        /*
         if (this.groupCountDownTimer) {
             window.clearInterval(this.groupCountDownTimer);
         } else {
@@ -99,10 +100,13 @@ export default {
                 }
             }, 1000);
         }
+        */
     },
 
     destroyed() {
+        /*
         window.clearInterval(this.groupCountDownTimer);
+        */
     },
 
     methods: {

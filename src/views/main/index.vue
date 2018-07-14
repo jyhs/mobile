@@ -51,7 +51,7 @@
     import Mine from './mine/index.vue';
 
     export default {
-        data () {
+        data() {
             return {
                 activeIndex: parseInt(window.sessionStorage.getItem('SeawaterTabActiveIndex')) || 0
             };

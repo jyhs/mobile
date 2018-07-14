@@ -33,7 +33,7 @@
                 </span></span>
             </div>
             <div class="confirm" @click="handleActions({}, 'cartDetail')">
-                <span class="f20">去确认({{cartDetailIds.length}})</span>
+                <span class="f20">购物车({{cartDetailIds.length}})</span>
             </div>
         </div>
         <scroller :on-refresh="handleDataRefresh">
@@ -59,7 +59,7 @@
                 <div>
                     <span class="column f12">
                         <span class="title">运费：</span>
-                        <span class="count">{{parseInt((group.freight || 0) * 100)}}%</span>
+                        <span class="count">{{parseInt((group.freight || 0) * 100)}}%<span v-if="group.top_freight!==0">，单品<span style="color: #ee735c">{{group.top_freight}}</span>元封顶</span></span>
                     </span>
                 </div>
                 <div>
@@ -96,7 +96,7 @@
                     </tab-item>
                 </tab>
             </div>
-            <div class="items" :class="{pT05Rem: isSearching}" v-if="details.length!==0">
+            <div class="items" :class="{pT05Rem: isSearching}" v-if="details&&details.length!==0">
                 <div class="block-content" v-for="item in details" :key="item.id">
                     <div class="content-main ency-content-main" :class="{activeBg: cartDetailIds.includes(item.id)}">
                         <div class="pic">
@@ -119,13 +119,19 @@
                                     <badge v-if="item.recommend==='tj'" text="推荐"></badge>
                                     <badge v-if="item.recommend==='tej'" text="特价"></badge>
                                 </div>
-                                <div class="actions">
+                                <div class="actions" v-if="group.status===1">
                                     <div v-if="cartDetailIds.includes(item.id)" class="item-in-cart">
+                                        <!--
                                         <icon 
                                             class="el-icon-coral-publishgoods_fill"
                                             @click.stop="handleActions({}, 'cartDetail')">
                                         </icon>
                                         <badge :text="detailsInCartMap[item.id]"></badge>
+                                        -->
+                                        <icon 
+                                            class="el-icon-coral-delete_fill"
+                                            @click.stop="deleteConfirmFun(item)">
+                                        </icon>
                                     </div>
                                     <div v-else class="item-in-cart">
                                         <icon 
@@ -140,20 +146,27 @@
                 </div>
             </div>
             <div v-if="isSearching">
-                <div v-if="!searchText&&details.length===0" class="more-description">
+                <div v-if="!searchText&&details&&details.length===0" class="more-description">
                     请输入你搜索条件~~~
                 </div>
-                <div v-if="searchText&&details.length===0" class="more-description">
+                <div v-if="searchText&&details&&details.length===0" class="more-description">
                     暂无可购买的生物，请去别处逛逛~~~
                 </div>
             </div>
             <div v-else>
-                <div v-if="details.length===0" class="more-description">
+                <div v-if="details===undefined">
+                    <load-more tip="努力加载中"></load-more>
+                </div>
+                <div v-if="details&&details.length===0" class="more-description">
                     暂无可购买的生物，请去别处逛逛~~~
                 </div>
             </div>
         </scroller>
         <alert v-model="showTip" title="亲，" content="购物车空空如也，先挑点喜欢的吧~~~"></alert>
+        <confirm v-model="deleteConfirm" :title="`删除${currentItem.name}`"
+                 @on-confirm="handleConfirmDelete">
+            <p style="text-align:center;">确定从购物车中删除{{currentItem.name}}吗？</p>
+        </confirm>
     </div>
 </template>
 <script src="./script.js"></script>

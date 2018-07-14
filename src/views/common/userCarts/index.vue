@@ -29,11 +29,11 @@
                                 <img :src="cart.userAvatar" alt="用户头像">
                             </div>
                             <div class="info">
-                                <div class="info-item" @click="handleActions(cart, 'cartItems')">
+                                <div class="info-item">
                                     <span class="f14 c666">{{cart.user_name}}</span>
                                     <span>
                                         <icon class="el-icon-coral-mobilephone_fill f12 c999"></icon>
-                                        <span class="f12 c999">{{cart.phone}}</span>
+                                        <a class="f12 c999" :href="cart.telTo">{{cart.phone}}</a>
                                     </span>
                                 </div>
                                 <div class="info-item">
@@ -55,8 +55,9 @@
                                     <span></span>
                                     <div @click="handleActions(cart, 'changeHasPay')" v-if="group.current_step===0">
                                         <check-icon :value.sync="cart.is_pay">
+                                            <span v-if="cart.is_pay===2" style="color: #ee735c;">有变动</span>
                                             <span v-if="cart.is_pay" style="color: #ee735c;">已付款</span>
-                                            <span v-else>未付款</span>
+                                            <span v-if="!cart.is_pay">未付款</span>
                                         </check-icon>
                                     </div>
                                 </div>

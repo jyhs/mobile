@@ -1,5 +1,5 @@
 import {mapActions} from 'vuex';
-import {Search, Badge, Alert, Popover, Tab, TabItem} from 'vux';
+import {Search, Badge, Alert, Popover, Tab, TabItem, LoadMore, Confirm} from 'vux';
 import {unCompile} from '../../../util/data';
 import {SmallImageBasePath} from '../../../constants/index'
 
@@ -11,7 +11,7 @@ export default {
             group: {},
             groupCount: '',
             allDetails: [],
-            details: [],
+            details: undefined,
             cart: {},
             detailsInCart: [],
             detailsInCartMap: {},
@@ -24,7 +24,9 @@ export default {
             isSearching: false,
             searchText: '',
             searchTimer: null,
-            scrollUp: false
+            scrollUp: false,
+            currentItem: {},
+            deleteConfirm: false,
         };
     },
 
@@ -34,30 +36,37 @@ export default {
         Alert,
         Popover,
         Tab,
-        TabItem
+        TabItem, 
+        LoadMore,
+        Confirm
     },
 
     async activated() {
         const {id} = this.$route.params;
         const groupId = unCompile(id);
 
-        this.$vux.loading.show({
-            text: '努力加载中'
-        });
         this.group = (await this.getGroupById({id: groupId}))[0] || {};
         this.groupCount = (await this.getCountById({id: groupId}))[0].sum || 0;
-        this.initDetailsByType(this.activeTab);
+        await this.initDetailsByType(this.activeTab);
         this.cart = (await this.getCartUnderUserByGroupId({
             groupId: this.group.id,
             userId: this.currentUserId
         }))[0];
-        this.$vux.loading.hide();
 
         if (this.alreadyHasCartUnderGroup()) {
             this.updateDetailsInCart();
         } else {
             this.addNewCartUnderGroup();
         }
+    },
+
+    deactivated() {
+        this.group = {};
+        this.details = undefined;
+        this.cartDetailIds = [];
+        this.detailsInCart = [];
+        this.totalPrice = 0;
+        this.totalFreight = 0;
     },
 
     mounted() {
@@ -68,7 +77,7 @@ export default {
         groupDetailContainer.ontouchstart = (e) => {
             startPageY = e.touches[0].pageY;
             //console.log(startPageY);
-        }
+        };
         groupDetailContainer.ontouchmove = (e) => {
             if (startPageY - e.touches[0].pageY > 10) {
                 this.scrollUp = true;
@@ -88,7 +97,9 @@ export default {
             'getDetailsByBillId',
             'getBillDetailsById',
             'getBillShanhuDetailsById',
-            'getBillUndefienDetailsById'
+            'getBillUndefinedDetailsById',
+            'updateCartAndDetail',
+            'updateCart'
         ]),
 
         async initDetailsByType(type) {
@@ -100,7 +111,7 @@ export default {
                     id: this.group.bill_id
                 }) || [];
             } else if (type === 'wfl') {
-                this.details = await this.getBillUndefienDetailsById({
+                this.details = await this.getBillUndefinedDetailsById({
                     id: this.group.bill_id
                 }) || [];
             } else {
@@ -112,6 +123,7 @@ export default {
             for (let ency of this.details) {
                 this.$set(ency, 'encyImage', `${SmallImageBasePath}?id=${ency.material_id || 0}`);
             }
+            return this.allDetails;
         },
 
         async handleDataRefresh(done) {
@@ -220,28 +232,24 @@ export default {
         },
 
         async updateDetailsInCart() {
-            const detailsInCartKey = `SeawaterDetailsToCart_${this.currentUserId}_${this.group.id}`;
-            const detailsInLocalStore = JSON.parse(window.sessionStorage.getItem(detailsInCartKey));
-            if (detailsInLocalStore && detailsInLocalStore.length) {
-                this.detailsInCart = detailsInLocalStore;
-            } else {
-                const result = (await this.getDetailsByCartId({
-                    cartId: this.cart.id
-                }))['res'];
-                this.detailsInCart = this.allDetails.filter(detail => {
-                    for (let item of result) {
-                        if (detail.id === item.bill_detail_id) {
-                            this.$set(detail, 'count', item['bill_detail_num']);
-                            this.$set(detail, 'groupId', this.group.id);
-                            return true;
-                        }
+            const result = (await this.getDetailsByCartId({
+                cartId: this.cart.id
+            }))['res'];
+            this.detailsInCart = this.allDetails.filter(detail => {
+                for (let item of result) {
+                    if (detail.id === item.bill_detail_id) {
+                        this.$set(detail, 'count', item['bill_detail_num']);
+                        this.$set(detail, 'groupId', this.group.id);
+                        return true;
                     }
-                    return false;
-                });
-            }
+                }
+                return false;
+            });
 
-            const cartDetailIds = this.getCartDetailsIds();
-            this.details.map(item => {
+            const cartDetailIds = this.detailsInCart.map(detail => {
+                return detail.id;
+            });
+            this.details && this.details.map(item => {
                 if (cartDetailIds.indexOf(item.id) === -1) {
                     this.$set(item, 'count', 0);
                 }
@@ -255,24 +263,27 @@ export default {
             return this.cartDetailIds;
         },
 
-        calculateCartPrice() {
+        calculateCartCount() {
             let totalPrice = 0;
             for (let detail of this.detailsInCart) {
                 totalPrice += detail.count * detail.price;
             }
             this.totalPrice = totalPrice;
+            return totalPrice;
         },
 
         calculateCartFreight() {
             let totalFreight = 0;
             for (let detail of this.detailsInCart) {
+                const {price, count} = detail;
                 if (this.group.top_freight) {
-                    totalFreight += Math.min(detail.price * this.group.freight, this.group.top_freight) * detail.count;
+                    totalFreight += Math.min(price * this.group.freight, this.group.top_freight) * count;
                 } else {
-                    totalFreight += (detail.count * detail.price) * this.group.freight;
+                    totalFreight += (count * price) * this.group.freight;
                 }
             }
             this.totalFreight = Math.round(totalFreight * 100) / 100;
+            return this.totalFreight;
         },
 
         generateDetailsInCartMap() {
@@ -289,7 +300,7 @@ export default {
                 const result = await this.addCart({
                     group_bill_id: this.group.id,
                     user_id: this.currentUserId,
-                    status: 0
+                    status: 1
                 });
                 if (result.status === 'ok') {
                     this.cart = (await this.getCartUnderUserByGroupId({
@@ -299,6 +310,46 @@ export default {
                 }
             } catch (error) {
                 console.error(error);
+            }
+        },
+
+        deleteConfirmFun(item) {
+            this.currentItem = item;
+            this.deleteConfirm = true;
+        },
+
+        async handleConfirmDelete() {
+            let deleteIndex = -1;
+
+            for (let i = 0; i < this.detailsInCart.length; i++) {
+                if (this.detailsInCart[i].id === this.currentItem.id) {
+                    deleteIndex = i;
+                    break;
+                }
+            }
+            if (deleteIndex !== -1) {
+                this.$vux.loading.show('努力加载中');
+                const result = await this.deleteDetailById({
+                    cart_id: this.cart.id,
+                    bill_detail_id: this.currentItem.id
+                });
+                
+                if (result.status === 'ok') {
+                    this.detailsInCart.splice(deleteIndex, 1);
+                    this.$nextTick(async () => {
+                        await this.updateCart({
+                            id: this.cart.id,
+                            phone: this.cart.phone,
+                            description: this.cart.remark || undefined,
+                            sum: this.calculateCartCount(),
+                            freight: this.calculateCartFreight(),
+                            status: 1
+                        });
+                    });
+                    const detailsInCartKey = `SeawaterDetailsToCart_${this.currentUserId}_${this.group.id}`;
+                    window.sessionStorage.setItem(detailsInCartKey, JSON.stringify(this.detailsInCart));
+                }
+                this.$vux.loading.hide();
             }
         },
 
@@ -341,11 +392,27 @@ export default {
                 copyDetail.count = 1;
                 copyDetail.checked = true;
                 this.detailsInCart.push(copyDetail);
-                window.sessionStorage.setItem(
-                    detailsInCartKey,
-                    JSON.stringify((JSON.parse(window.sessionStorage.getItem(detailsInCartKey)) || []
-                ).concat([copyDetail])));
-                this.$vux.toast.text('加入购物车成功');
+                this.$nextTick(async () => {
+                    const totalCount = this.calculateCartCount();
+                    const totalFreight = this.calculateCartFreight();
+                    const response = await this.updateCartAndDetail({
+                        cart_id: this.cart.id,
+                        bill_detail_id: detail.id,
+                        bill_detail_num: 1,
+                        group_bill_id: this.group.id,
+                        org_bill_detail_num: 1,
+                        sum: totalCount,
+                        freight: totalFreight,
+                    });
+
+                    if (response.status === 'ok') {
+                        window.sessionStorage.setItem(
+                            detailsInCartKey,
+                            JSON.stringify((JSON.parse(window.sessionStorage.getItem(detailsInCartKey)) || []
+                        ).concat([copyDetail])));
+                        this.$vux.toast.text('加入购物车成功');
+                    }
+                });
             }
         },
     },
@@ -353,7 +420,7 @@ export default {
     watch: {
         'detailsInCart'() {
             this.getCartDetailsIds();
-            this.calculateCartPrice();
+            this.calculateCartCount();
             this.calculateCartFreight();
             this.generateDetailsInCartMap();
         }

@@ -68,7 +68,7 @@ export default {
                     name: '全部',
                     code: 'all'
                 }, ...types];
-                this.initEncyListInType(this.activeTypes[this.activeTab]);
+                this.initEncyListInType(this.activeTypes[this.activeTab], 20);
             } else {
                 this.types = [];
                 this.encyList = await this.getEncyRandomList({number: 20});
@@ -78,7 +78,7 @@ export default {
             }
         },
 
-        async initEncyListInType(type) {
+        async initEncyListInType(type, size = 1000) {
             this.$vux.loading.show({
                 text: '努力加载中'
             });
@@ -96,7 +96,7 @@ export default {
                 } else {
                     result = await this.getEncyList({
                         type, page: 1,
-                        size: 1000,
+                        size,
                         userId: this.currentUserId
                     });
                     this.encyList = result['materials'] || [];
@@ -140,7 +140,7 @@ export default {
                     break;
                 case 'encySearchCancel':
                     this.searching = false;
-                    this.initRandomEncyList();
+                    this.initRandomEncyList(this.activeTab);
                     break;
                 case 'focus':
                     this.handleFocusEncy(item);

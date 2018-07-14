@@ -1,5 +1,5 @@
 import {mapActions} from 'vuex';
-import {XNumber, Group, XTextarea, XInput, Confirm} from 'vux';
+import {XNumber, Group, XTextarea, XInput, Cell, Marquee, MarqueeItem, Confirm} from 'vux';
 import {compile} from '../../../util/data';
 import {SmallImageBasePath} from '../../../constants/index';
 import RegExp from '../../../constants/regExp';
@@ -7,7 +7,6 @@ import RegExp from '../../../constants/regExp';
 export default {
     data() {
         return {
-            max: 10000,
             currentUser: {},
             currentUserId: parseInt(window.localStorage.getItem('SeawaterLoginUserId')),
             group: {},
@@ -28,6 +27,9 @@ export default {
         Group,
         XTextarea,
         XInput,
+        Cell, 
+        Marquee, 
+        MarqueeItem,
         Confirm
     },
 
@@ -42,40 +44,49 @@ export default {
         this.phone = this.currentUser.phone;
 
         this.group = (await this.getGroupById({id: groupId}))[0] || {};
-        if (this.group.status === 0) {
-            this.max = 0;
-        }
         this.cart = (await this.getCartUnderUserByGroupId({
             groupId: this.group.id,
             userId: this.currentUserId
         }))[0];
-        this.remark = this.cart.description.trim();
+        this.remark = (this.cart.description || '').trim() || undefined;
         const detailsInCartKey = `SeawaterDetailsToCart_${this.currentUser.id}_${this.group.id}`;
 
         this.details = await this.getDetailsByBillId({id: this.group.bill_id});
 
-        const detailsInLocalStore = JSON.parse(window.sessionStorage.getItem(detailsInCartKey));
-        if (this.group.status === 1 && detailsInLocalStore && detailsInLocalStore.length) {
-            this.detailsInCart = detailsInLocalStore;
-        } else {
-            const result = (await this.getDetailsByCartId({
-                cartId
-            }))['res'];
-            this.detailsInCart = this.details.filter(detail => {
-                for (let item of result) {
-                    if (detail.id === item.bill_detail_id) {
-                        this.$set(detail, 'count', item['bill_detail_num']);
-                        this.$set(detail, 'lostNum', item['lost_num']);
-                        this.$set(detail, 'damageNum', item['damage_num']);
-                        this.$set(detail, 'groupId', this.group.id);
-                        return true;
+        const result = (await this.getDetailsByCartId({
+            cartId
+        }))['res'];
+        this.detailsInCart = this.details.filter(detail => {
+            for (let item of result) {
+                if (detail.id === item.bill_detail_id) {
+                    this.$set(detail, 'count', item['bill_detail_num']);
+                    this.$set(detail, 'lostNum', item['lost_num']);
+                    this.$set(detail, 'damageNum', item['damage_num']);
+                    this.$set(detail, 'lostBackFreight', item['lost_back_freight']);
+                    this.$set(detail, 'groupId', this.group.id);
+                    if (this.group.status === 0) {
+                        this.$set(detail, 'max', item['bill_detail_num']);
+                        this.$set(detail, 'min', item['bill_detail_num']);
+                    } else {
+                        this.$set(detail, 'max', 10000);
+                        this.$set(detail, 'min', 1);
                     }
+                    return true;
                 }
-                return false;
-            });
-        }
+            }
+            return false;
+        });
 
         this.$vux.loading.hide();
+    },
+
+    deactivated() {
+        this.detailsInCart = [];
+        this.totalCount = 0;
+        this.totalFreight = 0;
+        this.phone =  '';
+        this.remark = '';
+        this.cart = {};
     },
 
     mounted() {
@@ -121,6 +132,9 @@ export default {
                 case 'return':
                     this.$router.push('/');
                     break;
+                case 'saveInfo':
+                    this.handleSaveInfo();
+                    break;
                 default:
                     break;
             }
@@ -140,15 +154,10 @@ export default {
                 this.$vux.loading.show({
                     text: '努力加载中'
                 });
-                let result = {};
-                try {
-                    result = await this.deleteDetailById({
-                        cart_id: cartId,
-                        bill_detail_id: this.currentItem.id
-                    });
-                } catch (error) {
-                    console.error(error);
-                }
+                const result = await this.deleteDetailById({
+                    cart_id: cartId,
+                    bill_detail_id: this.currentItem.id
+                });
 
                 if (result.status === 'ok') {
                     this.detailsInCart.splice(deleteIndex, 1);
@@ -156,9 +165,40 @@ export default {
                         type: 'success',
                         text: `删除${this.currentItem.name}成功`
                     });
+                    let cartCount = 0;
+                    for (let detail of this.detailsInCart) {
+                        cartCount += detail.price * detail.count;
+                    }
+
+                    this.$nextTick(async () => {
+                        await this.updateCart({
+                            id: cartId,
+                            phone: this.phone,
+                            description: this.remark || undefined,
+                            sum: cartCount,
+                            freight: this.calculateCartFreight(),
+                            status: 1
+                        });
+                    });
                 }
                 this.$vux.loading.hide();
             }
+        },
+
+        async handleSaveInfo() {
+            if (!this.validSubmit()) {
+                return;
+            }
+            const {cartId} = this.$route.params;
+            
+            await this.updateCart({
+                id: cartId,
+                phone: this.phone,
+                description: this.remark || undefined,
+                sum: this.totalCount,
+                freight: this.totalFreight,
+                status: 1
+            });
         },
 
         async handleSubmit() {

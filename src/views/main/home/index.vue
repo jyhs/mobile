@@ -56,7 +56,10 @@
                                 <span class="group-status group-status-disabled f11" v-else>已结束</span>
                                 <span v-if="group.status===1">
                                     <icon class="el-icon-coral-naozhong f12"></icon>
-                                    <span class="f12 c999">{{mapTimeInterval(group.interval)}}后结束</span>
+                                    <!--
+                                        <span class="f12 c999">{{mapTimeInterval(group.interval)}}后结束</span>
+                                    -->
+                                    <span class="f12 c999">{{group.end_date}}结束</span>
                                 </span>
                             </div>
                             <div class="info-item">
@@ -103,7 +106,10 @@
                                 <span class="group-status group-status-disabled f11" v-else>已结束</span>
                                 <span v-if="group.status===1">
                                     <icon class="el-icon-coral-naozhong f12"></icon>
-                                    <span class="f12 c999">{{mapTimeInterval(group.interval)}}后结束</span>
+                                    <!--
+                                        <span class="f12 c999">{{mapTimeInterval(group.interval)}}后结束</span>
+                                    -->
+                                    <span class="f12 c999">{{group.end_date}}结束</span>
                                 </span>
                             </div>
                             <div class="info-item">
@@ -147,12 +153,12 @@
                                 </span>
                             </div>
                             <div class="tags">
-                                <div class="tag" v-for="item in item.tag.trim().split(',')" :key="item">
-                                    <span class="f10">{{item}}</span>
+                                <div class="tag" v-for="i in item.tag.trim().split(',')" :key="i">
+                                    <span class="f10">{{i}}</span>
                                 </div>
                             </div>
                             <div class="others">
-                                <rater :value="mapLevel(item.level)" :font-size="10"></rater>
+                                <rater :value="mapLevel(item.level)" :font-size="10" disabled></rater>
                                 <div class="actions">
                                     <!--
                                     <div class="action">

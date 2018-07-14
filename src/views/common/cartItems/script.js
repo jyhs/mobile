@@ -65,10 +65,15 @@ export default {
                 for (let item of result) {
                     if (detail.id === item.bill_detail_id) {
                         this.$set(detail, 'count', item['bill_detail_num']);
-                        if (this.group.current_step === 1) {
+                        if (this.group.current_step === 0) {
                             this.$set(detail, 'max', item['org_bill_detail_num'] - item['damage_num']);
+                            this.$set(detail, 'min', item['org_bill_detail_num'] - item['damage_num']);
+                        } else if (this.group.current_step === 1) {
+                            this.$set(detail, 'max', item['org_bill_detail_num'] - item['damage_num']);
+                            this.$set(detail, 'min', 0);
                         } else if (this.group.current_step === 2) {
                             this.$set(detail, 'max', item['org_bill_detail_num'] - item['lost_num']);
+                            this.$set(detail, 'min', 0);
                         }
                         this.$set(detail, 'groupId', this.group.id);
                         return true;
@@ -138,8 +143,10 @@ export default {
             this.$vux.loading.show('努力加载中');
             const result = await this.updateCart({
                 id,
+                phone: this.cart.phone,
                 description: this.remark || undefined,
                 sum: this.totalCount,
+                freight: this.totalFreight,
                 status: 1
             });
             if (result.status) {
@@ -196,7 +203,8 @@ export default {
             } else if (this.group.current_step === 2) {
                 this.totalFreight = this.cart.freight;
             }
-            console.log(this.totalFreight);
+
+            return this.totalFreight;
         },
 
         async handleLostDamage(item) {

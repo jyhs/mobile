@@ -3,11 +3,15 @@
         <div class="header">
             <div @click="handleActions({}, 'return')">
                 <icon class="el-icon-coral-return f20"></icon>
+                <span class="f16" style="position: relative; top: -2px;">返回</span>
             </div>
             <div class="name">
                 <span class="f16">我开的团购</span>
             </div>
-            <span></span>
+            <div @click="handleActions({}, 'index')">
+                <span class="f16" style="position: relative; top: -2px;">去首页</span>
+                <icon class="el-icon-coral-enter f20"></icon>
+            </div>
         </div>
         <scroller :on-refresh="handleDataRefresh">
             <div class="block">
