@@ -33,14 +33,12 @@
                 </div>
             </div>
         </div>
-        <!--
-        <div style="margin-top: 10px;" v-if="index===0">
+        <div style="margin-top: 10px;" v-if="index===0&&isWechat">
             <divider>免注册微信快捷登录</divider>
             <div class="third-part">
                 <img :src="require('../../../assets/weixin_on.png')" @click="handleActions({}, 'wechatLogin')">
             </div>
         </div>
-        -->
     </div>
 </template>
 <script src="./script.js"></script>

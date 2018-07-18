@@ -66,5 +66,17 @@ export default {
                 name
             }
         });
+    },
+
+    hasBindPhone({id}) {
+        return Vue.axios.get(`${ApiBasePath}/api/users/checkPhone`, {
+            params: {
+                id
+            }
+        });
+    },
+
+    bindPhone(params) {
+        return Vue.axios.post(`${ApiBasePath}/api/users/save/phone`, params);
     }
 };

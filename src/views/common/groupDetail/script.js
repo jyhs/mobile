@@ -1,7 +1,8 @@
 import {mapActions} from 'vuex';
-import {Search, Badge, Alert, Popover, Tab, TabItem, LoadMore, Confirm} from 'vux';
+import {Search, Badge, Alert, Popover, Tab, TabItem, LoadMore, XDialog, Confirm, Group, XInput} from 'vux';
 import {unCompile} from '../../../util/data';
-import {SmallImageBasePath} from '../../../constants/index'
+import {SmallImageBasePath} from '../../../constants'
+import RegExp from "../../../constants/regExp";
 
 export default {
     data() {
@@ -27,6 +28,8 @@ export default {
             scrollUp: false,
             currentItem: {},
             deleteConfirm: false,
+            bindPhoneFlag: false,
+            phone: '',
         };
     },
 
@@ -38,7 +41,10 @@ export default {
         Tab,
         TabItem, 
         LoadMore,
-        Confirm
+        XDialog,
+        Confirm,
+        Group,
+        XInput
     },
 
     async activated() {
@@ -71,19 +77,7 @@ export default {
 
     mounted() {
         const ele = document.getElementById('loading');
-        const groupDetailContainer = document.getElementById('group-detail-container');
         ele.style.display = 'none';
-        let startPageY = 0;
-        groupDetailContainer.ontouchstart = (e) => {
-            startPageY = e.touches[0].pageY;
-            //console.log(startPageY);
-        };
-        groupDetailContainer.ontouchmove = (e) => {
-            if (startPageY - e.touches[0].pageY > 10) {
-                this.scrollUp = true;
-                //console.log('1', this.scrollUp);
-            }
-        }
     },
 
     methods: {
@@ -99,7 +93,9 @@ export default {
             'getBillShanhuDetailsById',
             'getBillUndefinedDetailsById',
             'updateCartAndDetail',
-            'updateCart'
+            'updateCart',
+            'hasBindPhone',
+            'bindPhone'
         ]),
 
         async initDetailsByType(type) {
@@ -178,7 +174,7 @@ export default {
                             }
                         });
                     } else {
-                        this.$vux.toast.text('Sorry,没有匹配的生物')
+                        this.$vux.toast.text('没有匹配的生物')
                     }
                     break;
                 case 'return':
@@ -198,8 +194,29 @@ export default {
                         this.initDetailsByType(this.activeTab);
                     });
                     break;
+                case 'bindPhone':
+                    this.handleBindPhone();
+                    break;
                 default:
                     break;
+            }
+        },
+
+        async handleBindPhone() {
+            if (!this.validSubmit()) {
+                return;
+            }
+
+            const response = await this.bindPhone({
+                id: this.currentUserId,
+                phone: this.phone
+            });
+
+            if (response.status === 'ok') {
+                this.bindPhoneFlag = false;
+                this.$vux.toast.text('保存手机成功');
+                window.localStorage.setItem('SeawaterUserHasBindPhone', true);
+                this.handleAddOneDetail(this.currentItem);
             }
         },
 
@@ -354,6 +371,24 @@ export default {
         },
 
         async handleCartDetail(detail) {
+            window.localStorage.removeItem('SeawaterUserHasBindPhone');
+            if (!Boolean(window.localStorage.getItem('SeawaterUserHasBindPhone'))) {
+                this.currentItem = detail;
+                const phoneResponse = await this.hasBindPhone({id: this.currentUserId});
+                const {status, isBindPhone} = phoneResponse;
+                if (status === 'ok') {
+                    if (isBindPhone) {
+                        window.localStorage.setItem('SeawaterUserHasBindPhone', true);
+                    } else {
+                        this.bindPhoneFlag = true;
+                    }
+                }
+            } else {
+                this.handleAddOneDetail(detail);
+            }
+        },
+
+        async handleAddOneDetail(detail) {
             const detailsInCartKey = `SeawaterDetailsToCart_${this.currentUserId}_${this.group.id}`;
             if (this.cartDetailIds.includes(detail.id)) {
                 const detailsInStore = JSON.parse(window.sessionStorage.getItem(detailsInCartKey)) || [];
@@ -361,9 +396,9 @@ export default {
                 if (idsInStore.includes(detail.id)) {
                     window.sessionStorage.setItem(detailsInCartKey, JSON.stringify(detailsInStore.filter(item => item.id !== detail.id)));
                     for (let i = 0; i < this.detailsInCart.length; i++) {
-                       if (this.detailsInCart[i].id === detail.id) {
-                           this.detailsInCart.splice(i, 1);
-                       }
+                        if (this.detailsInCart[i].id === detail.id) {
+                            this.detailsInCart.splice(i, 1);
+                        }
                     }
                 } else {
                     this.$vux.loading.show();
@@ -409,12 +444,29 @@ export default {
                         window.sessionStorage.setItem(
                             detailsInCartKey,
                             JSON.stringify((JSON.parse(window.sessionStorage.getItem(detailsInCartKey)) || []
-                        ).concat([copyDetail])));
+                            ).concat([copyDetail])));
                         this.$vux.toast.text('加入购物车成功');
                     }
                 });
             }
         },
+
+        validSubmit() {
+            if (!this.phone) {
+                this.$vux.toast.show({
+                    type: 'warn',
+                    text: '请填写联系电话'
+                });
+                return false;
+            } else if (!RegExp.PhoneReg.test(this.phone)) {
+                this.$vux.toast.show({
+                    type: 'warn',
+                    text: '请填写正确的联系电话'
+                });
+                return false;
+            }
+            return true;
+        }
     },
 
     watch: {

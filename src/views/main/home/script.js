@@ -1,6 +1,6 @@
 import {mapActions} from 'vuex';
 import {Search, Swiper, Group, PopupPicker, Rater, LoadMore} from 'vux';
-import {compile} from '../../../util/data';
+import {compile, formatUrlParams} from '../../../util/data';
 import {AvatarBasePath, SmallImageBasePath} from '../../../constants/index';
 
 const baseList = [{
@@ -78,39 +78,41 @@ export default {
     },
 
     async activated() {
-        const response = await this.getGroupList({
-            page: 1,
-            size: 10,
-            province: this.curProvince[0]
-        });
-        this.groups = response.res;
-        //this.bills = (await this.getBillList({page: 1, size: 10}))['bills'] || [];
+        if (!this.currentUserId && window.location.search) {
+            const params = formatUrlParams(window.location.search.substring(1));
+            const {code} = params;
+            if (code) {
+                const result = await this.loginWechat({code});
 
-        for (let group of this.groups) {
-            this.$set(group, 'userAvatar', `${AvatarBasePath}?id=${group.user_id}`);
-            this.$set(group, 'interval', this.getIntervalFromNow(group.end_date));
-        }
-        /*
-        if (this.groupCountDownTimer) {
-            window.clearInterval(this.groupCountDownTimer);
-        } else {
-            this.groupCountDownTimer = window.setInterval(() => {
-                for (let group of this.groups) {
-                    this.$set(group, 'interval', this.getIntervalFromNow(group.end_date));
+                if (result.status === 'ok') {
+                    this.$vux.toast.show({
+                        text: '登录成功'
+                    });
+                    this.currentUserId = result.id;
+                    this.handleProvinceChange([result.province]);
+                    window.localStorage.setItem('SeawaterAuthorization', result.token);
+                    window.localStorage.setItem('SeawaterLoginUserId', result.id);
+                    window.sessionStorage.removeItem('SeaWaterInputHasErrorNum');
+                    window.sessionStorage.removeItem('SeaWaterLoginHasError');
                 }
-            }, 1000);
-        }
-        */
-    },
+            }
+        } else {
+            const response = await this.getGroupList({
+                page: 1,
+                size: 10,
+                province: this.curProvince[0]
+            });
+            this.groups = response.res;
 
-    destroyed() {
-        /*
-        window.clearInterval(this.groupCountDownTimer);
-        */
+            for (let group of this.groups) {
+                this.$set(group, 'userAvatar', `${AvatarBasePath}?id=${group.user_id}`);
+            }
+        }
     },
 
     methods: {
         ...mapActions([
+            'loginWechat',
             'updateGroupsInCurProvince',
             'getProvinces',
             'getGroupList',
@@ -137,7 +139,6 @@ export default {
             for (let group of this.groups) {
                 this.$set(group, 'userAvatar', `${AvatarBasePath}?id=${group.user_id}`);
             }
-            //this.bills = (await this.getBillList({page: 1, size: 10}))['bills'] || [];
             this.updateGroupsInCurProvince(this.groups);
 
             window.localStorage.setItem('SeawaterCurProvince', value[0]);
@@ -181,6 +182,8 @@ export default {
                 case 'billDetail':
                 case 'encyDetail':
                 case 'groupAdd':
+                    //const content = document.querySelector('._v-content');
+                    //console.log(content.style.transform);
                     this.$router.push({
                         name: actionType,
                         params: {

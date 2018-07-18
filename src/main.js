@@ -34,6 +34,7 @@ Vue.use(VueLazyload, {
 const scrollBehavior = (to, from, savedPosition) => {
     if (savedPosition) {
         // savedPosition is only available for popstate navigations.
+        console.log(savedPosition);
         return savedPosition;
     } else {
         let position = {};
@@ -113,6 +114,7 @@ Axios.interceptors.response.use(
                 text: `登录失效，请重新登录`,
                 time: 8000
             });
+            window.localStorage.removeItem('SeawaterLoginUserId');
             window.localStorage.removeItem(`SeawaterAuthorization`);
             window.sessionStorage.removeItem(`SeawaterTabActiveIndex`);
             window.location = 'https://group.huanjiaohu.com/#/user/login/register';

@@ -46,6 +46,8 @@ export default {
                 title: '确定退出',
                 content: '确定退出登录吗？',
                 onConfirm: async () => {
+                    window.localStorage.clear();
+                    window.sessionStorage.clear();
                     const result = await this.logout({
                         id: this.currentUser.id
                     });
@@ -54,8 +56,6 @@ export default {
                             type: 'success',
                             text: `退出登录成功`
                         });
-                        window.localStorage.clear();
-                        window.sessionStorage.clear();
                         this.$router.push('/user/login/register');
                     }
                 }

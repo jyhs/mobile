@@ -41,16 +41,14 @@ export default {
         this.currentUser = (await this.getUserById({
             id: parseInt(window.localStorage.getItem('SeawaterLoginUserId'))
         }))[0];
-        this.phone = this.currentUser.phone;
+        this.phone = this.currentUser.phone === '18888888888' ? '' : this.currentUser.phone;
 
         this.group = (await this.getGroupById({id: groupId}))[0] || {};
         this.cart = (await this.getCartUnderUserByGroupId({
             groupId: this.group.id,
             userId: this.currentUserId
         }))[0];
-        this.remark = (this.cart.description || '').trim() || undefined;
-        const detailsInCartKey = `SeawaterDetailsToCart_${this.currentUser.id}_${this.group.id}`;
-
+        this.remark = (this.cart.description === 'null' ? '' : (this.cart.description || '')).trim();
         this.details = await this.getDetailsByBillId({id: this.group.bill_id});
 
         const result = (await this.getDetailsByCartId({
@@ -174,7 +172,7 @@ export default {
                         await this.updateCart({
                             id: cartId,
                             phone: this.phone,
-                            description: this.remark || undefined,
+                            description: this.remark,
                             sum: cartCount,
                             freight: this.calculateCartFreight(),
                             status: 1
@@ -194,7 +192,7 @@ export default {
             await this.updateCart({
                 id: cartId,
                 phone: this.phone,
-                description: this.remark || undefined,
+                description: this.remark,
                 sum: this.totalCount,
                 freight: this.totalFreight,
                 status: 1
@@ -214,7 +212,7 @@ export default {
             const result = await this.updateCart({
                 id: cartId,
                 phone: this.phone,
-                description: this.remark || undefined,
+                description: this.remark,
                 sum: this.totalCount,
                 freight: this.totalFreight,
                 status: 1

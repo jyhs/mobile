@@ -23,7 +23,7 @@ export default {
                 top_freight: 50,
                 description: undefined
             },
-            eidtorOption: {
+            editorOption: {
                 placeholder: '请输入',
                 modules: {
                     toolbar: [
@@ -46,6 +46,7 @@ export default {
 
     async activated() {
         const {id} = this.$route.params;
+        const curProvince = window.localStorage.getItem('SeawaterCurProvince') || 'sh';
 
         this.bill = (await this.getBillById({id}));
         this.details = await this.getDetailsByBillId({id}) || [];
@@ -57,8 +58,9 @@ export default {
         this.form.phone = this.currentUser.phone;
         this.form.city = this.currentUser.city;
         const cities = await this.getCitiesInProvinces({
-            area: this.curProvince
+            area: curProvince
         });
+        console.log('cities', cities);
         for (let city of cities) {
             this.cities.push({
                 key: city.name,
@@ -92,8 +94,10 @@ export default {
         },
 
         async submit() {
+            const {id} = this.$route.params;
             const needValid = ['name', 'contacts', 'phone', 'end_date', 'city'];
             const message = ['团单名', '联系人姓名', '联系人手机', '截止时间', '开团城市'];
+            const curProvince = window.localStorage.getItem('SeawaterCurProvince') || 'sh';
 
             for (let i = 0; i < needValid.length; i++) {
                 if (!this.form[needValid[i]]) {
@@ -107,9 +111,9 @@ export default {
 
             const sendInfo = Object.assign({}, this.form, {
                 end_date: this.form.end_date ? formatDateTimeParam(this.form.end_date.replace(/-/g, '/')) : '',
-                bill_id: this.$route.params.id,
+                bill_id: id,
                 user_id: parseInt(window.localStorage.getItem('SeawaterLoginUserId')),
-                province: this.curProvince,
+                province: curProvince,
                 freight: this.form.freight / 100,
                 top_freight: this.form.hasTop ? this.form.top_freight : undefined
             });

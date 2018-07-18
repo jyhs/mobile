@@ -7,7 +7,8 @@ export default {
         return {
             index: 0,
             showWechatLogin: false,
-            wechatLoginUrl: 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx6689f1d6479c5425&redirect_uri=https://group.huanjiaohu.com&response_type=code&scope=snsapi_userinfo#wechat_redirect'
+            wechatLoginUrl: 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx6edb9c7695fb8375&redirect_uri=https://group.huanjiaohu.com&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect',
+            isWechat: true,
         };
     },
 
@@ -22,6 +23,10 @@ export default {
         Divider
     },
 
+    activated() {
+        this.isWechat = /MicroMessenger/.test(navigator.userAgent);
+    },
+
     methods: {
         handleTabItemClick (index) {
             this.index = index;
@@ -30,7 +35,8 @@ export default {
         handleActions(item, actionType) {
             switch(actionType) {
                 case 'wechatLogin':
-                    window.open(this.wechatLoginUrl);
+                    window.sessionStorage.removeItem(`SeawaterTabActiveIndex`);
+                    window.location.href = this.wechatLoginUrl;
                     break;
                 case 'return':
                     window.sessionStorage.removeItem(`SeawaterTabActiveIndex`);

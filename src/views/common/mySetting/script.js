@@ -1,7 +1,8 @@
 import {mapActions} from 'vuex';
 import {Group, GroupTitle, XButton, XInput, PopupPicker, XTextarea} from 'vux';
-import {AvatarBasePath, TaobaoQrBasePath, WechatQrBasePath, SmallImageBasePath} from '../../../constants/index';
+import {AvatarBasePath, TaobaoQrBasePath, WechatQrBasePath} from '../../../constants/index';
 import {isEmpty, toFormData} from '../../../util/common';
+import RegExp from "../../../constants/regExp";
 
 const ImageBasePath = {
     avatar: AvatarBasePath,
@@ -168,6 +169,19 @@ export default {
         },
 
         validSubmit() {
+            if (!this.user.phone) {
+                this.$vux.toast.show({
+                    type: 'warn',
+                    text: '请填写联系电话'
+                });
+                return false;
+            } else if (!RegExp.PhoneReg.test(this.user.phone)) {
+                this.$vux.toast.show({
+                    type: 'warn',
+                    text: '请填写正确的联系电话'
+                });
+                return false;
+            }
             if (this.nowCity.length < 2 || !this.nowCity[0] || !this.nowCity[1]) {
                 this.$vux.toast.text('请选择所在城市');
                 return false;

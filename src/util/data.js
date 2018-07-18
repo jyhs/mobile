@@ -1,7 +1,4 @@
-/** 次数处理，当次数大于10w级时已w为单位，当播放次数小于10w，正常显示次数
- * @param {string} count
- * */
-exports.countHandle = (count) => {
+export const countHandle = (count) => {
     let wCount = parseInt(count / 100000);
     if (wCount > 0) {
         return wCount + '万';
@@ -14,7 +11,7 @@ exports.countHandle = (count) => {
  * @param code
  * @returns {string}
  */
-exports.compile = (code) => {
+export const compile = (code) => {
     const codeStr = `${code}`;
     let c = String.fromCharCode(codeStr.charCodeAt(0) + codeStr.length);
     for (let i = 1; i < codeStr.length; i++) {
@@ -28,7 +25,7 @@ exports.compile = (code) => {
  * @param code
  * @returns {string}
  */
-exports.unCompile = (code) => {
+export const unCompile = (code) => {
     let codeStr = `${code}`;
     codeStr = unescape(codeStr).split(' ').join('');
     let c = String.fromCharCode(codeStr.charCodeAt(0) - codeStr.length);
@@ -36,4 +33,19 @@ exports.unCompile = (code) => {
         c += String.fromCharCode(codeStr.charCodeAt(i) - c.charCodeAt(i - 1));
     }
     return c;
+};
+
+/**
+ * 格式化url params
+ * @param paramsStr
+ */
+export const formatUrlParams = (paramsStr) => {
+    const paramsObj = {};
+    const params = paramsStr.split('&');
+    for (let param of params) {
+        const pair = param.split('=');
+        paramsObj[pair[0]] = pair[1];
+    }
+
+    return paramsObj;
 };

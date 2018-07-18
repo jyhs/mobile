@@ -27,13 +27,13 @@
         </div>
         <div class="bottom">
             <div class="total">
-                <span class="f20">合计<span style="font-weight: bold;">
+                <span class="f18">合计<span style="font-weight: bold;">
                     <span style="color: #ee753c;">￥{{(totalPrice + totalFreight).toFixed(2)}}</span>
                     <span class="f14">(含运费<span style="color: #ee735c;">￥{{totalFreight.toFixed(2)}}</span>)</span>
                 </span></span>
             </div>
             <div class="confirm" @click="handleActions({}, 'cartDetail')">
-                <span class="f20">购物车({{cartDetailIds.length}})</span>
+                <span class="f18">购物车({{cartDetailIds.length}})</span>
             </div>
         </div>
         <scroller :on-refresh="handleDataRefresh">
@@ -167,6 +167,22 @@
                  @on-confirm="handleConfirmDelete">
             <p style="text-align:center;">确定从购物车中删除{{currentItem.name}}吗？</p>
         </confirm>
+        <x-dialog v-model="bindPhoneFlag">
+            <div style="padding: 15px;">
+                <span>为确保团长能够联系你,请录入有效手机号</span>
+                <group>
+                    <x-input placeholder="联系电话" is-type="china-mobile" v-model="phone"></x-input>
+                </group>
+                <div class="submit">
+                    <button class="btn btn-full f15" @click="handleActions({}, 'bindPhone')">保存</button>
+                </div>
+                <!--
+                <div style="margin-top: 15px;">
+                    <x-icon type="ios-close-outline" size="30" @click="bindPhoneFlag=false"></x-icon>
+                </div>
+                -->
+            </div>
+        </x-dialog>
     </div>
 </template>
 <script src="./script.js"></script>

@@ -119,3 +119,25 @@ export async function checkUsername({commit}, params) {
     const response = await UserService.checkUsername(params);
     return response.data || {};
 }
+
+/**
+ * 获取是否绑定手机
+ * @param commit
+ * @param params
+ * @returns {Promise<*|{}>}
+ */
+export async function hasBindPhone({commit}, params) {
+    const response = await UserService.hasBindPhone(params);
+    return response.data || {};
+}
+
+/**
+ * 绑定手机
+ * @param commit
+ * @param params
+ * @returns {Promise<*|{}>}
+ */
+export async function bindPhone({commit}, params) {
+    const response = await UserService.bindPhone(params);
+    return response.data || {};
+}
