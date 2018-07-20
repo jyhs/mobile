@@ -105,3 +105,35 @@ export async function getLocalContacts({commit}, params) {
     const response = await CommonService.getLocalContacts(params);
     return response.data || [];
 }
+
+/**
+ * 是否弹公告
+ * @param commit
+ * @param params
+ * @returns {Promise<*>}
+ */
+export async function checkNotice({commit}, params) {
+    const response = await CommonService.checkNotice(params);
+    return response.data;
+}
+
+/**
+ * 获取公告
+ * @param commit
+ * @returns {Promise<*>}
+ */
+export async function getNoticeImage({commit}) {
+    const response = await CommonService.getNoticeImage();
+    return response.data;
+}
+
+/**
+ * 更新是否阅读公告
+ * @param commit
+ * @param params
+ * @returns {Promise<*>}
+ */
+export async function insertNotice({commit}, params) {
+    const response = await CommonService.insertNotice(params);
+    return response.data;
+}

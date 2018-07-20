@@ -21,7 +21,7 @@ export const GroupExcelBasePath = 'http://111.231.136.250/bill/download/';
 */
 
 export const ApiBasePath = 'https://api.huanjiaohu.com';
-export const ImageBasePath = 'https://static.huanjiaohu.com/image/uploads';
+export const ImageBasePath = 'https://static.huanjiaohu.com/image/material';
 export const SmallImageBasePath = 'https://api.huanjiaohu.com/api/material/image/base64/small';
 export const AvatarBasePath = 'https://api.huanjiaohu.com/api/users/get/logo';
 export const QQAvatarBasePath = 'https://api.huanjiaohu.com/api/qq/get/logo';

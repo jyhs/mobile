@@ -32,5 +32,17 @@ export default {
 
     getLocalContacts({type, province}) {
         return Vue.axios.get(`${ApiBasePath}/api/users/qq?type=${type}&province=${province}`);
+    },
+
+    checkNotice({userId, noticeId}) {
+        return Vue.axios.get(`${ApiBasePath}/api/notice/check?user_id=${userId}&notice_id=${noticeId}`);
+    },
+
+    getNoticeImage() {
+        return Vue.axios.get(`${ApiBasePath}/api/notice/get`);
+    },
+
+    insertNotice({userId, noticeId}) {
+        return Vue.axios.get(`${ApiBasePath}/api/notice/insert?user_id=${userId}&notice_id=${noticeId}`);
     }
 };

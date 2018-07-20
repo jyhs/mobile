@@ -1,5 +1,5 @@
 import {mapActions} from 'vuex';
-import {Search, Swiper, Group, PopupPicker, Rater, LoadMore} from 'vux';
+import {Search, Swiper, Group, PopupPicker, Rater, LoadMore, XDialog, CheckIcon, XButton} from 'vux';
 import {compile, formatUrlParams} from '../../../util/data';
 import {AvatarBasePath, SmallImageBasePath} from '../../../constants/index';
 
@@ -44,7 +44,10 @@ export default {
             hasActiveGroup: true,
             hasActiveLingShow: true,
             hasActiveBill: true,
-            groupCountDownTimer: null
+            groupCountDownTimer: null,
+            showNotice: false,
+            showNoticeImage: '',
+            hasReadNotice: false,
         };
     },
 
@@ -54,7 +57,10 @@ export default {
         Group,
         PopupPicker,
         Rater,
-        LoadMore
+        LoadMore,
+        XDialog,
+        CheckIcon,
+        XButton
     },
 
     async created () {
@@ -78,6 +84,8 @@ export default {
     },
 
     async activated() {
+        const noticeId = parseInt(window.localStorage.getItem('SeawaterNoticeId')) || 0;
+
         if (!this.currentUserId && window.location.search) {
             const params = formatUrlParams(window.location.search.substring(1));
             const {code} = params;
@@ -94,9 +102,17 @@ export default {
                     window.localStorage.setItem('SeawaterLoginUserId', result.id);
                     window.sessionStorage.removeItem('SeaWaterInputHasErrorNum');
                     window.sessionStorage.removeItem('SeaWaterLoginHasError');
+                    await this.checkIfNotice({
+                        userId: result.id,
+                        noticeId
+                    });
                 }
             }
         } else {
+            await this.checkIfNotice({
+                userId: this.currentUserId || 0,
+                noticeId
+            });
             const response = await this.getGroupList({
                 page: 1,
                 size: 10,
@@ -120,7 +136,10 @@ export default {
             'getBillList',
             'getEncyRandomList',
             'getEncyImagesById',
-            'focusEncy'
+            'focusEncy',
+            'checkNotice',
+            'getNoticeImage',
+            'insertNotice'
         ]),
 
         handleShowProvinces() {
@@ -216,6 +235,36 @@ export default {
             if (response.status === 'ok') {
                 this.$set(ency, 'isFocused', !ency.isFocused);
             }
+        },
+
+        async checkIfNotice({userId = 0, noticeId = 0}) {
+            const response = await this.checkNotice({
+                userId,
+                noticeId
+            });
+
+            const {status, checked} = response;
+            if (status === 'ok' && checked) {
+                const imageResponse = await this.getNoticeImage();
+                const {status, notice_id, notice_file} = imageResponse;
+                if (status === 'ok') {
+                    this.showNotice = true;
+                    this.showNoticeImage = notice_file;
+                    window.localStorage.setItem('SeawaterNoticeId', notice_id);
+                }
+            }
+        },
+
+        async handleHasReadNotice() {
+            const noticeId = parseInt(window.localStorage.getItem('SeawaterNoticeId')) || 0;
+
+            this.showNotice = false;
+            this.showNoticeImage = '';
+
+            await this.insertNotice({
+                userId: this.currentUserId,
+                noticeId
+            });
         },
 
         getIntervalFromNow(endDate) {

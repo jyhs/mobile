@@ -213,6 +213,17 @@
                     :columns="2" @on-change="handleProvinceChange" v-model="curProvince">
             </popup-picker>
         </group>
+        <x-dialog v-model="showNotice">
+            <div>
+                <img :src="showNoticeImage" style="max-width:100%">
+            </div>
+            <div class="dialog-read-btn">
+                <!--
+                   <check-icon :value.sync="hasReadNotice">已阅读</check-icon>
+                -->
+                <x-button mini type="warn" @click.native="handleHasReadNotice">已阅读并关闭</x-button>
+            </div>
+        </x-dialog>
     </div>
 </template>
 <script src="./script.js"></script>

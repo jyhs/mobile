@@ -117,7 +117,7 @@ Axios.interceptors.response.use(
             window.localStorage.removeItem('SeawaterLoginUserId');
             window.localStorage.removeItem(`SeawaterAuthorization`);
             window.sessionStorage.removeItem(`SeawaterTabActiveIndex`);
-            window.location = 'https://group.huanjiaohu.com/#/user/login/register';
+            //window.location = 'https://group.huanjiaohu.com/#/user/login/register';
         } else {
             Vue.$vux.toast.show({
                 type: 'warn',
