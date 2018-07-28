@@ -85,6 +85,9 @@ export default {
 
     async activated() {
         const noticeId = parseInt(window.localStorage.getItem('SeawaterNoticeId')) || 0;
+        this.currentUserId = parseInt(window.localStorage.getItem('SeawaterLoginUserId')) || 0;
+        this.curProvince = [localStorage.getItem('SeawaterCurProvince') || 'sh'];
+        this.curProvinceName = localStorage.getItem('SeawaterCurProvinceName') || '上海';
 
         if (!this.currentUserId && window.location.search) {
             const params = formatUrlParams(window.location.search.substring(1));
@@ -248,8 +251,10 @@ export default {
                 const imageResponse = await this.getNoticeImage();
                 const {status, notice_id, notice_file} = imageResponse;
                 if (status === 'ok') {
-                    this.showNotice = true;
                     this.showNoticeImage = notice_file;
+                    this.$nextTick(() => {
+                        this.showNotice = true;
+                    });
                     window.localStorage.setItem('SeawaterNoticeId', notice_id);
                 }
             }
@@ -259,19 +264,14 @@ export default {
             const noticeId = parseInt(window.localStorage.getItem('SeawaterNoticeId')) || 0;
 
             this.showNotice = false;
-            this.showNoticeImage = '';
+            this.$nextTick(() => {
+                this.showNoticeImage = '';
+            });
 
             await this.insertNotice({
-                userId: this.currentUserId,
+                userId: this.currentUserId || 0,
                 noticeId
             });
-        },
-
-        getIntervalFromNow(endDate) {
-            const now = new Date().getTime();
-            const end = new Date(endDate.replace(/-/g,"/")).getTime();
-
-            return Math.floor(Math.abs(end - now) / 1000);
         },
 
         getProvinceNameByValue(value) {

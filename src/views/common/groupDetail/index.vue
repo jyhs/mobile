@@ -25,6 +25,30 @@
                 <icon class="el-icon-coral-search"></icon>
             </div>
         </div>
+        <div class="nav" v-if="!isSearching">
+            <tab class="tab-container" bar-active-color="#28b1ea" active-color="#28b1ea">
+                <tab-item :selected="activeTab==='hy'" @on-item-click="handleTabItemClick('hy')">
+                    <div class="tab-item-container">
+                        <span class="text f13">海水鱼</span>
+                    </div>
+                </tab-item>
+                <tab-item :selected="activeTab==='sh'" @on-item-click="handleTabItemClick('sh')">
+                    <div class="tab-item-container">
+                        <span class="text f13">珊瑚</span>
+                    </div>
+                </tab-item>
+                <tab-item :selected="activeTab==='qt'" @on-item-click="handleTabItemClick('qt')">
+                    <div class="tab-item-container">
+                        <span class="text f13">其它</span>
+                    </div>
+                </tab-item>
+                <tab-item :selected="activeTab==='wfl'" @on-item-click="handleTabItemClick('wfl')">
+                    <div class="tab-item-container">
+                        <span class="text f13">未分类</span>
+                    </div>
+                </tab-item>
+            </tab>
+        </div>
         <div class="bottom">
             <div class="total">
                 <span class="f18">合计<span style="font-weight: bold;">
@@ -72,31 +96,8 @@
             <div class="description" v-if="!isSearching">
                 <span class="f12" v-html="group.description"></span>
             </div>
-            <div class="nav" v-if="!isSearching">
-                <tab class="tab-container" bar-active-color="#28b1ea" active-color="#28b1ea">
-                    <tab-item :selected="activeTab==='hy'" @on-item-click="handleTabItemClick('hy')">
-                        <div class="tab-item-container">
-                            <span class="text f13">海水鱼</span>
-                        </div>
-                    </tab-item>
-                    <tab-item :selected="activeTab==='sh'" @on-item-click="handleTabItemClick('sh')">
-                        <div class="tab-item-container">
-                            <span class="text f13">珊瑚</span>
-                        </div>
-                    </tab-item>
-                    <tab-item :selected="activeTab==='qt'" @on-item-click="handleTabItemClick('qt')">
-                        <div class="tab-item-container">
-                            <span class="text f13">其它</span>
-                        </div>
-                    </tab-item>
-                    <tab-item :selected="activeTab==='wfl'" @on-item-click="handleTabItemClick('wfl')">
-                        <div class="tab-item-container">
-                            <span class="text f13">未分类</span>
-                        </div>
-                    </tab-item>
-                </tab>
-            </div>
-            <div class="items" :class="{pT05Rem: isSearching}" v-if="details&&details.length!==0">
+            <div class="items" :class="{pT05Rem: isSearching}" v-if="details&&details.length!==0"
+                 @touchstart="handleTouchStart" @touchmove="handleTouchMove">
                 <div class="block-content" v-for="item in details" :key="item.id">
                     <div class="content-main ency-content-main" :class="{activeBg: cartDetailIds.includes(item.id)}">
                         <div class="pic">
@@ -133,7 +134,7 @@
                                             @click.stop="deleteConfirmFun(item)">
                                         </icon>
                                     </div>
-                                    <div v-else class="item-in-cart">
+                                    <div v-else class="item-cart">
                                         <icon 
                                             class="el-icon-coral-addition_fill"
                                             @click.stop="handleCartDetail(item)">
@@ -154,7 +155,7 @@
                 </div>
             </div>
             <div v-else>
-                <div v-if="details===undefined">
+                <div v-if="details===undefined" style="margin-top: 60px;">
                     <load-more tip="努力加载中"></load-more>
                 </div>
                 <div v-if="details&&details.length===0" class="more-description">

@@ -25,11 +25,15 @@ export default {
             isSearching: false,
             searchText: '',
             searchTimer: null,
-            scrollUp: false,
             currentItem: {},
             deleteConfirm: false,
             bindPhoneFlag: false,
             phone: '',
+            pageY: 0,
+            disY: 0,
+            navTop: 0,
+            startNavTop: 0,
+            htmlFontSize: 14,
         };
     },
 
@@ -64,6 +68,10 @@ export default {
         } else {
             this.addNewCartUnderGroup();
         }
+
+        const html = document.querySelector('html');
+        this.htmlFontSize = parseInt(html.style.fontSize);
+        this.initNavStyle();
     },
 
     deactivated() {
@@ -97,6 +105,19 @@ export default {
             'hasBindPhone',
             'bindPhone'
         ]),
+
+        initNavStyle() {
+            const desc = document.querySelector('.description');
+            const detail = document.querySelector('.detail');
+            desc.style.display = 'block';
+            detail.style.display = 'flex';
+            const descRect = desc.getBoundingClientRect();
+            const nav = document.querySelector('.nav');
+            this.navTop = this.startNavTop = descRect.height + descRect.top;
+            nav.style.position = 'fixed';
+            nav.style.left = '0';
+            nav.style.top = this.navTop / this.htmlFontSize + 'rem';
+        },
 
         async initDetailsByType(type) {
             this.allDetails = await this.getDetailsByBillId({
@@ -191,6 +212,7 @@ export default {
                 case 'encySearchCancel':
                     this.isSearching = false;
                     this.$nextTick(() => {
+                        this.initNavStyle();
                         this.initDetailsByType(this.activeTab);
                     });
                     break;
@@ -218,21 +240,6 @@ export default {
                 window.localStorage.setItem('SeawaterUserHasBindPhone', true);
                 this.handleAddOneDetail(this.currentItem);
             }
-        },
-
-        async handleDetailImageShow (detail) {
-            const materialId = detail['material_id'] || 0;
-            if (!detail['material_id']) {
-                this.preDetail = detail;
-                this.imagePath = `${SmallImageBasePath}?id=${materialId}`;
-                return;
-            }
-            if (detail.id === this.preDetail.id) {
-                return;
-            }
-
-            this.preDetail = detail;
-            this.imagePath = `${SmallImageBasePath}?id=${materialId}`;
         },
 
         alreadyHasCartUnderGroup() {
@@ -451,6 +458,41 @@ export default {
             }
         },
 
+        handleTouchStart(ev) {
+            this.pageY = ev.touches[0].pageY;
+            this.distY = 0;
+        },
+
+        handleTouchMove(ev) {
+            const pageY = ev.touches[0].pageY;
+            this.distY = pageY - this.pageY;
+            const nav = document.querySelector('.nav');
+            const detail = document.querySelector('.detail');
+            const description = document.querySelector('.description');
+            const header = document.querySelector('.name-cart');
+            const items = document.querySelector('.items');
+            const headerReact = header.getBoundingClientRect();
+            const navRect = nav.getBoundingClientRect();
+            let navTop = this.navTop + this.distY;
+            if (this.distY <= -5) {
+                items.style.marginTop = navRect.height + navRect.top + 'px';
+                detail.style.display = 'none';
+                description.style.display = 'none';
+                navTop = headerReact.height - 2;
+                nav.style.top = navTop / this.htmlFontSize + 'rem';
+                this.navTop = navTop;
+            }
+            if (this.distY >= 5) {
+                const itemsTop = items.getBoundingClientRect().top;
+                if (itemsTop > (navRect.height + navRect.top + 20)) {
+                    detail.style.display = 'flex';
+                    description.style.display = 'block';
+                    nav.style.top = this.startNavTop / this.htmlFontSize + 'rem';
+                    items.style.marginTop = '44px';
+                }
+            }
+        },
+
         validSubmit() {
             if (!this.phone) {
                 this.$vux.toast.show({
@@ -470,6 +512,19 @@ export default {
     },
 
     watch: {
+        'group.description'() {
+            this.$nextTick(() => {
+                const description = document.querySelector('.description');
+                const detail = document.querySelector('.detail');
+                detail && (detail.style.display = 'flex');
+                description && (description.style.display = 'block');
+                const nav = document.querySelector('.nav');
+                const descRect = (description && description.getBoundingClientRect()) || {};
+                this.navTop = this.startNavTop = descRect.height + descRect.top;
+                nav && (nav.style.top = this.navTop / this.htmlFontSize + 'rem');
+            });
+        },
+
         'detailsInCart'() {
             this.getCartDetailsIds();
             this.calculateCartCount();

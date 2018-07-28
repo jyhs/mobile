@@ -117,8 +117,8 @@
         width: 100%;
         background: #f8f8f8;
         border-top: 1px solid #eaeaea;
-        border-bottom: 1px solid #eaeaea;
         border-radius: 2px;
+        overflow: scroll;
         span {
             line-height: 17px;
             p {
@@ -130,14 +130,17 @@
         }
     }
     .nav {
-        padding-top: 0.03rem;
+        width: 100%;
         background: #f8f8f8;
+        z-index: 10000;
+        border-top: 1px solid #eaeaea;
     }
     .pT05Rem {
         padding-top: 0.5rem;
+        margin-top: 0 !important;
     }
     .items {
-        overflow: scroll;
+        margin-top: 44px;
         .active {
             background-color: #d6e9ff;
         }
@@ -220,7 +223,7 @@
                             .el-icon-coral-delete_fill {
                                 color: #ee753c;
                             }
-                            .item-in-cart {
+                            .item-cart {
                                 width: 0.3rem;
                                 height: 0.3rem;
                                 position: relative;

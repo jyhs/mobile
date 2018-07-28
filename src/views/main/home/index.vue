@@ -41,7 +41,7 @@
                 <load-more tip="努力加载中" v-if="!groups"></load-more>
                 <div 
                     class="block-content" 
-                    v-for="group in ((groups || []).filter(item => item.userType!=='lss') || [])" 
+                    v-for="group in ((groups || []).filter(item => item.userType!=='lss') || [])"
                     v-if="group.status===1" 
                     :key="group.id"
                     @click="handleActions(group, 'groupDetail')"
