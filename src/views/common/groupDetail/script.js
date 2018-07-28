@@ -378,7 +378,6 @@ export default {
         },
 
         async handleCartDetail(detail) {
-            window.localStorage.removeItem('SeawaterUserHasBindPhone');
             if (!Boolean(window.localStorage.getItem('SeawaterUserHasBindPhone'))) {
                 this.currentItem = detail;
                 const phoneResponse = await this.hasBindPhone({id: this.currentUserId});

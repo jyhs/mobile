@@ -1,31 +1,30 @@
 import {mapActions} from 'vuex';
-import {Search, Swiper, Group, PopupPicker, Rater, LoadMore, XDialog, CheckIcon, XButton} from 'vux';
+import {Search, Swiper, SwiperItem, Group, PopupPicker, Rater, LoadMore, XDialog, CheckIcon, XButton} from 'vux';
 import {compile, formatUrlParams} from '../../../util/data';
 import {AvatarBasePath, SmallImageBasePath} from '../../../constants/index';
 
 const baseList = [{
     url: 'javascript: void(0);',
-    img: '/static/images/banner/20180707/b01.jpg',
-    title: ''
+    img: 'https://static.huanjiaohu.com/image/ad/china/1.jpg',
+    bigImg: 'https://static.huanjiaohu.com/image/ad/china/1_big.jpg',
 }, {
     url: 'javascript: void(0);',
-    img: '/static/images/banner/20180707/b02.jpg',
-    title: ''
+    img: 'https://static.huanjiaohu.com/image/ad/china/2.jpg',
+    bigImg: 'https://static.huanjiaohu.com/image/ad/china/2_big.jpg',
 }, {
     url: 'javascript: void(0);',
-    img: '/static/images/banner/20180707/b03.jpg',
-    title: ''
+    img: 'https://static.huanjiaohu.com/image/ad/china/3.jpg',
+    bigImg: 'https://static.huanjiaohu.com/image/ad/china/3_big.jpg',
 }, {
     url: 'javascript: void(0);',
-    img: '/static/images/banner/20180707/b04.jpg',
-    title: ''
+    img: 'https://static.huanjiaohu.com/image/ad/china/4.jpg',
+    bigImg: 'https://static.huanjiaohu.com/image/ad/china/4_big.jpg',
 }];
 
 const urlList = baseList.map((item) => ({
     url: item.url,
     img: item.img,
-    fallbackImg: item.fallbackImg,
-    title: item.title
+    bigImg: item.bigImg
 }));
 
 export default {
@@ -33,6 +32,7 @@ export default {
         return {
             currentUserId: parseInt(window.localStorage.getItem('SeawaterLoginUserId')),
             list: urlList,
+            provinceAdList: [],
             billFirstWordColor: ['#ee735c', '#d4e5e0', '#f5a623', '#64c708', '#84daef'],
             showProvincesPicker: false,
             provinces: [],
@@ -48,12 +48,15 @@ export default {
             showNotice: false,
             showNoticeImage: '',
             hasReadNotice: false,
+            showAd: false,
+            showAdImage: ''
         };
     },
 
     components: {
         Search,
         Swiper,
+        SwiperItem,
         Group,
         PopupPicker,
         Rater,
@@ -89,6 +92,7 @@ export default {
         this.curProvince = [localStorage.getItem('SeawaterCurProvince') || 'sh'];
         this.curProvinceName = localStorage.getItem('SeawaterCurProvinceName') || '上海';
 
+        this.getProvinceAds(this.curProvince);
         if (!this.currentUserId && window.location.search) {
             const params = formatUrlParams(window.location.search.substring(1));
             const {code} = params;
@@ -142,7 +146,8 @@ export default {
             'focusEncy',
             'checkNotice',
             'getNoticeImage',
-            'insertNotice'
+            'insertNotice',
+            'getAdByProvinceCode'
         ]),
 
         handleShowProvinces() {
@@ -152,6 +157,7 @@ export default {
         async handleProvinceChange(value) {
             this.curProvince = value;
             this.curProvinceName = this.getProvinceNameByValue(value);
+            this.getProvinceAds(value);
             const response = await this.getGroupList({
                 page: 1,
                 size: 10,
@@ -168,6 +174,7 @@ export default {
         },
 
         async handleDataRefresh(done) {
+            this.getProvinceAds(this.curProvince);
             const response = await this.getGroupList({
                 page: 1,
                 size: 10,
@@ -264,14 +271,39 @@ export default {
             const noticeId = parseInt(window.localStorage.getItem('SeawaterNoticeId')) || 0;
 
             this.showNotice = false;
-            this.$nextTick(() => {
-                this.showNoticeImage = '';
-            });
 
-            await this.insertNotice({
-                userId: this.currentUserId || 0,
-                noticeId
+            if (this.currentUserId) {
+                await this.insertNotice({
+                    userId: this.currentUserId,
+                    noticeId
+                });
+            }
+        },
+
+        handleSwiperImageClick(item) {
+            this.showAd = true;
+            this.showAdImage = item.bigImg;
+        },
+
+        handleAdDialog() {
+            this.showAd = false;
+        },
+
+        async getProvinceAds(code) {
+            this.provinceAdList = [];
+            const response = await this.getAdByProvinceCode({
+                code
             });
+            if (response.status === 'ok') {
+                const adNum = Number(response.ad_num);
+                for (let i = 0; i < adNum; i++) {
+                    this.provinceAdList.push({
+                        url: 'javascript: void(0);',
+                        img: `https://static.huanjiaohu.com/image/ad/${code}/${i + 1}.jpg`,
+                        bigImg: `https://static.huanjiaohu.com/image/ad/${code}/${i + 1}_big.jpg`,
+                    });
+                }
+            }
         },
 
         getProvinceNameByValue(value) {

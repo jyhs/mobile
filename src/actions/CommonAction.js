@@ -137,3 +137,14 @@ export async function insertNotice({commit}, params) {
     const response = await CommonService.insertNotice(params);
     return response.data;
 }
+
+/**
+ * 获取广告
+ * @param commit
+ * @param params
+ * @returns {Promise<*>}
+ */
+export async function getAdByProvinceCode({commit}, params) {
+    const response = await CommonService.getAdByProvinceCode(params);
+    return response.data;
+}

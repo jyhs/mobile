@@ -44,5 +44,9 @@ export default {
 
     insertNotice({userId, noticeId}) {
         return Vue.axios.get(`${ApiBasePath}/api/notice/insert?user_id=${userId}&notice_id=${noticeId}`);
+    },
+
+    getAdByProvinceCode({code}) {
+        return Vue.axios.get(`${ApiBasePath}/api/tools/provinces/ad?code=${code}`);
     }
 };

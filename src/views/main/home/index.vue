@@ -1,7 +1,11 @@
 <template>
     <div class="home-container">
         <scroller :on-refresh="handleDataRefresh">
-            <swiper loop auto :list="list" :aspect-ratio="306/750"></swiper>
+            <swiper loop auto :aspect-ratio="306/750" interval="6000">
+                <swiper-item v-for="(item, index) in list" :key="index">
+                    <img :src="item.img" @click="handleSwiperImageClick(item)">
+                </swiper-item>
+            </swiper>
             <div class="city-selector">
                 <span @click="handleShowProvinces">
                     <icon class="el-icon-coral-coordinates f15"></icon>
@@ -83,6 +87,11 @@
                     </div>
                 </div>
             </div>
+            <swiper loop auto :aspect-ratio="140/750" interval="6000">
+                <swiper-item v-for="(item, index) in provinceAdList" :key="index">
+                    <img :src="item.img" @click="handleSwiperImageClick(item)">
+                </swiper-item>
+            </swiper>
             <div class="block m-t-10" v-if="hasActiveLingShow">
                 <div class="block-title">
                     <span class="rect"></span>
@@ -218,10 +227,15 @@
                 <img :src="showNoticeImage" style="max-width:100%">
             </div>
             <div class="dialog-read-btn">
-                <!--
-                   <check-icon :value.sync="hasReadNotice">已阅读</check-icon>
-                -->
                 <x-button mini type="warn" @click.native="handleHasReadNotice">已阅读并关闭</x-button>
+            </div>
+        </x-dialog>
+        <x-dialog v-model="showAd">
+            <div>
+                <img :src="showAdImage" style="max-width:100%">
+            </div>
+            <div class="dialog-read-btn">
+                <x-button mini type="warn" @click.native="handleAdDialog">关闭</x-button>
             </div>
         </x-dialog>
     </div>
