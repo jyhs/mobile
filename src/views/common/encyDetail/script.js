@@ -47,6 +47,14 @@ export default {
                 title: ''
             });
         });
+
+        wx.miniProgram.postMessage({
+            data: {
+                'param': `type=dict&id=${id}`,
+                'title': `${this.ency.name}`,
+                'imageUrl': (this.encyImages[0] || {}).img
+            }
+        });
     },
 
     deactivated() {
@@ -54,8 +62,17 @@ export default {
     },
 
     mounted() {
+        const {id} = this.$route.params;
         const ele = document.getElementById('loading');
         ele.style.display = 'none';
+
+        wx.miniProgram.postMessage({
+            data: {
+                'param': `type=dict&id=${id}`,
+                'title': `${this.ency.name}`,
+                'imageUrl': (this.encyImages[0] || {}).img
+            }
+        });
     },
 
     methods: {

@@ -63,6 +63,14 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
+    wx.miniProgram.postMessage({
+        data: {
+            'param': `type=home`,
+            'title': `礁岩海水`,
+            'imageUrl': `https://static.huanjiaohu.com/image/share/default.jpg`
+        }
+    });
+
     if (to.meta.requireAuth) {
         const Authorization = localStorage.getItem('SeawaterAuthorization');
         if (Authorization) {

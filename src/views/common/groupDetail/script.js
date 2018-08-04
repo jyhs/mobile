@@ -43,7 +43,7 @@ export default {
         Alert,
         Popover,
         Tab,
-        TabItem, 
+        TabItem,
         LoadMore,
         XDialog,
         Confirm,
@@ -54,13 +54,14 @@ export default {
     async activated() {
         const {id} = this.$route.params;
         const groupId = unCompile(id);
+        const currentUserId = parseInt(window.localStorage.getItem('SeawaterLoginUserId'));
 
         this.group = (await this.getGroupById({id: groupId}))[0] || {};
         this.groupCount = (await this.getCountById({id: groupId}))[0].sum || 0;
         await this.initDetailsByType(this.activeTab);
         this.cart = (await this.getCartUnderUserByGroupId({
             groupId: this.group.id,
-            userId: this.currentUserId
+            userId: currentUserId
         }))[0];
 
         if (this.alreadyHasCartUnderGroup()) {
@@ -72,6 +73,14 @@ export default {
         const html = document.querySelector('html');
         this.htmlFontSize = parseInt(html.style.fontSize);
         this.initNavStyle();
+
+        wx.miniProgram.postMessage({
+            data: {
+                'param': `type=group&id=${groupId}`,
+                'title': `${this.group.name}`,
+                'imageUrl': 'https://static.huanjiaohu.com/image/share/group.jpg'
+            }
+        });
     },
 
     deactivated() {
@@ -84,8 +93,17 @@ export default {
     },
 
     mounted() {
+        const {id} = this.$route.params;
         const ele = document.getElementById('loading');
         ele.style.display = 'none';
+
+        wx.miniProgram.postMessage({
+            data: {
+                'param': `type=group&id=${unCompile(id)}`,
+                'title': `${this.group.name}`,
+                'imageUrl': 'https://static.huanjiaohu.com/image/share/group.jpg'
+            }
+        });
     },
 
     methods: {
@@ -150,7 +168,7 @@ export default {
             done();
         },
 
-        async handleTabItemClick (type) {
+        async handleTabItemClick(type) {
             this.activeTab = type;
             this.initDetailsByType(type);
         },
@@ -357,7 +375,7 @@ export default {
                     cart_id: this.cart.id,
                     bill_detail_id: this.currentItem.id
                 });
-                
+
                 if (result.status === 'ok') {
                     this.detailsInCart.splice(deleteIndex, 1);
                     this.$nextTick(async () => {

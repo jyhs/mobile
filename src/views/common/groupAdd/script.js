@@ -60,7 +60,6 @@ export default {
         const cities = await this.getCitiesInProvinces({
             area: curProvince
         });
-        console.log('cities', cities);
         for (let city of cities) {
             this.cities.push({
                 key: city.name,
