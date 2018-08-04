@@ -102,5 +102,9 @@ export default {
 
     updateCartAndDetail(params) {
         return Vue.axios.post(`${ApiBasePath}/api/cart/update/cart/detail`, params);
+    },
+
+    confirmCart(params) {
+        return Vue.axios.post(`${ApiBasePath}/api/cart/confirm/update`, params);
     }
 };

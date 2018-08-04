@@ -12,6 +12,7 @@
             </span>
         </div>
         <scroller>
+            <!--
             <group style="margin-top: 0.45rem;">
                 <div title="温馨提示" class="tip-cell">
                     <p>温馨提示:</p>
@@ -19,7 +20,8 @@
                     <p>团购结束后,购物车数据不能修改</p>
                 </div>
             </group>
-            <div class="block">
+            -->
+            <div class="block" style="margin-top: 0.45rem;">
                 <div class="block-content m-b-10" v-for="item in detailsInCart" :key="item.id">
                     <div class="img-container">
                         <img :src="item.encyImage" alt="生物图片">
@@ -74,14 +76,12 @@
                 </group>
             </div>
         </scroller>
-        <!--
         <div class="submit" v-if="group.status===1">
             <button class="btn btn-full f15" @click="handleSubmit">确认购买</button>
         </div>
         <div class="submit" v-else>
             <button class="btn btn-full btn-disabled f15">确认购买</button>
         </div>
-        -->
         <confirm v-model="deleteConfirm" :title="`删除${currentItem.name}`"
                  @on-confirm="handleConfirmDelete">
             <p style="text-align:center;">亲，确定删除吗？</p>

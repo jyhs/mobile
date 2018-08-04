@@ -103,7 +103,8 @@ export default {
             'updateCartDetail',
             'deleteDetailById',
             'getCartUnderUserByGroupId',
-            'updateCartAndDetail'
+            'updateCartAndDetail',
+            'confirmCart'
         ]),
 
         handleDataRefresh(done) {
@@ -204,49 +205,22 @@ export default {
                 return;
             }
             const {cartId} = this.$route.params;
-            let submitFlag = true;
 
             this.$vux.loading.show({
                 text: '努力加载中'
             });
-            const result = await this.updateCart({
+            const result = await this.confirmCart({
                 id: cartId,
-                phone: this.phone,
-                description: this.remark,
-                sum: this.totalCount,
-                freight: this.totalFreight,
-                status: 1
+                is_confirm: 1
             });
-            if (result.status) {
-                for (let i = 0; i < this.detailsInCart.length; i++) {
-                    try {
-                        await this.updateCartDetail({
-                            cart_id: cartId,
-                            bill_detail_id: this.detailsInCart[i].id,
-                            bill_detail_num: this.detailsInCart[i].count,
-                            org_bill_detail_num: this.detailsInCart[i].count,
-                            group_bill_id: this.group.id
-                        });
-                    } catch (error) {
-                        console.error(error);
-                        submitFlag = false;
-                    }
-                }
-            } else {
-                submitFlag = false;
+            if (result.status === 'ok') {
+                this.$vux.toast.text('确认购买成功');
             }
             this.$vux.loading.hide();
-
-            if (submitFlag) {
-                this.$vux.toast.text('购买成功，准备分货吧');
-                this.$router.push({
-                    name: 'myCarts'
-                });
-            }
         },
 
-        async updateDetailsImg() {
-            this.detailsInCart.map(async detail => {
+        updateDetailsImg() {
+            this.detailsInCart.map(detail => {
                 this.$set(detail, 'encyImage', `${SmallImageBasePath}?id=${detail.material_id || 0}`);
             });
         },

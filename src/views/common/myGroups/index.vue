@@ -40,7 +40,13 @@
                                 </span>
                             </div>
                             <div class="info-item">
-                                <span class="group-name f15">{{group.name}}</span>
+                                <span class="group-name f15">
+                                    {{group.name}}
+                                    <icon v-if="group.status===1"
+                                          class="el-icon-coral-editor f18"
+                                          @click.stop="handleEditGroup(group)">
+                                    </icon>
+                                </span>
                                 <icon class="el-icon-coral-lock f20"
                                       v-if="group.status===1"
                                       @click.stop="handleFinishGroup(group)"

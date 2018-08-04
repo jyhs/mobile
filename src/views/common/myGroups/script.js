@@ -126,6 +126,15 @@ export default {
             });
         },
 
+        handleEditGroup(group) {
+            this.$router.push({
+                name: 'groupEdit',
+                params: {
+                    id: group.id,
+                }
+            });
+        },
+
         async handleDownload(group) {
             this.$vux.loading.show({
                 text: '努力加载中'

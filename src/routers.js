@@ -11,6 +11,7 @@ const encyDetail = r => require.ensure([], () => r(require('@/views/common/encyD
 const encyFocus = r => require.ensure([], () => r(require('@/views/common/encyFocus/index.vue')), 'encyFocus');
 const billDetail = r => require.ensure([], () => r(require('@/views/common/billDetail/index.vue')), 'billDetail');
 const groupAdd = r => require.ensure([], () => r(require('@/views/common/groupAdd/index.vue')), 'groupAdd');
+const groupEdit = r => require.ensure([], () => r(require('@/views/common/groupEdit/index.vue')), 'groupEdit');
 const groupDetail = r => require.ensure([], () => r(require('@/views/common/groupDetail/index.vue')), 'groupDetail');
 const cartDetail = r => require.ensure([], () => r(require('@/views/common/cartDetail/index.vue')), 'cartDetail');
 const cartItems = r => require.ensure([], () => r(require('@/views/common/cartItems/index.vue')), 'cartItems');
@@ -62,6 +63,13 @@ const routes = [{
         path: '/bill/:id/group/add',
         component: groupAdd,
         name: 'groupAdd',
+        meta: {
+            requireAuth: true
+        }
+    }, {
+        path: '/group/:id/edit',
+        component: groupEdit,
+        name: 'groupEdit',
         meta: {
             requireAuth: true
         }

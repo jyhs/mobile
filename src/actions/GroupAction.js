@@ -34,6 +34,17 @@ export async function getCountById({commit}, params) {
 }
 
 /**
+ * 更新团购清单
+ * @param commit
+ * @param params
+ * @returns {Promise.<{}>}
+ */
+export async function updateGroupDescription({commit}, params) {
+    const response = await GroupService.updateGroupDescription(params);
+    return response.data || {};
+}
+
+/**
  * 开团人马上结束团购
  * @param commit
  * @param params

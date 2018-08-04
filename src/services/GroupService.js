@@ -30,6 +30,10 @@ export default {
         });
     },
 
+    updateGroupDescription(params) {
+        return Vue.axios.post(`${ApiBasePath}/api/group/update/description`, params);
+    },
+
     finishGroupByIdAndUserId(params) {
         return Vue.axios.post(`${ApiBasePath}/api/group/finish`, params);
     },

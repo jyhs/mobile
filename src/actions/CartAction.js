@@ -185,3 +185,14 @@ export async function updateCartAndDetail({commit}, params) {
     const response = await CartService.updateCartAndDetail(params);
     return response.data || {};
 }
+
+/**
+ * 确定购买
+ * @param commit
+ * @param params
+ * @returns {Promise.<{}>}
+ */
+export async function confirmCart({commit}, params) {
+    const response = await CartService.confirmCart(params);
+    return response.data || {};
+}
